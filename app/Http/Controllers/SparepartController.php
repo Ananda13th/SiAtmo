@@ -1,0 +1,100 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Sparepart;
+use Exception;
+
+class SparepartController extends Controller
+{
+    public function index()
+    {
+        $sparepart= Sparepart::all();
+
+        return view('sparepart/index', ['sparepart'=>$sparepart, 'no'=>0]);
+    }
+
+    public function create()
+    {
+        $sparepart= Sparepart::all();
+        return view('sparepart/create',['sparepart'=>$sparepart]);
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'kodeSparepart'=>'required|max:12|min:12',
+            'namaSparepart'=>'required',
+            'tipeSparepart'=>'required',
+            'merkSparepart'=>'required',
+            'hargaJual'=>'required',
+            'hargaBeli'=>'required',
+            'tempatPeletakan'=>'required',
+            'jumlahStok'=>'required',
+        ]);
+        
+        
+        try{
+            $addSparepart = Sparepart::create([
+                'kodeSparepart' => $request->kodeSparepart,
+                'namaSparepart'=>$request->namaSparepart,
+                'tipeSparepart'=>$request->tipeSparepart,
+                'merkSparepart'=>$request->merkSparepart,
+                'hargaJual'=>$request->hargaJual,
+                'hargaBeli'=>$request->hargaBeli,
+                'tempatPeletakan'=>$request->tempatPeletakan,
+                'jumlahStok'=>$request->jumlahStok,
+                'gambarSparepart'=>$request->gambarSparepart
+            ]);
+        }
+        catch(Exception $exception)
+        {
+            return redirect()->route('sparepart.create')->with('failed','Kode Sparepart Sudah Ada');
+        }
+        return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil ditambah');
+    }
+
+    public function edit($kodeSparepart)
+    {
+        $sparepart = Sparepart::find($kodeSparepart);
+        
+        return view('sparepart/edit',['sparepart'=>$sparepart]);
+    }
+
+    public function show($kodeSparepart)
+    {
+        $sparepart = Sparepart::find($kodeSparepart);
+
+        return redirect()->route('sparepart.index');
+    }
+
+    public function update(Request $request, $kodeSparepart)
+    {
+        $this->validate($request, [
+            'namaSparepart'=>'required',
+            'tipeSparepart'=>'required',
+            'merkSparepart'=>'required',
+            'hargaJual'=>'required',
+            'hargaBeli'=>'required',
+        ]);
+        
+        $sparepart = Sparepart::find($kodeSparepart);
+        $sparepart->namaSparepart= $request['namaSparepart'];
+        $sparepart->tipeSparepart=$request['tipeSparepart'];
+        $sparepart->merkSparepart=$request['merkSparepart'];
+        $sparepart->hargaJual=$request['hargaJual'];
+        $sparepart->hargaBeli=$request['hargaBeli'];
+        $sparepart->update();
+        // $pegawai = User::findOrFail($email);
+        // $pegawai->update($request->all());
+        return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil diedit');
+    }
+
+    public function destroy($kodeSparepart)
+    {
+        $sparepart = Sparepart::find($kodeSparepart);
+        $sparepart->delete();
+        return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil dihapus');
+    }
+}
