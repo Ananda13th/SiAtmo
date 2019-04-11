@@ -17,6 +17,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -40,12 +42,12 @@
         </li>
         <li class="nav-item">
             <a class="nav-link text-white" href="{{route('transaksiSparepart.index')}}">
-                <i class="oi oi-person"></i> Sparepart
+            <i class="oi oi-cog"></i> Sparepart
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-white" href="{{route('transaksiService.index')}}">
-                <i class="oi oi-person"></i> Service
+            <i class="oi oi-cog"></i> Service
             </a>
         </li>
         <li class="nav-item">
@@ -68,12 +70,12 @@
                 </li>
                 <li class="list-group-item bg-dark">
                     <a class="nav-link text-white" href="{{route('transaksiSparepart.index')}}">
-                        <i class="oi oi-person"></i> Sparepart
+                    <i class="oi oi-cog"></i></span> Sparepart
                     </a>
                 </li>
                 <li class="list-group-item bg-dark">
                     <a class="nav-link text-white" href="{{route('transaksiService.index')}}">
-                        <i class="oi oi-person"></i> Service
+                    <i class="oi oi-cog"></i> Service
                     </a>
                 </li>
                 <li class="list-group-item bg-dark">

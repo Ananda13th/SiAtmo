@@ -63,7 +63,7 @@
     <div class="field_wrapper">
         <tr>
             <td>
-                <select class="custom-select" id="kodeService" name="kodeService[]">
+                <select class="custom-select kodeService" name="kodeService[]">
                     <option value=""> --Pilih Jasa Service-- </option>";
                     @foreach($service as $s) {
                             <option value="{{ $s['kodeService'] }}" data-price="{{ $s->biayaService }}"> {{ $s['keterangan'] }} </option>";
@@ -72,7 +72,7 @@
                 </select>
             </td> 
             <td> 
-                <input class="form-control" type="text" id="biayaServiceTransaksi" name="biayaServiceTransaksi[]" autocomplete="off" readonly> </td>
+                <input class="form-control biayaServiceTransaksi" type="text" name="biayaServiceTransaksi[]" autocomplete="off" readonly> </td>
             <td>
                 <select class="custom-select" id="platNomorKendaraan" name="platNomorKendaraan[]">
                     <option value=""> --Pilih Kendaraan-- </option>";
@@ -122,7 +122,7 @@
                 </select>
             </td> 
             <td> 
-                <input class="form-control" type="text" id="hargaJualTransaksi" name="hargaJualTransaksi[]" autocomplete="off" readonly> </td>
+                <input class="form-control hargaJualTransaksi" type="text" name="hargaJualTransaksi[]" autocomplete="off" readonly> </td>
             </td>
             <td> <input type="number" id="jumlahSparepart" name="jumlahSparepart" step="1"> </td>
             <td> <button class="btn add-more" id="remove" type="button">x</button> </td>
@@ -150,9 +150,9 @@
     });    
 
     $(function() {
-        $('#kodeService').on('change', function(){
+        $('body').on('change', '.kodeService', function(){
             var price = $(this).children('option:selected').data('price');
-            $('#biayaServiceTransaksi').val(price);
+            $(this).closest('tr').find('.biayaServiceTransaksi').val(price);
         });
     });
 

@@ -49,21 +49,21 @@ class LoginController extends Controller
         }
     }
 
-    protected function authenticated($request, $user)
-    {
-        if($user->idPosisi == 1) {
-            return redirect()->intended('/owner');
-        }
-        if($user->idPosisi == 2)
-        {
-            return redirect()->intended('/cs');
-        }
-        if($user->idPosisi == 2)
-        {
-            return redirect()->intended('/kasir');
-        }
-        return redirect()->intended('/');
-    }
+    // protected function authenticated($request, $user)
+    // {
+    //     if($user->idPosisi == 1) {
+    //         return redirect()->intended('/owner');
+    //     }
+    //     if($user->idPosisi == 2)
+    //     {
+    //         return redirect()->intended('/cs');
+    //     }
+    //     if($user->idPosisi == 2)
+    //     {
+    //         return redirect()->intended('/kasir');
+    //     }
+    //     return redirect()->intended('/');
+    // }
 
 
     /**

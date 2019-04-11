@@ -10,6 +10,8 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    const UPDATED_AT = null;
+    const CREATED_AT = null;
     protected $table = 'users';
     protected $primaryKey = 'email';
     

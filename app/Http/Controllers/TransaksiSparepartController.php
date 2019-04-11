@@ -49,11 +49,6 @@ class TransaksiSparepartController extends Controller
             $subtotal += $request->hargaJualTransaksi[$i]*$request->jumlahSparepart[$i];
         }
 
-        $user = Auth::user();
-        $pegawaiOnDuty = PegawaiOnDuty::create([
-             'email'=> $user->email,
-             'kodeNota'=>$transaksi->kodeNota
-        ]);
 
        
         $transaksi = TransaksiPenjualan::create([
@@ -67,6 +62,11 @@ class TransaksiSparepartController extends Controller
             'alamatKonsumen'=>$request->alamatKonsumen,
         ]);
         
+        // $user = Auth::user();
+        // $pegawaiOnDuty = PegawaiOnDuty::create([
+        //      'email'=> $user->email,
+        //      'kodeNota'=>$transaksi->kodeNota
+        // ]);
 
         $count = count($request->kodeSparepart);
         for($i = 0; $i<$count; $i++)

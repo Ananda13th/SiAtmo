@@ -28,8 +28,6 @@ Route::get('/kasir', function () {
 
 Auth::routes();
 
-//Route::get('/home', 'HomeController@index')->name('home');
-
 Route::group(['middleware'=>'cekRole'], function(){
     Route::get('owner', 'HomeController@index')->name('home');
     Route::resource('pegawai', 'PegawaiController');
@@ -61,8 +59,17 @@ Route::group(['middleware'=>'cekRole'], function(){
     });
     Route::resource('supplier', 'SupplierController');
     Route::resource('kendaraan', 'KendaraanController');
+    Route::resource('pemesanan', 'PemesananController');
     Route::resource('transaksiService', 'TransaksiServiceController');
     Route::resource('transaksiSparepart', 'TransaksiSparepartController');
     Route::resource('pemesanan', 'PemesananController');
-    //Route::get('/info/{kodeService}', 'TransaksiServiceController@getInfo');
+});
+
+Route::group(['middleware'=>'cekRoleCS'], function(){
+    Route::resource('transaksiService', 'TransaksiServiceController');
+    Route::resource('transaksiSparepart', 'TransaksiSparepartController');
+});
+
+Route::group(['middleware'=>'cekRoleKasir'], function(){
+    //
 });

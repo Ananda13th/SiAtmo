@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Sparepart;
 use Exception;
+use Image;
 
 class SparepartController extends Controller
 {
@@ -32,26 +33,52 @@ class SparepartController extends Controller
             'hargaBeli'=>'required',
             'tempatPeletakan'=>'required',
             'jumlahStok'=>'required',
+            'gambarSparepart'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        
-        
-        try{
-            $addSparepart = Sparepart::create([
-                'kodeSparepart' => $request->kodeSparepart,
-                'namaSparepart'=>$request->namaSparepart,
-                'tipeSparepart'=>$request->tipeSparepart,
-                'merkSparepart'=>$request->merkSparepart,
-                'hargaJual'=>$request->hargaJual,
-                'hargaBeli'=>$request->hargaBeli,
-                'tempatPeletakan'=>$request->tempatPeletakan,
-                'jumlahStok'=>$request->jumlahStok,
-                'gambarSparepart'=>$request->gambarSparepart
-            ]);
-        }
-        catch(Exception $exception)
+
+        if($request->hasFile('gambarSparepart'))
         {
-            return redirect()->route('sparepart.create')->with('failed','Kode Sparepart Sudah Ada');
+            $image = $request->file('gambarSparepart');
+            $filename = time() .$image->getClientOriginalName();
+            //$image->move( storage_path('public/image/',  $filename ));
+            $image->move( public_path().'/image/',  $filename );
+            try{
+                $addSparepart = Sparepart::create([
+                    'kodeSparepart' => $request->kodeSparepart,
+                    'namaSparepart'=>$request->namaSparepart,
+                    'tipeSparepart'=>$request->tipeSparepart,
+                    'merkSparepart'=>$request->merkSparepart,
+                    'hargaJual'=>$request->hargaJual,
+                    'hargaBeli'=>$request->hargaBeli,
+                    'tempatPeletakan'=>$request->tempatPeletakan,
+                    'jumlahStok'=>$request->jumlahStok,
+                    'gambarSparepart'=>$filename
+                ]);
+            }
+            catch(Exception $exception)
+            {
+                return redirect()->route('sparepart.create')->with('failed','Kode Sparepart Sudah Ada');
+            }
         }
+        else
+        {
+            try{
+                $addSparepart = Sparepart::create([
+                    'kodeSparepart' => $request->kodeSparepart,
+                    'namaSparepart'=>$request->namaSparepart,
+                    'tipeSparepart'=>$request->tipeSparepart,
+                    'merkSparepart'=>$request->merkSparepart,
+                    'hargaJual'=>$request->hargaJual,
+                    'hargaBeli'=>$request->hargaBeli,
+                    'tempatPeletakan'=>$request->tempatPeletakan,
+                    'jumlahStok'=>$request->jumlahStok
+                ]);
+            }
+            catch(Exception $exception)
+            {
+                return redirect()->route('sparepart.create')->with('failed','Kode Sparepart Sudah Ada');
+            }
+        };
         return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil ditambah');
     }
 
@@ -86,8 +113,6 @@ class SparepartController extends Controller
         $sparepart->hargaJual=$request['hargaJual'];
         $sparepart->hargaBeli=$request['hargaBeli'];
         $sparepart->update();
-        // $pegawai = User::findOrFail($email);
-        // $pegawai->update($request->all());
         return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil diedit');
     }
 

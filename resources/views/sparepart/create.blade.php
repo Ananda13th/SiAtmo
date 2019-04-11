@@ -75,8 +75,10 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="author">Gambar:</label>
-        <input type="file" class="form-control" name="gambarSparepart"/>
+        <label class="col-sm-2"for="author">Gambar:</label>
+        <div class="col-sm-4">
+           <input type="file" id="gambarSparepart" name="gambarSparepart">
+        </div>
     </div>
     <br>
     <button type="submit" class="btn btn-info"><i class="oi oi-task"></i> Simpan</button>

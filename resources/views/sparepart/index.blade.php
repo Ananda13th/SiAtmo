@@ -5,6 +5,7 @@
 <h4 class="mt-2">Data Sparepart</h4>
 <hr>
 <a class="btn btn-success" href="{{ route('sparepart.create')}}"> <span class="oi oi-plus"></span> Tambah </a>
+<a class="btn btn-success" href="{{ route('pemesanan.index')}}"> <span class="oi oi-eye"></span> Pemesanan </a>
 <br>
 <br>
 <form action="sparepart/search" method="POST" role="search">
