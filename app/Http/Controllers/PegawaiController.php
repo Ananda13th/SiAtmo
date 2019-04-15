@@ -89,7 +89,8 @@ class PegawaiController extends Controller
 
     public function destroy($email)
     {
-        $pegawai = User::find($email);
+        $pegawai = User::findOrFail($email);
+        dd($pegawai);
         $pegawai->delete();
         return redirect()->route('pegawai.index')->with('success', 'Pegawai berhasil dihapus');
     }

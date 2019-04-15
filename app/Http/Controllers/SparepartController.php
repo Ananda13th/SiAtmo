@@ -16,6 +16,20 @@ class SparepartController extends Controller
         return view('sparepart/index', ['sparepart'=>$sparepart, 'no'=>0]);
     }
 
+    public function ByHarga()
+    {
+        $sparepart= Sparepart::orderBy('hargaJual')->get();
+
+        return view('sparepart/index', ['sparepart'=>$sparepart, 'no'=>0]);
+    }
+
+    public function ByStok()
+    {
+        $sparepart= Sparepart::orderBy('jumlahStok')->get();
+
+        return view('sparepart/index', ['sparepart'=>$sparepart, 'no'=>0]);
+    }
+
     public function create()
     {
         $sparepart= Sparepart::all();
@@ -40,7 +54,6 @@ class SparepartController extends Controller
         {
             $image = $request->file('gambarSparepart');
             $filename = time() .$image->getClientOriginalName();
-            //$image->move( storage_path('public/image/',  $filename ));
             $image->move( public_path().'/image/',  $filename );
             try{
                 $addSparepart = Sparepart::create([
@@ -52,7 +65,7 @@ class SparepartController extends Controller
                     'hargaBeli'=>$request->hargaBeli,
                     'tempatPeletakan'=>$request->tempatPeletakan,
                     'jumlahStok'=>$request->jumlahStok,
-                    'gambarSparepart'=>$filename
+                    'gambarSparepart'=>$image
                 ]);
             }
             catch(Exception $exception)
@@ -118,7 +131,7 @@ class SparepartController extends Controller
 
     public function destroy($kodeSparepart)
     {
-        $sparepart = Sparepart::find($kodeSparepart);
+        $sparepart = Sparepart::findOrFail($kodeSparepart);
         $sparepart->delete();
         return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil dihapus');
     }

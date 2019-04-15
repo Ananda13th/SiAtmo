@@ -43,38 +43,38 @@
                 <tr>
                     <td><?=++$no?></td>
                     <td><?= $data['name']?></td>
-                    <td><?= $data->email ?></td>
+                    <td><?= $data['email'] ?></td>
                     <td><?= $data['keteranganPosisi']?></td>
                     <td><?= $data['gaji']?></td>
                     <td>
-                        <a class="btn btn-sm btn-info" href="{{ route('pegawai.edit', $data['email']) }}"> <i class="oi oi-pencil"></i> Edit</a>
-                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal"><span class="oi oi-trash"></span> Hapus</button>
+                        {{ Form::open(array('route' => array('pegawai.destroy', $data['email']), 'method' => 'DELETE')) }}
+                            <button type="submit" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span> Hapus </button>
+                            <a class="btn btn-sm btn-info" href="{{ route('pegawai.edit', $data['email']) }}"> <i class="oi oi-pencil"></i> Edit</a>
+                        {{ Form::close() }}
+                        <!-- <a class="btn btn-sm btn-info" href="{{ route('pegawai.edit', $data['email']) }}"> <i class="oi oi-pencil"></i> Edit</a>
+                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal"><span class="oi oi-trash"></span> Hapus</button> -->
                     </td>
                 </tr>
                 @endif
             @endforeach
         </tbody>
     </table>
-    <!-- Modal -->
+
 	<div id="myModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
-			<!-- konten modal-->
 			<div class="modal-content">
-				<!-- heading modal -->
 				<div class="modal-header">
 					<h4 class="modal-title">PERINGATAN</h4>
 				</div>
-				<!-- body modal -->
 				<div class="modal-body">
-					<p>Yakin ingin menhapus pegawai?</p>
+					<p>Yakin ingin menghapus pegawai?</p>
+                    <p>{{$data['email']}}</p>
 				</div>
-				<!-- footer modal -->
 				<div class="modal-footer">
                     {{ Form::open(array('route' => array('pegawai.destroy', $data['email']), 'method' => 'DELETE')) }}
                         <button type="submit" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span> Ya</button>
                         <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
                     {{ Form::close() }}
-					
 				</div>
 			</div>
 		</div>

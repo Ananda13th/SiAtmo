@@ -13,7 +13,7 @@ class PegawaiController extends Controller
     {
         $pegawai = User::leftJoin('posisi','posisi.idPosisi','=','users.idPosisi')->get();
         $response = "OK";
-        return json_encode(array("response"=>$response, "pegawai"=>$pegawai));
+        return response()->json(($pegawai), 200);
     }
 
     public function create()

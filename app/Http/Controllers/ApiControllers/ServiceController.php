@@ -11,7 +11,7 @@ class ServiceController extends Controller
     {
         $service = Service::all();
 
-        return json_encode(array("data"=>$service));
+        return response()->json(($serice), 200);
     }
 
     public function create()

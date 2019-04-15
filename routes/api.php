@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use App\User;
+use App\Sparepart;
+use App\Service;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,44 +55,38 @@ Route::patch('kendaraan/{$kodeSparepart}', 'ApiControllers\Kendaraan@update');
 Route::delete('kendaraan/{$kodeSparepart}', 'ApiControllers\Kendaraan@destroy');
 
 
+
+Route::any('pegawai/search',function()
+{
+    $q = Input::get ( 'name' );
+    $user = User::leftJoin('posisi','posisi.idPosisi','=','users.idPosisi')->where('name','LIKE','%'.$q.'%')->orWhere('name','LIKE','%'.$q.'%')->get();
+    if(count($user) > 0)
+        return response()->json($user);
+    else return response()->json('Data Tidak Ditemukan');
+});
+
+Route::any('service/search',function()
+{
+    $q = Input::get ( 'keterangan' );
+    $user = Service::where('keterangan','LIKE','%'.$q.'%')->orWhere('keterangan','LIKE','%'.$q.'%')->get();
+    if(count($user) > 0)
+        return response()->json($user);
+    else return response()->json('Data Tidak Ditemukan');
+});
+
+Route::any('sparepart/search',function()
+{
+    $q = Input::get ( 'namaSparepart' );
+    $user = Sparepart::where('namaSparepart','LIKE','%'.$q.'%')->get();
+    if(count($user) > 0)
+        return response()->json($user);
+    else return response()->json('Data Tidak Ditemukan');
+});
+
+
 Route::group(['middleware'=>'cekRole'], function(){
-    // Route::get('pegawai', 'ApiControllers\PegawaiController@index');
-    // Route::post('pegawai', 'ApiControllers\PegawaiController@store');
-    // Route::patch('pegawai/{$email}', 'ApiControllers\PegawaiController@update');
-    // Route::delete('pegawai/{$email}', 'ApiControllers\PegawaiController@destroy');
-    //Route::resource('sparepart', 'ApiControllers\SparepartController');
-    //Route::resource('service', 'ApiControllers\ServiceController');
-    //Route::resource('supplier', 'ApiControllers\SupplierController');
-    //Route::resource('kendaraan', 'ApiControllers\KendaraanController');
     Route::resource('transaksiService', 'ApiControllers\TransaksiServiceController');
     Route::resource('transaksiSparepart', 'ApiControllers\TransaksiSparepartController');
     Route::resource('pemesanan', 'ApiControllers\PemesananController');
-
-    Route::any('pegawai/search',function()
-    {
-        $q = Input::get ( 'name' );
-        $user = User::leftJoin('posisi','posisi.idPosisi','=','users.idPosisi')->where('name','LIKE','%'.$q.'%')->orWhere('name','LIKE','%'.$q.'%')->get();
-        if(count($user) > 0)
-            return view('pegawai.search')->withDetails($user)->withQuery ( $q );
-        else return view ('welcome')->withMessage('No Details found. Try to search again !');
-    });
-
-    Route::any('service/search',function()
-    {
-        $q = Input::get ( 'keterangan' );
-        $user = Service::where('keterangan','LIKE','%'.$q.'%')->orWhere('keterangan','LIKE','%'.$q.'%')->get();
-        if(count($user) > 0)
-            return view('service.search')->withDetails($user)->withQuery ( $q );
-        else return view ('welcome')->withMessage('No Details found. Try to search again !');
-    });
-
-    Route::any('sparepart/search',function()
-    {
-        $q = Input::get ( 'namaSparepart' );
-        $user = Sparepart::where('namaSparepart','LIKE','%'.$q.'%')->get();
-        if(count($user) > 0)
-            return view('sparepart.search')->withDetails($user)->withQuery ( $q );
-        else return view ('welcome')->withMessage('No Details found. Try to search again !');
-    });
 });
 

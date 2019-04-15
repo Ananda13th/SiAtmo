@@ -11,7 +11,7 @@ class KendaraanController extends Controller
     {
         $kendaraan = Kendaraan::all();
 
-        return json_encode(array("data"=>$kendaraan));
+        return response()->json(($kendaraan), 200);
     }
 
     public function create()

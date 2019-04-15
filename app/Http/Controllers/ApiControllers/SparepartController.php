@@ -11,7 +11,7 @@ class SparepartController extends Controller
     {
         $sparepart= Sparepart::all();
 
-        return json_encode(array("sparepart"=>$sparepart));
+        return response()->json(($sparepart), 200);
     }
 
     public function create()
@@ -46,7 +46,7 @@ class SparepartController extends Controller
         ]);
 
 
-        return response()->json($service, 201);
+        return response()->json($addSparepart, 201);
     }
 
     public function edit($kodeSparepart)

@@ -33,8 +33,12 @@
                 <td><?= $data['namaSales']?></td>
                 <td><?= $data['noTelpSales']?></td>
                 <td>
-                    <a class="btn btn-sm btn-info" href="{{ route('supplier.edit', $data['namaPerusahaan']) }}"> <i class="oi oi-pencil"></i> Edit</a>
-                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal"><span class="oi oi-trash"></span> Hapus</button>
+                    {{ Form::open(array('route' => array('supplier.destroy', $data['namaPerusahaan']), 'method' => 'DELETE')) }}
+                        <button type="submit" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span> Hapus </button>
+                        <a class="btn btn-sm btn-info" href="{{ route('supplier.edit', $data['namaPerusahaan']) }}"> <i class="oi oi-pencil"></i> Edit</a>
+                    {{ Form::close() }}
+                    <!-- <a class="btn btn-sm btn-info" href="{{ route('supplier.edit', $data['namaPerusahaan']) }}"> <i class="oi oi-pencil"></i> Edit</a>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal"><span class="oi oi-trash"></span> Hapus</button> -->
                 </td>
             </tr>
             @endforeach

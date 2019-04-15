@@ -30,6 +30,7 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>Gambar</th>
                 <th>Kode</th>
                 <th>Nama</th>
                 <th>Tipe</th>
@@ -44,6 +45,8 @@
             @foreach($sparepart as $data)
             <tr>
                 <td><?=++$no?></td>
+                <td><img src="{{ asset('image/'.$data['gambarSparepart'])}}" width="100"></td>
+                <!-- <td><img src="$data->gambarSparepart/jpeg;base64,'.base64_encode($data->gambarSparepart) .'"></td> -->
                 <td><?= $data->kodeSparepart?></td>
                 <td><?= $data->namaSparepart ?></td>
                 <td><?= $data->tipeSparepart?></td>
@@ -52,8 +55,12 @@
                 <td><?= $data->hargaBeli?></td>
                 <td><?= $data->jumlahStok?></td>
                 <td>
-                    <a class="btn btn-sm btn-info" href="{{ route('sparepart.edit', $data['kodeSparepart']) }}"> <i class="oi oi-pencil"></i> Edit</a>
-                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal"><span class="oi oi-trash"></span> Hapus</button>
+                    {{ Form::open(array('route' => array('sparepart.destroy', $data['kodeSparepart']), 'method' => 'DELETE')) }}
+                        <button type="submit" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span> Hapus </button>
+                        <a class="btn btn-sm btn-info" href="{{ route('sparepart.edit', $data['kodeSparepart']) }}"> <i class="oi oi-pencil"></i> Edit</a>
+                    {{ Form::close() }}
+                    <!-- <a class="btn btn-sm btn-info" href="{{ route('sparepart.edit', $data['kodeSparepart']) }}"> <i class="oi oi-pencil"></i> Edit</a>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal"><span class="oi oi-trash"></span> Hapus</button> -->
                 </td>
             </tr>
             @endforeach
@@ -68,6 +75,7 @@
 				</div>
 				<div class="modal-body">
 					<p>Yakin ingin menghapus sparepart?</p>
+                    <p>{{$data['kodeSparepart']}}</p>
 				</div>
 				<div class="modal-footer">
                     {{ Form::open(array('route' => array('sparepart.destroy', $data['kodeSparepart']), 'method' => 'DELETE')) }}

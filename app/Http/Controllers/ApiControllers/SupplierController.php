@@ -11,7 +11,7 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::all();
 
-        return json_encode(array("data"=>$supplier));
+        return response()->json(($supplier), 200);
     }
 
     public function create()
