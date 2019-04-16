@@ -24,7 +24,9 @@
     <p>{{ $message }}</p>
 </div>
 @endif
-
+<br>
+<a class="btn btn-primary" href="{{ route('sparepart.byStok')}}"> <span class="oi oi-eye"></span> Stok </a>
+<a class="btn btn-primary" href="{{ route('sparepart.byHarga')}}"> <span class="oi oi-eye"></span> Harga </a>
 <div class="table-responsive mt-3">
     <table class="table table-striped table-hover table-bordered">
         <thead>

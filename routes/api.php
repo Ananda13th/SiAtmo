@@ -39,20 +39,15 @@ Route::post('sparepart', 'ApiControllers\SparepartController@store');
 Route::patch('sparepart/{$kodeSparepart}', 'ApiControllers\SparepartController@update');
 Route::delete('sparepart/{$kodeSparepart}', 'ApiControllers\SparepartController@destroy');
 
-Route::get('sparepart', 'ApiControllers\SparepartController@index');
-Route::post('sparepart', 'ApiControllers\SparepartController@store');
-Route::patch('sparepart/{$kodeSparepart}', 'ApiControllers\SparepartController@update');
-Route::delete('sparepart/{$kodeSparepart}', 'ApiControllers\SparepartController@destroy');
-
 Route::get('supplier', 'ApiControllers\SupplierController@index');
 Route::post('supplier', 'ApiControllers\SupplierController@store');
 Route::patch('supplier/{$kodeSparepart}', 'ApiControllers\SupplierController@update');
 Route::delete('supplier/{$kodeSparepart}', 'ApiControllers\SupplierController@destroy');
 
 Route::get('kendaraan', 'ApiControllers\KendaraanController@index');
-Route::post('kendaraan', 'ApiControllers\SupplierController@store');
-Route::patch('kendaraan/{$kodeSparepart}', 'ApiControllers\Kendaraan@update');
-Route::delete('kendaraan/{$kodeSparepart}', 'ApiControllers\Kendaraan@destroy');
+Route::post('kendaraan', 'ApiControllers\KendaraanController@store');
+Route::patch('kendaraan/{$kodeSparepart}', 'ApiControllers\KendaraanController@update');
+Route::delete('kendaraan/{$kodeSparepart}', 'ApiControllers\KendaraanController@destroy');
 
 
 

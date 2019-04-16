@@ -8,6 +8,7 @@ use App\DetilPemesanan;
 use App\Sparepart;
 use App\Supplier;
 use Carbon\Carbon;
+use PDF;
 
 class PemesananController extends Controller
 {
@@ -100,4 +101,15 @@ class PemesananController extends Controller
         return redirect()->route('pemesanan.index')->with('success', 'Pemesanan berhasil dihapus');
 
     }
+
+    public function downloadPDF($noPemesanan)
+    {
+        $pemesanan = Pemesanan::find($noPemesanan);
+        $detilPesan = DetilPemesanan::all();
+        $supplier = Supplier::all();
+  
+        $pdf = PDF::loadView('pdf.pemesanan', ['data'=>$pemesanan, 'detil'=>$detilPesan, 'supplier'=>$supplier]);
+        return $pdf->stream();
+  
+      }
 }

@@ -3,16 +3,8 @@ use Illuminate\Support\Facades\Input;
 use App\User;
 use App\Sparepart;
 use App\Service;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,11 +21,36 @@ Route::get('/kasir', function () {
 Auth::routes();
 
 Route::group(['middleware'=>'cekRole'], function(){
+    //PDF
+    Route::get('pemesanan/downloadPDF/{noPemesanan}',
+    [
+        'as'=>'pemesanan.downloadPDF',
+        'uses'=>'PemesananController@downloadPDF']);
+    
+    Route::get('transaksiService/downloadPDF/{noPemesanan}',
+    [
+        'as'=>'transaksiService.downloadPDF',
+        'uses'=>'PemesananController@downloadPDF']);
+    
+    Route::get('transaksiSparepart/downloadPDF/{noPemesanan}',
+    [
+        'as'=>'transaksiSparepartph.downloadPDF',
+        'uses'=>'PemesananController@downloadPDF']);
+
+    //Sorting
+    Route::get('sparepart/byHarga', 
+    [   
+        'as'=>'sparepart.byHarga',
+        'uses'=>'SparepartController@ByHarga']);
+    Route::get('sparepart/byStok', 
+    [   
+        'as'=>'sparepart.byStok',
+        'uses'=>'SparepartController@ByStok']);
+
+    //CRUD
     Route::get('owner', 'HomeController@index')->name('home');
     Route::resource('pegawai', 'PegawaiController');
     Route::resource('sparepart', 'SparepartController');
-    // Route::get('sparepart', 'SparepartController@ByHarga');
-    // Route::get('sparepart', 'SparepartController@ByStok');
     Route::get('service/search', 'Service@search')->name('live_search.action');
     Route::resource('service', 'ServiceController');
     Route::resource('supplier', 'SupplierController');

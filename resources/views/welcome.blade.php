@@ -84,12 +84,12 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Atma Auto
+                <img src="{{ asset('image/Logo.png') }}" width="400"/>
                 </div>
                 <div class="title m-b-md">
                     SiAtmo
                 </div>
-                <img src="public\image\Logo.png">
+                
             </div>
         </div>
     </body>
