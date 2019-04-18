@@ -36,57 +36,52 @@
       th {
         height: 10px;
       }
+      hr {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid #ccc;
+        margin: 1em 0;
+        padding: 0;
+      }
     </style>
   </head>
   <?php $image_path = '/image/Logo2.PNG'; ?>
   <h1> <img src="{{ public_path().$image_path }}" width=700> </h1>
   <body>
   <div class="default-list-upper-alpha">
-      <div class="text-right"> {{$data->tanggalPemesanan}} </div>
-      Kepada Yth. <br>
-      {{$data->namaPerusahaan}}                                   
+      <div class="text-right"> {{$data->tanggalTransaksi}} </div>
+      {{$data->kodeNota}} <br>
+      <p> Cust          : {{$data->namaKonsumen}}  <span> <div class="text-right"> CS : {{$pegawai->name}} </div> </span> </p>    
       <br>
-      @foreach($supplier as $s)
-        @if($s->namaPerusahaan == $data->namaPerusahaan)
-        <label>{{$s->alamatSupplier}} </label> <br>
-        @endif
-      @endforeach
-      <br>
-      Mohon Untuk Disediakan barang-barang berikut : <br>
+      Nomor Telepon : {{$data->noTelpKonsumen}}   
+      <hr/>
+      <div class="text-center">Service</div> :
+      <hr/>
       <div>
         <table>
             <thead>
                 <tr>
-                    <th>Nama Sparepart</th>
-                    <th>Merk</th>
-                    <th>Tipe</th>
+                    <th>Kode</th>
+                    <th>Layanan Service</th>
                     <th>Jumlah</th>
-                    <th>Satuan</th>
+                    <th>Montir</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($detil as $d)
                     @if($d->noPemesanan == $data->noPemesanan)
                     <tr>
-                        <td>{{$d->namaSparepart}} </td>
-                        <td>{{$d->merkSparepart}} </td>
-                        <td>{{$d->tipeSparepart}} </td>
-                        <td>{{$d->jumlahPemesanan}} </td>
-                        <td>{{$d->satuan}} </td>
+                        <td>{{$d->kodeService}} </td>
+                        <td>{{$d->keterangan}} </td>
+                        <td> 1 </td>
+                        <td>{{$d->name}} </td>
                     </tr>
                     @endif
                 @endforeach
             </tbody>
         </table>
       </div>
-      <br>
-      <br>
-      <div class="text-right"> Hormat Kami,  </div>
-      <br>
-      <br>
-      <br>
-      <br>
-      <div class="text-right-c"> Owner </div>
     </div>
   </body>
 </html>

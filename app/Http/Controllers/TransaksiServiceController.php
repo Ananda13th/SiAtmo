@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SiAtmo\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\TransaksiPenjualan;
-use App\DetilTransaksiService;
-use App\Service;
-use App\Posisi;
-use App\User;
-use App\KendaraanKonsumen;
+use SiAtmo\TransaksiPenjualan;
+use SiAtmo\DetilTransaksiService;
+use SiAtmo\Service;
+use SiAtmo\Posisi;
+use SiAtmo\User;
+use SiAtmo\KendaraanKonsumen;
 use Illuminate\Support\Facades\Auth;
-use App\PegawaiOnDuty;
-use App\Sparepart;
+use SiAtmo\PegawaiOnDuty;
+use SiAtmo\Sparepart;
 use Carbon\Carbon;
+use PDF;
 
 class TransaksiServiceController extends Controller
 {
@@ -92,6 +93,18 @@ class TransaksiServiceController extends Controller
         return view('transaksiService.edit', ['dataNota'=>$dataNota]);
 
     }
+
+    public function downloadPDF($kodeNota)
+    {
+        $tService = TransaksiPenjualan::find($kodeNota);
+        $detil = DetilTransaksiService::leftJoin('service', 'detiltransaksiservice.kodeService', '=', 'service.kodeService')
+        ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
+        ->get();
+        $user = Auth::user();
+        $pdf = PDF::loadView('pdf.SPKService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
+        return $pdf->stream();
+  
+      }
 
     public function show($kodeNota)
     {

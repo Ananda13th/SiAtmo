@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,14 +16,14 @@ class TransaksiPenjualan extends Model
         'statusTransaksi', 'namaKonsumen', 'noTelpKonsumen', 'alamatKonsumen'
     ];
     public function transaksi_service(){
-        return $this->hasMany('App\DetilTransaksiService', 'kodeNota');
+        return $this->hasMany('SiAtmo\DetilTransaksiService', 'kodeNota');
     }
 
     public function transaksi_sparepart(){
-        return $this->hasMany('App\DetilTransaksiSparepart', 'kodeNota');
+        return $this->hasMany('SiAtmo\DetilTransaksiSparepart', 'kodeNota');
     }
 
     public function transaksi_onDuty(){
-        return $this->hasMany('App\PegawaiOnDuty', 'kodeNota');
+        return $this->hasMany('SiAtmo\PegawaiOnDuty', 'kodeNota');
     }
 }

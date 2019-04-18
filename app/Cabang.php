@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +15,6 @@ class Cabang extends Model
     ];
 
     public function user_cabang() {
-        return $this->hasMany('App\User', 'idCabang');
+        return $this->hasMany('SiAtmo\User', 'idCabang');
     }
 }

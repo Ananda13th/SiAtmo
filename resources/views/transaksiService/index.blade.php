@@ -37,7 +37,7 @@
                     <td><?= $data['statusTransaksi']?></td>
                     <td>
                         <a class="btn btn-sm btn-info" href="{{ route('transaksiService.edit', $data['kodeNota']) }}"> <i class="oi oi-pencil"></i> Edit</a>
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal"><span class="oi oi-eye"> </span> Lihat</button>
+                        <a class="btn btn-sm btn-primary" href="{{ route('transaksiService.downloadPDF', $data['kodeNota']) }}"><span class="oi oi-eye"></span> Lihat</button>
                     </td>
                 </tr>
                 @endif

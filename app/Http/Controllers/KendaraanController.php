@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SiAtmo\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Kendaraan;
+use SiAtmo\Kendaraan;
 
 class KendaraanController extends Controller
 {

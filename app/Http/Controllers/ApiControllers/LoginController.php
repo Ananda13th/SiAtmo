@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\ApiControllers;
+namespace SiAtmo\Http\Controllers\ApiControllers;
 
-use App\User;
-use App\Http\Controllers\Controller;
+use SiAtmo\User;
+use SiAtmo\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Auth;

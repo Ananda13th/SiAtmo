@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +15,6 @@ class Service extends Model
     ];
 
     public function service_detilTransaksiService() {
-        return $this->hasMany('App\DetilTransaksiService', 'kodeService');
+        return $this->hasMany('SiAtmo\DetilTransaksiService', 'kodeService');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,10 +14,10 @@ class Pasangan extends Model
         'kodeSparepart', 'kodeKendaraan'
     ];
     public function pasangan_kendaraan(){
-        return $this->belongsTo('App\Kendaraan');
+        return $this->belongsTo('SiAtmo\Kendaraan');
     }
 
     public function pasangan_sparepart(){
-        return $this->belongsTo('App\Sparepart');
+        return $this->belongsTo('SiAtmo\Sparepart');
     }
 }

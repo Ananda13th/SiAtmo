@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\ApiControllers;
+namespace SiAtmo\Http\Controllers\ApiControllers;
 
 use Illuminate\Http\Request;
-use App\TransaksiPenjualan;
-use App\DetilTransaksiSparepart;
-use App\Sparepart;
-use App\User;
-use App\DetilTransaksiService;
-use App\Service;
-use App\Posisi;
-use App\KendaraanKonsumen;
+use SiAtmo\TransaksiPenjualan;
+use SiAtmo\DetilTransaksiSparepart;
+use SiAtmo\Sparepart;
+use SiAtmo\User;
+use SiAtmo\DetilTransaksiService;
+use SiAtmo\Service;
+use SiAtmo\Posisi;
+use SiAtmo\KendaraanKonsumen;
 use Illuminate\Support\Facades\Auth;
-use App\PegawaiOnDuty;
+use SiAtmo\PegawaiOnDuty;
 use Carbon\Carbon;
 
-class TransaksiSparepartController extends Controller
+class TransaksiFullController extends Controller
 {
     public function index()
     {
@@ -25,7 +25,7 @@ class TransaksiSparepartController extends Controller
             ->leftJoin('kendaraankonsumen','kendaraankonsumen.platNomorKendaraan','=','detiltransaksiservice.platNomorKendaraan')
             ->leftJoin('service','service.kodeService','=','detiltransaksiservice.kodeService')
             ->get();
-        return view('transaksiSparepart/index', ['tSparepart'=>$transaksiFull, 'no'=>0, ]);
+        return view('transaksiFull/index', ['tSparepart'=>$transaksiFull, 'no'=>0, ]);
     }
 
     public function create()
@@ -104,7 +104,7 @@ class TransaksiSparepartController extends Controller
             ]);
         }
 
-        return redirect()->route('transaksiSparepart.index')->with('success', 'Data berhasil ditambah');
+        return redirect()->route('transaksiFull.index')->with('success', 'Data berhasil ditambah');
     }
 
     public function edit($kodeNota)

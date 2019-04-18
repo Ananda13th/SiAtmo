@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -36,14 +36,14 @@ class User extends Authenticatable
     ];
 
     public function pegawai_posisi(){
-        return $this->belongsTo('App\Posisi');
+        return $this->belongsTo('SiAtmo\Posisi');
     }
 
     public function pegawai_cabang(){
-        return $this->belongsTo('App\Cabang');
+        return $this->belongsTo('SiAtmo\Cabang');
     }
 
     public function pegawai_onDuty(){
-        return $this->hasMany('App\PegawaiOnDuty', 'email');
+        return $this->hasMany('SiAtmo\PegawaiOnDuty', 'email');
     }
 }

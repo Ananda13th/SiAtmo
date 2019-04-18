@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SiAtmo\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Supplier;
+use SiAtmo\Supplier;
 
 class SupplierController extends Controller
 {

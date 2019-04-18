@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,18 +15,18 @@ class DetilTransaksiService extends Model
         'biayaServiceTransaksi', 'platNomorKendaraan', 'emailPegawai', 'kodeNota', 'kodeService'
     ];
     public function detilService_service(){
-        return $this->belongsTo('App\Service');
+        return $this->belongsTo('SiAtmo\Service');
     }
 
     public function detilService_kosumen(){
-        return $this->belongsTo('App\KendaraanKonsumen');
+        return $this->belongsTo('SiAtmo\KendaraanKonsumen');
     }
 
     public function detilService_montir(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('SiAtmo\User');
     }
 
     public function detilService_transaksi(){
-        return $this->belongsTo('App\TransaksiPenjualan');
+        return $this->belongsTo('SiAtmo\TransaksiPenjualan');
     }
 }

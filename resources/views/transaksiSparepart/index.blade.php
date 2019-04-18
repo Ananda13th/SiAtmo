@@ -57,7 +57,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($sparepart as $detilSparepart)
+                            @foreach($tSparepart as $detilSparepart)
                                 @if($detilSparepart->kodeNota == $data->kodeNota)
                                     <tr>
                                         <td><?=++$noDetil?></td>

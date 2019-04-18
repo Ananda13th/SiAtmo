@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SiAtmo\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Service;
+use SiAtmo\Service;
 
 class ServiceController extends Controller
 {

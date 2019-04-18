@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SiAtmo\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Sparepart;
+use SiAtmo\Sparepart;
 use Exception;
 use Image;
 

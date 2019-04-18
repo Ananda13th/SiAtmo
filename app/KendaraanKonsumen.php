@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,10 +16,10 @@ class KendaraanKonsumen extends Model
     ];
 
     public function konsumen_kendaraan(){
-        return $this->belongsTo('App\Kendaraan');
+        return $this->belongsTo('SiAtmo\Kendaraan');
     }
 
     public function konsumen_transaksi(){
-        return $this->hasMany('App\DetilTransaksiKendaraan', 'platNomorKendaraan');
+        return $this->hasMany('SiAtmo\DetilTransaksiKendaraan', 'platNomorKendaraan');
     }
 }

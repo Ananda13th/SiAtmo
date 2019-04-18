@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +15,6 @@ class Posisi extends Model
     ];
 
     public function user_posisi() {
-        return $this->hasMany('App\User', 'idPosisi');
+        return $this->hasMany('SiAtmo\User', 'idPosisi');
     }
 }

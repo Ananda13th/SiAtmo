@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,11 +15,11 @@ class DetilPemesanan extends Model
     ];
 
     public function pemesanan(){
-        return $this->belongsTo('App\Pemesanan');
+        return $this->belongsTo('SiAtmo\Pemesanan');
     }
 
     public function sparepart() {
-        return $this->belongsTo('App\Sparepart');
+        return $this->belongsTo('SiAtmo\Sparepart');
     }
 
 }

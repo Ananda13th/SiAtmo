@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,10 +14,10 @@ class Kendaraan extends Model
         'merkKendaraan', 'tipeKendaraan'
     ];
     public function kendaraan_pasangan() {
-        return $this->hasMany('App\Pasangan', 'kodeKendaraan');
+        return $this->hasMany('SiAtmo\Pasangan', 'kodeKendaraan');
     }
 
     public function kedaraan_konsumen() {
-        return $this->hasMany('App\KendaraanKonsumen', 'kodeKendaraan');
+        return $this->hasMany('SiAtmo\KendaraanKonsumen', 'kodeKendaraan');
     }
 }

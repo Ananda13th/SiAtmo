@@ -27,11 +27,6 @@ Route::group(['middleware'=>'cekRole'], function(){
         'as'=>'pemesanan.downloadPDF',
         'uses'=>'PemesananController@downloadPDF']);
     
-    Route::get('transaksiService/downloadPDF/{noPemesanan}',
-    [
-        'as'=>'transaksiService.downloadPDF',
-        'uses'=>'PemesananController@downloadPDF']);
-    
     Route::get('transaksiSparepart/downloadPDF/{noPemesanan}',
     [
         'as'=>'transaksiSparepartph.downloadPDF',
@@ -42,6 +37,7 @@ Route::group(['middleware'=>'cekRole'], function(){
     [   
         'as'=>'sparepart.byHarga',
         'uses'=>'SparepartController@ByHarga']);
+        
     Route::get('sparepart/byStok', 
     [   
         'as'=>'sparepart.byStok',
@@ -56,8 +52,6 @@ Route::group(['middleware'=>'cekRole'], function(){
     Route::resource('supplier', 'SupplierController');
     Route::resource('kendaraan', 'KendaraanController');
     Route::resource('pemesanan', 'PemesananController');
-    Route::resource('transaksiService', 'TransaksiServiceController');
-    Route::resource('transaksiSparepart', 'TransaksiSparepartController');
     Route::resource('pemesanan', 'PemesananController');
 
     //Search Data
@@ -90,6 +84,12 @@ Route::group(['middleware'=>'cekRole'], function(){
 });
 
 Route::group(['middleware'=>'cekRoleCS'], function(){
+    Route::get('transaksiService/downloadPDF/{noPemesanan}',
+    [
+        'as'=>'transaksiService.downloadPDF',
+        'uses'=>'TransaksiServiceController@downloadPDF']);
+    
+    //Transaksi
     Route::resource('transaksiService', 'TransaksiServiceController');
     Route::resource('transaksiSparepart', 'TransaksiSparepartController');
 });

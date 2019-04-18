@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +15,6 @@ class Supplier extends Model
         'namaPerusahaan', 'alamatSupplier', 'namaSales', 'noTelpSales'
     ];
     public function supplier_pemesanan(){
-        return $this->hasMany('App\Pemesanan', 'namaPerusahaan');
+        return $this->hasMany('SiAtmo\Pemesanan', 'namaPerusahaan');
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\ApiControllers;
+namespace SiAtmo\Http\Controllers\ApiControllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use App\Posisi;
+use SiAtmo\User;
+use SiAtmo\Posisi;
 use Illuminate\Support\Facades\Hash;
 
 class PegawaiController extends Controller

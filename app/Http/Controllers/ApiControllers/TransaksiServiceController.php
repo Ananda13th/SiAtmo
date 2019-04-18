@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\ApiControllers;
+namespace SiAtmo\Http\Controllers\ApiControllers;
 
 use Illuminate\Http\Request;
-use App\TransaksiPenjualan;
-use App\DetilTransaksiService;
-use App\Service;
-use App\Posisi;
-use App\User;
-use App\KendaraanKonsumen;
+use SiAtmo\TransaksiPenjualan;
+use SiAtmo\DetilTransaksiService;
+use SiAtmo\Service;
+use SiAtmo\Posisi;
+use SiAtmo\User;
+use SiAtmo\KendaraanKonsumen;
 use Illuminate\Support\Facades\Auth;
-use App\PegawaiOnDuty;
-use App\Sparepart;
+use SiAtmo\PegawaiOnDuty;
+use SiAtmo\Sparepart;
 use Carbon\Carbon;
 
 class TransaksiServiceController extends Controller

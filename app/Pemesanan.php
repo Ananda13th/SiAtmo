@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,10 +15,10 @@ class Pemesanan extends Model
     ];
 
     public function detil_pesan() {
-        return $this->hasMany('App\DetilPemesanan', 'noPemesanan');
+        return $this->hasMany('SiAtmo\DetilPemesanan', 'noPemesanan');
     }
 
     public function pemesanan_supplier(){
-        return $this->belongsTo('App\Supplier');
+        return $this->belongsTo('SiAtmo\Supplier');
     }
 }

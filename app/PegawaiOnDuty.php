@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,10 +15,10 @@ class PegawaiOnDuty extends Model
     ];
 
     public function onDuty_transaksi(){
-        return $this->belongsTo('App\TransaksiPenjualan');
+        return $this->belongsTo('SiAtmo\TransaksiPenjualan');
     }
 
     public function onDuty_pegawai(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('SiAtmo\User');
     }
 }

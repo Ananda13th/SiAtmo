@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SiAtmo\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Pemesanan;
-use App\DetilPemesanan;
-use App\Sparepart;
-use App\Supplier;
+use SiAtmo\Pemesanan;
+use SiAtmo\DetilPemesanan;
+use SiAtmo\Sparepart;
+use SiAtmo\Supplier;
 use Carbon\Carbon;
 use PDF;
 
@@ -105,7 +105,7 @@ class PemesananController extends Controller
     public function downloadPDF($noPemesanan)
     {
         $pemesanan = Pemesanan::find($noPemesanan);
-        $detilPesan = DetilPemesanan::all();
+        $detilPesan = DetilPemesanan::leftJoin('sparepart', 'detilpemesanan.kodeSparepart', '=', 'sparepart.kodeSparepart')->get();
         $supplier = Supplier::all();
   
         $pdf = PDF::loadView('pdf.pemesanan', ['data'=>$pemesanan, 'detil'=>$detilPesan, 'supplier'=>$supplier]);

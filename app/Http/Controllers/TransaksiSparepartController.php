@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SiAtmo\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\TransaksiPenjualan;
-use App\DetilTransaksiSparepart;
-use App\Sparepart;
-use App\PegawaiOnDuty;
-use App\User;
+use SiAtmo\TransaksiPenjualan;
+use SiAtmo\DetilTransaksiSparepart;
+use SiAtmo\Sparepart;
+use SiAtmo\PegawaiOnDuty;
+use SiAtmo\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -16,13 +16,11 @@ class TransaksiSparepartController extends Controller
     public function index()
     {
         $pegawai = Auth::user();
-        $sparepart=DetilTransaksiSparepart::all();
         $transaksiSparepart   = TransaksiPenjualan::leftJoin('detiltransaksisparepart','transaksipenjualan.kodenota','=','detiltransaksisparepart.kodenota')
             ->leftJoin('sparepart','sparepart.kodeSparepart','=','detiltransaksisparepart.kodeSparepart')
             ->where('transaksipenjualan.kodeNota', 'like', '%'.'SP'.'%')
             ->get();
-        return view('transaksiSparepart/index', ['tSparepart'=>$transaksiSparepart, 'sparepart'=>$sparepart,'no'=>0, 'pegawai'=>$pegawai, 'noDetil'=>0]);
-
+        return view('transaksiSparepart/index', ['tSparepart'=>$transaksiSparepart, 'no'=>0, 'pegawai'=>$pegawai, 'noDetil'=>0]);
     }
 
     public function create()

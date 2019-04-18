@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\ApiControllers;
+namespace SiAtmo\Http\Controllers\ApiControllers;
 
 use Illuminate\Http\Request;
-use App\TransaksiPenjualan;
-use App\DetilTransaksiSparepart;
-use App\Sparepart;
-use App\PegawaiOnDuty;
-use App\User;
+use SiAtmo\TransaksiPenjualan;
+use SiAtmo\DetilTransaksiSparepart;
+use SiAtmo\Sparepart;
+use SiAtmo\PegawaiOnDuty;
+use SiAtmo\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 

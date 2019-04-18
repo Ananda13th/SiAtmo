@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,14 +17,14 @@ class Sparepart extends Model
         'hargaJual', 'tempatPeletakan', 'jumlahStok', 'gambarSparepart'
     ];
     public function sparepart_pemesanan() {
-        return $this->hasMany('App\DetilPemesanan', 'kodeSparepart');
+        return $this->hasMany('SiAtmo\DetilPemesanan', 'kodeSparepart');
     }
 
     public function sparepart_detilTransaksiSparepart() {
-        return $this->hasMany('App\DetilTransaksiSparepart', 'kodeSparepart');
+        return $this->hasMany('SiAtmo\DetilTransaksiSparepart', 'kodeSparepart');
     }
 
     public function sparepart_pasangan() {
-        return $this->hasMany('App\Pasangan', 'kodeSparepart');
+        return $this->hasMany('SiAtmo\Pasangan', 'kodeSparepart');
     }
 }

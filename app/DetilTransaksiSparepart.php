@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SiAtmo;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,10 +16,10 @@ class DetilTransaksiSparepart extends Model
         'hargaJualTransaksi', 'jumlahSparepart','kodeNota', 'kodeSparepart'
     ];
     public function detilSparepart_transaksi(){
-        return $this->belongsTo('App\TransaksiPenjualan');
+        return $this->belongsTo('SiAtmo\TransaksiPenjualan');
     }
 
     public function detilSparepart_sparepart(){
-        return $this->belongsTo('App\Sparepart');
+        return $this->belongsTo('SiAtmo\Sparepart');
     }
 }
