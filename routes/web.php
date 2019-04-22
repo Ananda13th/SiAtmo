@@ -27,10 +27,7 @@ Route::group(['middleware'=>'cekRole'], function(){
         'as'=>'pemesanan.downloadPDF',
         'uses'=>'PemesananController@downloadPDF']);
     
-    Route::get('transaksiSparepart/downloadPDF/{noPemesanan}',
-    [
-        'as'=>'transaksiSparepartph.downloadPDF',
-        'uses'=>'PemesananController@downloadPDF']);
+   
 
     //Sorting
     Route::get('sparepart/byHarga', 
@@ -88,6 +85,11 @@ Route::group(['middleware'=>'cekRoleCS'], function(){
     [
         'as'=>'transaksiService.downloadPDF',
         'uses'=>'TransaksiServiceController@downloadPDF']);
+    
+    Route::get('transaksiSparepart/downloadPDF/{noPemesanan}',
+    [
+        'as'=>'transaksiSparepart.downloadPDF',
+        'uses'=>'TransaksiSparepartController@downloadPDF']);
     
     //Transaksi
     Route::resource('transaksiService', 'TransaksiServiceController');

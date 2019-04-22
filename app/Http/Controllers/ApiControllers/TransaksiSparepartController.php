@@ -23,7 +23,7 @@ class TransaksiSparepartController extends Controller
             ->where('transaksipenjualan.kodeNota', 'like', '%'.'SP'.'%')
             ->get();
         
-        return view('transaksiSparepart/index', ['tSparepart'=>$transaksiSparepart, 'sparepart'=>$sparepart,'no'=>0, 'pegawai'=>$pegawai, 'noDetil'=>0]);
+            return response()->json(($transaksiSparepart), 200);
 
     }
 
@@ -85,7 +85,9 @@ class TransaksiSparepartController extends Controller
 
             
         }
-        return redirect()->route('transaksiSparepart.index')->with('success', 'Data berhasil ditambah');
+        $response = "Sukses";
+
+        return response()->json(($response), 201);
     }
 
     public function edit($kodeNota)

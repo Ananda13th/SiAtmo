@@ -10,15 +10,14 @@ use SiAtmo\PegawaiOnDuty;
 use SiAtmo\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use PDF;
 
 class TransaksiSparepartController extends Controller
 {
     public function index()
     {
         $pegawai = Auth::user();
-        $transaksiSparepart   = TransaksiPenjualan::leftJoin('detiltransaksisparepart','transaksipenjualan.kodenota','=','detiltransaksisparepart.kodenota')
-            ->leftJoin('sparepart','sparepart.kodeSparepart','=','detiltransaksisparepart.kodeSparepart')
-            ->where('transaksipenjualan.kodeNota', 'like', '%'.'SP'.'%')
+        $transaksiSparepart   = TransaksiPenjualan::where('transaksipenjualan.kodeNota', 'like', '%'.'SP'.'%')
             ->get();
         return view('transaksiSparepart/index', ['tSparepart'=>$transaksiSparepart, 'no'=>0, 'pegawai'=>$pegawai, 'noDetil'=>0]);
     }
@@ -47,8 +46,12 @@ class TransaksiSparepartController extends Controller
             $subtotal += $request->hargaJualTransaksi[$i]*$request->jumlahSparepart[$i];
         }
 
+        // $user = Auth::user();
+        // $pegawaiOnDuty = PegawaiOnDuty::create([
+        //      'emailPegawai'=> $user->email,
+        //      'kodeNota'=>$request->kodeNota
+        // ]);
 
-       
         $transaksi = TransaksiPenjualan::create([
             'kodeNota'=>$request->kodeNota,
             'tanggalTransaksi'=>Carbon::now(), 
@@ -59,12 +62,6 @@ class TransaksiSparepartController extends Controller
             'noTelpKonsumen'=>$request->noTelpKonsumen, 
             'alamatKonsumen'=>$request->alamatKonsumen,
         ]);
-        
-        // $user = Auth::user();
-        // $pegawaiOnDuty = PegawaiOnDuty::create([
-        //      'email'=> $user->email,
-        //      'kodeNota'=>$transaksi->kodeNota
-        // ]);
 
         $count = count($request->kodeSparepart);
         for($i = 0; $i<$count; $i++)
@@ -79,7 +76,9 @@ class TransaksiSparepartController extends Controller
 
             
         }
-        return redirect()->route('transaksiSparepart.index')->with('success', 'Data berhasil ditambah');
+        $response = "Sukses";
+
+        return response()->json(($response), 201);
     }
 
     public function edit($kodeNota)
@@ -102,5 +101,18 @@ class TransaksiSparepartController extends Controller
 
     }
 
+    public function downloadPDF($kodeNota)
+    {
+        $pegawai = Auth::user();
+        $transaksiSparepart   = TransaksiPenjualan::find($kodeNota)->leftJoin('detiltransaksisparepart','transaksipenjualan.kodenota','=','detiltransaksisparepart.kodenota')
+        ->leftJoin('sparepart','sparepart.kodeSparepart','=','detiltransaksisparepart.kodeSparepart')
+        ->get();
+        dd($transaksiSparepart);
+        $pdf = PDF::loadView('pdf.notaLunasSparepart', ['data'=>$transaksiSparepart, 'pegawai'=>$pegawai]);
+        return $pdf->stream();
+  
+      }
+
+   
 
 }

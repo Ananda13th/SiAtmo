@@ -29,7 +29,7 @@
                     <td><?= $data['kodeNota']?></td>
                     <td><?= $data->tanggalTransaksi ?></td>
                     <td>
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal"><span class="oi oi-eye"></span> Lihat</button>
+                    <a class="btn btn-sm btn-primary" href="{{ route('transaksiSparepart.downloadPDF', $data['kodeNota']) }}"><span class="oi oi-eye"></span> Lihat</button>
                     </td>
                 </tr>
             @endforeach

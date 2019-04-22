@@ -22,7 +22,7 @@ class TransaksiServiceController extends Controller
             ->leftJoin('kendaraankonsumen','kendaraankonsumen.platNomorKendaraan','=','detiltransaksiservice.platNomorKendaraan')
             ->leftJoin('service','service.kodeService','=','detiltransaksiservice.kodeService')->where('transaksipenjualan.kodeNota', 'like', '%'.'SV'.'%')
             ->get();
-        return view('transaksiService/index', ['tService'=>$transaksiService, 'no'=>0]);
+            return response()->json(($transaksiService), 200);
 
     }
 
@@ -82,7 +82,9 @@ class TransaksiServiceController extends Controller
                 'kodeService'=>$request->kodeService[$i]
             ]);
         }
-        return redirect()->route('transaksiService.index')->with('success', 'Data berhasil ditambah');
+        $response = "Sukses";
+
+        return response()->json(($response), 201);
     }
 
     public function edit($kodeNota)
@@ -92,6 +94,18 @@ class TransaksiServiceController extends Controller
         return view('transaksiService.edit', ['dataNota'=>$dataNota]);
 
     }
+
+    public function downloadPDF($kodeNota)
+    {
+        $tService = TransaksiPenjualan::find($kodeNota);
+        $detil = DetilTransaksiService::leftJoin('service', 'detiltransaksiservice.kodeService', '=', 'service.kodeService')
+        ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
+        ->get();
+        $user = Auth::user();
+        $pdf = PDF::loadView('pdf.SPKService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
+        return $pdf->stream();
+  
+      }
 
     public function show($kodeNota)
     {
@@ -107,5 +121,4 @@ class TransaksiServiceController extends Controller
     {
 
     }
-
 }
