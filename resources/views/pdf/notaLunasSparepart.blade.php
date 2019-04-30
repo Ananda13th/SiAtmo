@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title> Pemesanan</title>
+    <title> Nota Lunas</title>
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap.css"> -->
     <style type="text/css" media="all">
@@ -68,27 +68,26 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($data as $d)
+                @foreach($detil as $d)
+                @if($d->kodeNota == $data->kodeNota)
                     <tr>
                         <td>{{$d->kodeSparepart}} </td>
                         <td>{{$d->namaSparepart}} </td>
                         <td>{{$d->jumlahSparepart}} </td>
                     </tr>
+                @endif
                 @endforeach
                 <tr>
-                    <td></td>
-                    <td>Subtotal</td>
-                    <td>{{$d->subtotal}} </td>
+                    <td colspan="2">Subtotal</td>
+                    <td>{{$data->subtotal}} </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td>Diskon</td>
-                    <td>{{$d->diskon}} </td>
+                    <td colspan="2">Diskon</td>
+                    <td>{{$data->diskon}} </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td>Total</td>
-                    <td>{{$d->total}} </td>
+                    <td colspan="2">Total</td>
+                    <td>{{$data->total}} </td>
                 </tr>
             </tbody>
         </table>

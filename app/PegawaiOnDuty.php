@@ -11,7 +11,7 @@ class PegawaiOnDuty extends Model
     protected $table = 'pegawaionduty';
     protected $primaryKey = 'idDuty';
     protected $fillable = [
-       'email', 'kodeNota'
+       'emailPegawai', 'kodeNota'
     ];
 
     public function onDuty_transaksi(){

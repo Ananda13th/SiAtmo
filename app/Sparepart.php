@@ -20,6 +20,10 @@ class Sparepart extends Model
         return $this->hasMany('SiAtmo\DetilPemesanan', 'kodeSparepart');
     }
 
+    public function sparepart_history() {
+        return $this->hasMany('SiAtmo\HistoriSparepart', 'kodeSparepart');
+    }
+
     public function sparepart_detilTransaksiSparepart() {
         return $this->hasMany('SiAtmo\DetilTransaksiSparepart', 'kodeSparepart');
     }

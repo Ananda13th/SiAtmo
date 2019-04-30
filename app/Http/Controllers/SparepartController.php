@@ -132,7 +132,13 @@ class SparepartController extends Controller
     public function destroy($kodeSparepart)
     {
         $sparepart = Sparepart::findOrFail($kodeSparepart);
-        $sparepart->delete();
-        return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil dihapus');
+        try{
+            $sparepart->delete();
+            return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil dihapus');
+        }
+        catch(Exception $exception)
+        {
+            return redirect()->route('sparepart.index')->with('failed', 'Sparepart gagal dihapus');
+        }
     }
 }

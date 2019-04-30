@@ -24,6 +24,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Route::post('login', 'ApiControllers\LoginController');
 //Auth::routes();
 
+//Route::get('laporan/pendapatanBulanan', 'ReportController@LaporanPendapatanBulanan');
+
 Route::get('pegawai', 'ApiControllers\PegawaiController@index');
 Route::post('pegawai', 'ApiControllers\PegawaiController@store');
 Route::patch('pegawai/{$email}', 'ApiControllers\PegawaiController@update');
@@ -49,7 +51,10 @@ Route::post('kendaraan', 'ApiControllers\KendaraanController@store');
 Route::patch('kendaraan/{$kodeSparepart}', 'ApiControllers\KendaraanController@update');
 Route::delete('kendaraan/{$kodeSparepart}', 'ApiControllers\KendaraanController@destroy');
 
-
+Route::get('pemesanan', 'ApiControllers\PemesananController@index');
+Route::post('pemesanan', 'ApiControllers\PemesananController@store');
+Route::patch('pemesanan/{$kodeSparepart}', 'ApiControllers\PemesananController@update');
+Route::delete('pemesanan/{$kodeSparepart}', 'ApiControllers\PemesananController@destroy');
 
 Route::any('pegawai/search',function()
 {
@@ -78,10 +83,4 @@ Route::any('sparepart/search',function()
     else return response()->json('Data Tidak Ditemukan');
 });
 
-
-Route::group(['middleware'=>'cekRole'], function(){
-    Route::resource('transaksiService', 'ApiControllers\TransaksiServiceController');
-    Route::resource('transaksiSparepart', 'ApiControllers\TransaksiSparepartController');
-    Route::resource('pemesanan', 'ApiControllers\PemesananController');
-});
 

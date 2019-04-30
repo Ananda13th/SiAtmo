@@ -20,7 +20,7 @@
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Kode Nota</label>
         <div class="col-sm-4">
-            <input class="form-control" type="text" id="kodeNota" name="kodeNota">
+            <input class="form-control" type="text" id="kodeNota" name="kodeNota" value="{{$kode['kodeNota']}}">
         </div>
     </div>
     <div class="form-group row">

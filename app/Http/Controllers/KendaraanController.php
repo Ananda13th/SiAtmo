@@ -4,6 +4,7 @@ namespace SiAtmo\Http\Controllers;
 
 use Illuminate\Http\Request;
 use SiAtmo\Kendaraan;
+use SiAtmo\KendaraanKonsumen;
 
 class KendaraanController extends Controller
 {
@@ -56,7 +57,7 @@ class KendaraanController extends Controller
     {
         $this->validate($request, [
             'merkKendaraan'=>'required',
-            'tipeKendaraan'=>'tipeKendaraan',
+            'tipeKendaraan'=>'required',
         ]);
         
         $kendaraan = Kendaraan::find($kodeKendaraan);
@@ -73,5 +74,25 @@ class KendaraanController extends Controller
         $kendaraan = Kendaraan::find($kodeKendaraan);
         $kendaraan->delete();
         return redirect()->route('kendaraan.index')->with('success', 'Kendaraan berhasil dihapus');
+    }
+
+    public function createKonsumen()
+    {
+        $kendaraan = Kendaraan::all();
+        return view('kendaraan/createKonsumen', ['kendaraan'=>$kendaraan]);
+    }
+
+    public function saveKendaraanKonsumen($request)
+    {
+        $this->validate($request, [
+            'platNomorKendaraan'=>'required',
+            'merkKendaraan'=>'required',
+        ]
+        );
+        
+        $kendaraan = KendaraanKonsumen::create([
+            'merkKendaraan'=>$request->merkKendaraan,
+            'platNomorKendaraan'=>$request->platNomorKendaraan,
+        ]);
     }
 }

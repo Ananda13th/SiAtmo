@@ -45,5 +45,5 @@
     <br>
     <button type="submit" class="btn btn-sm btn-danger"><i class="oi oi-trash"></i> Simpan</button>
     <button type="reset" class="btn btn-sm btn-warning"><i class="oi oi-circle-x"></i> Batal</button>
-     {{ Form::close() }}
+{{ Form::close() }}
 @endsection

@@ -41,6 +41,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link text-white" href="{{route('')}}">
+            <i class="oi oi-key"></i> Daftar Kendaraan
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-white" href="{{route('transaksiSparepart.index')}}">
             <i class="oi oi-cog"></i> Sparepart
             </a>

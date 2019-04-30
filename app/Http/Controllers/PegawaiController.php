@@ -26,7 +26,7 @@ class PegawaiController extends Controller
     {
         $this->validate($request, [
             'name'=>'required|max:25',
-            'email'=>'required',
+            'email'=>'required|email',
             'password'=>'required|min:6|max:10',
             'nomorTelpon'=>'required|max:12',
             'gaji'=>'required',

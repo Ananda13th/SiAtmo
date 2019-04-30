@@ -11,8 +11,8 @@
 <form action="sparepart/search" method="POST" role="search">
     {{ csrf_field() }}
     <div class="input-group">
-        <input type="text" class="form-control" name="namaSparepart"
-            placeholder="Cari sparepart"> <span class="input-group-btn">
+        <input type="text" class="form-control" name="namaSparepart" id="namaSparepart"
+            placeholder="Cari sparepart" onkeyup="search()"> <span class="input-group-btn">
             <button type="submit" class="btn btn-default">
                 <span class="oi oi-zoom-in"></span>
             </button>
@@ -24,11 +24,17 @@
     <p>{{ $message }}</p>
 </div>
 @endif
+
+@if ($message = Session::get('failed'))
+<div class="alert alert-success mt-3 pb-0">
+    <p>{{ $message }}</p>
+</div>
+@endif
 <br>
 <a class="btn btn-primary" href="{{ route('sparepart.byStok')}}"> <span class="oi oi-eye"></span> Stok </a>
 <a class="btn btn-primary" href="{{ route('sparepart.byHarga')}}"> <span class="oi oi-eye"></span> Harga </a>
 <div class="table-responsive mt-3">
-    <table class="table table-striped table-hover table-bordered">
+    <table class="table table-striped table-hover table-bordered" id="table">
         <thead>
             <tr>
                 <th>No</th>
@@ -89,5 +95,27 @@
 		</div>
 	</div>
 </div>
+
+<script>
+ function search() {
+            var input, sfilter, table, tr, td, i, txtValue;
+            input = document.getElementById("namaSparepart");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("table");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[3];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } 
+                    else {
+                        tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+</script>
 
 @endsection

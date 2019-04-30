@@ -1,6 +1,6 @@
 <?php
 
-namespace SiAtmo\Http\ApiControllers\Controllers;
+namespace SiAtmo\Http\Controllers\ApiControllers;
 
 use Illuminate\Http\Request;
 use SiAtmo\Pemesanan;

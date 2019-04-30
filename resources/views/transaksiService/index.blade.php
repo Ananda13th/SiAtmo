@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h4 class="mt-2">Data Pegawai</h4>
+<h4 class="mt-2">Data Transaksi Service</h4>
 <hr>
 <a class="btn btn-success" href="{{ route('transaksiService.create')}}"> <span class="oi oi-plus"></span> Tambah </a>
 
@@ -19,9 +19,9 @@
                 <th>No</th>
                 <th>Kode Nota</th>
                 <th>Tanggal Transaksi</th>
-                <th>Plat Nomor Kendaraan</th>
+                <!-- <th>Plat Nomor Kendaraan</th>
                 <th>Jenis Service</th>
-                <th>Status</th>
+                <th>Status</th>-->
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -32,9 +32,9 @@
                     <td><?=++$no?></td>
                     <td><?= $data['kodeNota']?></td>
                     <td><?= $data->tanggalTransaksi ?></td>
-                    <td><?= $data['platNomorKendaraan']?></td>
+                    <!-- <td><?= $data['platNomorKendaraan']?></td>
                     <td><?= $data['keterangan']?></td>
-                    <td><?= $data['statusTransaksi']?></td>
+                    <td><?= $data['statusTransaksi']?></td> -->
                     <td>
                         <a class="btn btn-sm btn-info" href="{{ route('transaksiService.edit', $data['kodeNota']) }}"> <i class="oi oi-pencil"></i> Edit</a>
                         <a class="btn btn-sm btn-primary" href="{{ route('transaksiService.downloadPDF', $data['kodeNota']) }}"><span class="oi oi-eye"></span> Lihat</button>

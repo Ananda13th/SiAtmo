@@ -13,7 +13,7 @@
         </ul>
     </div>
 @endif
-<form method="POST" action="{{ route('kendaraan.store') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('daftarKendaraanKonsumen/create') }}" enctype="multipart/form-data">
     @csrf
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Merk Kendaraan</label>
@@ -22,9 +22,9 @@
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-2" col-form-label>Tipe Kendaraan</label>
+        <label class="col-sm-2" col-form-label>Plat Kendaraan</label>
         <div class="col-sm-4">
-            <input class="form-control" type="text" id="tipeKendaraan" name="tipeKendaraan">
+            <input class="form-control" type="text" id="tipeKendaraan" name="platNomorKendaraan">
         </div>
     </div>
     <button type="submit" class="btn btn-info"><i class="oi oi-task"></i>Simpan</button>

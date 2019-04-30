@@ -43,7 +43,7 @@
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Gaji</label>
         <div class="col-sm-4">
-            <input class="form-control" type="text" id="gaji" name="gaji">
+            <input class="form-control" type="number" id="gaji" name="gaji">
         </div>
     </div>
     <div class="form-group-row">

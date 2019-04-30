@@ -10,8 +10,8 @@
 <form action="pegawai/search" method="POST" role="search">
     {{ csrf_field() }}
     <div class="input-group">
-        <input type="text" class="form-control" name="name"
-            placeholder="Cari pegawai"> <span class="input-group-btn">
+        <input type="text" class="form-control" name="name" id="namaPegawai"
+            placeholder="Cari pegawai" onkeyup="search()"> <span class="input-group-btn">
             <button type="submit" class="btn btn-default">
                 <span class="oi oi-zoom-in"></span>
             </button>
@@ -26,7 +26,7 @@
 @endif
 
 <div class="table-responsive mt-3">
-    <table class="table table-striped table-hover table-bordered">
+    <table class="table table-striped table-hover table-bordered" id="table">
         <thead>
             <tr>
                 <th>No</th>
@@ -81,4 +81,25 @@
 	</div>
 </div>
 
+<script>
+ function search() {
+            var input, sfilter, table, tr, td, i, txtValue;
+            input = document.getElementById("namaPegawai");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("table");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } 
+                    else {
+                        tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+</script>
 @endsection

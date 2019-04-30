@@ -70,7 +70,7 @@
             </thead>
             <tbody>
                 @foreach($detil as $d)
-                    @if($d->noPemesanan == $data->noPemesanan)
+                    @if($d->kodeNota == $data->kodeNota)
                     <tr>
                         <td>{{$d->kodeService}} </td>
                         <td>{{$d->keterangan}} </td>

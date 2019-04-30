@@ -19,10 +19,8 @@ class TransaksiServiceController extends Controller
 {
     public function index()
     {
-        $transaksiService   = TransaksiPenjualan::leftJoin('detiltransaksiservice','transaksipenjualan.kodenota','=','detiltransaksiservice.kodenota')
-            ->leftJoin('kendaraankonsumen','kendaraankonsumen.platNomorKendaraan','=','detiltransaksiservice.platNomorKendaraan')
-            ->leftJoin('service','service.kodeService','=','detiltransaksiservice.kodeService')->where('transaksipenjualan.kodeNota', 'like', '%'.'SV'.'%')
-            ->get();
+        $transaksiService   = TransaksiPenjualan::where('transaksipenjualan.kodeNota', 'like', '%'.'SV'.'%')
+        ->get();
         return view('transaksiService/index', ['tService'=>$transaksiService, 'no'=>0]);
 
     }
@@ -33,7 +31,10 @@ class TransaksiServiceController extends Controller
         $sparepart  = Sparepart::all();
         $konsumen   = KendaraanKonsumen::all();
         $pegawai    = User::all();
-        return view('transaksiService/create', ['service'=>$service, 'konsumen'=>$konsumen, 'pegawai'=>$pegawai, 'sparepart'=>$sparepart]);
+        $kode       = TransaksiPenjualan::where('transaksipenjualan.kodeNota', 'like', '%'.'SV'.'%', 'AND', 'tanggalTransaksi', '='.Carbon::now())
+        ->orderBy('tanggaltransaksi', 'desc')
+        ->first();
+        return view('transaksiService/create', ['service'=>$service, 'konsumen'=>$konsumen, 'pegawai'=>$pegawai, 'sparepart'=>$sparepart, 'kode'=>$kode]);
     }
 
     public function store(Request $request)
@@ -68,8 +69,8 @@ class TransaksiServiceController extends Controller
 
         $user = Auth::user();
         $pegawaiOnDuty = PegawaiOnDuty::create([
-            'email'=> $user->email,
-            'kodeNota'=>$transaksi->kodeNota
+            'emailPegawai'=> $user['email'],
+            'kodeNota'=>$transaksi['kodeNota']
         ]);
 
         $count = count($request->kodeService);

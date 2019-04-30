@@ -31,8 +31,10 @@
                     <td><?= $data->tanggalPemesanan ?></td>
                     <td><?= $data->statusPemesanan ?></td>
                     <td>
-                    <a class="btn btn-sm btn-info" href="{{ route('pemesanan.edit', $data['noPemesanan']) }}"> <i class="oi oi-pencil"></i> Edit</a>
-                    <a class="btn btn-sm btn-primary" href="{{ route('pemesanan.downloadPDF', $data['noPemesanan']) }}"><span class="oi oi-eye"></span> Lihat</button>
+                    {{ Form::open(array('route' => array('pemesanan.destroy', $data['noPemesanan']), 'method' => 'DELETE')) }}
+                        <button type="submit" class="btn btn-sm btn-danger"> <i class="oi oi-trash"></i> Hapus</button>
+                        <a class="btn btn-sm btn-primary" href="{{ route('pemesanan.downloadPDF', $data['noPemesanan']) }}"><span class="oi oi-eye"></span> Lihat</button>
+                    {{ Form::close() }}
                     </td>
                 </tr>
             @endforeach

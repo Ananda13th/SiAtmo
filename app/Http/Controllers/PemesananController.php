@@ -8,6 +8,7 @@ use SiAtmo\DetilPemesanan;
 use SiAtmo\Sparepart;
 use SiAtmo\Supplier;
 use Carbon\Carbon;
+use SiAtmo\HistorySparepart;
 use PDF;
 
 class PemesananController extends Controller
@@ -45,6 +46,12 @@ class PemesananController extends Controller
                 'jumlahPemesanan'   =>$request->jumlahPemesanan[$i], 
                 'satuan'            =>$request->satuan[$i], 
                 'kodeSparepart'     =>$request->kodeSparepart[$i] 
+            ]);
+
+            HistorySparepart::create([
+                'jumlah'        =>$request->jumlahPemesanan[$i], 
+                'kodeSparepart' =>$request->kodeSparepart[$i],
+                'tanggal'       =>Carbon::now()
             ]);
         }
 
@@ -96,6 +103,14 @@ class PemesananController extends Controller
 
     public function destroy($noPemesanan)
     {
+        $detil = DetilPemesanan::all();
+        for($i=0;$i<count($detil);$i++)
+        {
+            if($detil[$i]->noPemesanan == $noPemesanan)
+            {
+                $detil[$i]->delete();
+            }
+        }
         $pemesanan  = Pemesanan::find($noPemesanan);
         $pemesanan->delete();
         return redirect()->route('pemesanan.index')->with('success', 'Pemesanan berhasil dihapus');

@@ -10,7 +10,7 @@
 <form action="service/search" method="POST" role="search">
     {{ csrf_field() }}
     <div class="input-group">
-        <input type="text" class="form-control" name="keterangan" id="search"
+        <input type="text" class="form-control" name="keterangan" id="namaService" onkeyup="search()"
             placeholder="Cari Jasa Service">
             <button type="submit" class="btn btn-default">
                 <span class="oi oi-zoom-in"></span>
@@ -21,6 +21,12 @@
 <!-- <input type="text" name="search" id="search" class="form-control" placeholder="Search Customer Data" /> -->
 @if ($message = Session::get('success'))
 <div class="alert alert-success mt-3 pb-0">
+    <p>{{ $message }}</p>
+</div>
+@endif
+
+@if ($message = Session::get('failed'))
+<div class="alert alert-failed mt-3 pb-0">
     <p>{{ $message }}</p>
 </div>
 @endif
@@ -81,28 +87,25 @@
 	</div>
 </div>
 
-<!-- <script>
-$(document).ready(function(){
-    fetch_customer_data();
-    function fetch_customer_data(query = '')
-    {
-        $.ajax({
-                url:"{{ route('live_search.action') }}",
-                method:'GET',
-                data:{query:query},
-                dataType:'json',
-                success:function(data)
-                {
-                    $('#table tbody').html(data.table_data);
-                }
-        });
-    }
-
-    $(document).on('keyup', '#search', function(){
-        var query = $(this).val();
-        fetch_customer_data(query)
-    });
-});
+<script>
+ function search() {
+            var input, sfilter, table, tr, td, i, txtValue;
+            input = document.getElementById("namaService");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("table");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } 
+                    else {
+                        tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
 </script>
- <script> $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') } }); </script> -->
 @endsection

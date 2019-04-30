@@ -12,7 +12,7 @@ class KendaraanKonsumen extends Model
     protected $primaryKey = 'platNomorKendaraan';
     public $incrementing = false;
     protected $fillable = [
-        'kodeKendaraan'
+        'platNomorKendaraan', 'merkKendaraan'
     ];
 
     public function konsumen_kendaraan(){

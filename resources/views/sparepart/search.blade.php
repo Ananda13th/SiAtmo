@@ -11,7 +11,19 @@
     <p>{{ $message }}</p>
 </div>
 @endif
-
+<br>
+<br>
+<form action="sparepart/search" method="POST" role="search">
+    {{ csrf_field() }}
+    <div class="input-group">
+        <input type="text" class="form-control" name="namaSparepart"
+            placeholder="Cari sparepart"> <span class="input-group-btn">
+            <button type="submit" class="btn btn-default">
+                <span class="oi oi-zoom-in"></span>
+            </button>
+        </span>
+    </div>
+</form>
 <div class="table-responsive mt-3">
     <table class="table table-striped table-hover table-bordered">
         <thead>

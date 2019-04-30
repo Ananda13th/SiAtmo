@@ -119,7 +119,14 @@ class ServiceController extends Controller
     public function destroy($kodeService)
     {
         $service = Service::find($kodeService);
-        $service->delete();
-        return redirect()->route('service.index')->with('success', 'Jasa Service berhasil dihapus');
+        try
+        {
+            $service->delete();
+            return redirect()->route('service.index')->with('success', 'Jasa Service berhasil dihapus');
+        }
+        catch(Exception $exception)
+        {
+            return redirect()->route('service.index')->with('failed', 'Jasa Service gagal dihapus');
+        }
     }
 }

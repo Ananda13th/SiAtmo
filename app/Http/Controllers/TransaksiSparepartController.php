@@ -8,6 +8,7 @@ use SiAtmo\DetilTransaksiSparepart;
 use SiAtmo\Sparepart;
 use SiAtmo\PegawaiOnDuty;
 use SiAtmo\User;
+use SiAtmo\HistorySparepart;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use PDF;
@@ -46,11 +47,11 @@ class TransaksiSparepartController extends Controller
             $subtotal += $request->hargaJualTransaksi[$i]*$request->jumlahSparepart[$i];
         }
 
-        // $user = Auth::user();
-        // $pegawaiOnDuty = PegawaiOnDuty::create([
-        //      'emailPegawai'=> $user->email,
-        //      'kodeNota'=>$request->kodeNota
-        // ]);
+        $user = Auth::user();
+        $pegawaiOnDuty = PegawaiOnDuty::create([
+             'emailPegawai'=> $user->email,
+             'kodeNota'=>$request->kodeNota
+        ]);
 
         $transaksi = TransaksiPenjualan::create([
             'kodeNota'=>$request->kodeNota,
@@ -66,6 +67,13 @@ class TransaksiSparepartController extends Controller
         $count = count($request->kodeSparepart);
         for($i = 0; $i<$count; $i++)
         {
+            $jumlah = $request->jumlahSparepart[$i]*-1;
+            HistorySparepart::create([
+                'jumlah'        =>$jumlah, 
+                'kodeSparepart' =>$request->kodeSparepart[$i],
+                'tanggal'       =>Carbon::now()
+            ]);
+
             Sparepart::where('kodeSparepart', '=', $request->kodeSparepart[$i])->decrement('jumlahStok', $request->jumlahSparepart[$i]);
             $detiltransaksi = DetilTransaksiSparepart::create([
                 'kodeNota'=>$transaksi->kodeNota,
@@ -74,11 +82,8 @@ class TransaksiSparepartController extends Controller
                 'kodeSparepart'=>$request->kodeSparepart[$i]
             ]);
 
-            
         }
-        $response = "Sukses";
-
-        return response()->json(($response), 201);
+        return redirect()->route('transaksiSparepart.index')->with('success', 'Data berhasil ditambah');
     }
 
     public function edit($kodeNota)
@@ -104,11 +109,9 @@ class TransaksiSparepartController extends Controller
     public function downloadPDF($kodeNota)
     {
         $pegawai = Auth::user();
-        $transaksiSparepart   = TransaksiPenjualan::find($kodeNota)->leftJoin('detiltransaksisparepart','transaksipenjualan.kodenota','=','detiltransaksisparepart.kodenota')
-        ->leftJoin('sparepart','sparepart.kodeSparepart','=','detiltransaksisparepart.kodeSparepart')
-        ->get();
-        dd($transaksiSparepart);
-        $pdf = PDF::loadView('pdf.notaLunasSparepart', ['data'=>$transaksiSparepart, 'pegawai'=>$pegawai]);
+        $transaksiSparepart   = TransaksiPenjualan::find($kodeNota);
+        $detil = DetilTransaksiSparepart::leftJoin('sparepart', 'detiltransaksisparepart.kodeSparepart', '=', 'sparepart.kodeSparepart')->get();
+        $pdf = PDF::loadView('pdf.notaLunasSparepart', ['data'=>$transaksiSparepart, 'detil'=>$detil, 'pegawai'=>$pegawai]);
         return $pdf->stream();
   
       }

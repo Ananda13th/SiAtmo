@@ -13,11 +13,11 @@
 @endif
 <br>
 <br>
-<form action="pegawai/search" method="POST" role="search">
+<form action="supplier/search" method="POST" role="search">
     {{ csrf_field() }}
     <div class="input-group">
-        <input type="text" class="form-control" name="name"
-            placeholder="Cari pegawai"> <span class="input-group-btn">
+        <input type="text" class="form-control" name="tipe"
+            placeholder="Cari Supplier"> <span class="input-group-btn">
             <button type="submit" class="btn btn-default">
                 <span class="oi oi-zoom-in"></span>
             </button>
@@ -29,22 +29,21 @@
     <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Posisi</th>
-                <th>Gaji</th>
-                <th>Aksi</th>
+                <th>Nama Perusahaan</th>
+                <th>Alamat</th>
+                <th>Sales</th>
+                <th>No Telp Sales</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($details as $user)
+            @foreach($details as $kendaraan)
                 <tr>
-                    <td><?= $user['name']?></td>
-                    <td><?= $user->email ?></td>
-                    <td><?= $user['keteranganPosisi']?></td>
-                    <td><?= $user['gaji']?></td>
+                    <td><?= $kendaraan['namaPerusahaan']?></td>
+                    <td><?= $kendaraan->alamatSupplier ?></td>
+                    <td><?= $kendaraan->namaSales ?></td>
+                    <td><?= $kendaraan->noTelpSales ?></td>
                     <td>
-                        <a class="btn btn-sm btn-info" href="{{ route('pegawai.edit', $user['email']) }}"> <i class="oi oi-pencil"></i> Edit</a>
+                        <a class="btn btn-sm btn-info" href="{{ route('supplier.edit', $kendaraan['namaPerusahaan']) }}"> <i class="oi oi-pencil"></i> Edit</a>
                         <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal"><span class="oi oi-trash"></span> Hapus</button>
                     </td>
                 </tr>
@@ -66,7 +65,7 @@
 				</div>
 				<!-- footer modal -->
 				<div class="modal-footer">
-                    {{ Form::open(array('route' => array('pegawai.destroy', $user['email']), 'method' => 'DELETE')) }}
+                    {{ Form::open(array('route' => array('supplier.destroy', $kendaraan['namaPerusahaan']), 'method' => 'DELETE')) }}
                         <button type="submit" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span> Ya</button>
                         <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
                     {{ Form::close() }}
