@@ -12,7 +12,11 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+    <script type="text/javascript" >
+            function preventBack(){window.history.forward();}
+                setTimeout("preventBack()", 0);
+                window.onunload=function(){null};
+        </script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -41,7 +45,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white" href="{{route('')}}">
+            <a class="nav-link text-white" href="{{route('daftarKendaraanKonsumen')}}">
             <i class="oi oi-key"></i> Daftar Kendaraan
             </a>
         </li>
@@ -71,6 +75,11 @@
                 <li class="list-group-item bg-dark">
                     <a class="nav-link text-white" href="{{ route('home')}}">
                         <i class="oi oi-dashboard"></i> Dashboard
+                    </a>
+                </li>
+                <li class="list-group-item bg-dark">
+                    <a class="nav-link text-white" href="{{route('daftarKendaraanKonsumen')}}">
+                    <i class="oi oi-key"></i> Daftar Kendaraan
                     </a>
                 </li>
                 <li class="list-group-item bg-dark">

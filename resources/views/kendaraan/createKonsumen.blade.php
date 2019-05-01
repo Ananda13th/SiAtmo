@@ -1,4 +1,4 @@
-@extends('layouts.owner')
+@extends('layouts.cs')
 
 @section('content')
 <h4 class="mt2">Tambah Kendaraan</h4>
@@ -17,9 +17,13 @@
     @csrf
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Merk Kendaraan</label>
-        <div class="col-sm-4">
-            <input class="form-control" type="text" id="merkKendaraan" name="merkKendaraan">
-        </div>
+        <select class="custom-select" id="merkKendaraan" name="merkKendaraan">
+            <option value="">-Pilih Merk-</option>
+            @foreach($kendaraan as $k) {
+                <option value="{{ $k['kodeKendaraan']}}"> {{$k['merkKendaraan']}} - {{$k['tipeKendaraan']}} </option>";
+            }
+            @endforeach
+        </select>
     </div>
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Plat Kendaraan</label>

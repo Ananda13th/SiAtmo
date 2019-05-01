@@ -15,6 +15,10 @@
         text-align: right;
         margin-right: 50px;
       }
+      .text-left{
+        text-align: left;
+        margin-left: 50px;
+      }
 			.fw600 {font-weight: 600;}
 			.mb8 {margin-bottom: 8px;}
 			.default-list-upper-alpha {
@@ -23,11 +27,15 @@
 				margin-left: 8px;
         margin-right: 30px;
 			}	
-      table, td, th {
-        border: 1px solid black;
-        text-align: center;
+      .table-invisible {
+        border: 0;
       }
-
+      .table-detail, th, td{
+        border: 1;
+        text-align: center;
+        border-collapse: collapse;
+        border: 1px solid #000;
+      }
       table {
         border-collapse: collapse;
         width: 100%;
@@ -50,16 +58,25 @@
   <h1> <img src="{{ public_path().$image_path }}" width=700> </h1>
   <body>
   <div class="default-list-upper-alpha">
-      <div class="text-right"> {{$data->tanggalTransaksi}} </div>
-      {{$data->kodeNota}} <br>
-      <p> Cust          : {{$data->namaKonsumen}}  <span> <div class="text-right"> CS : {{$pegawai->name}} </div> </span> </p>    
-      <br>
-      Nomor Telepon : {{$data->noTelpKonsumen}}   
-      <hr/>
-      <div class="text-center">Service</div> :
+      <table class=table-invisible>
+          <tr>
+            <td></td>
+            <td> <div class="text-right">{{$data->tanggalTransaksi}} </div> </td>
+          </tr>
+          <tr>
+            <td> {{$data->kodeNota}} </div> </td>
+          </tr>
+          <tr>
+            <td>  Cust          : {{$data->namaKonsumen}} </td>
+            <td> <div class="text-right"> CS : {{$pegawai->name}} </div> </td> 
+          </tr>
+          <tr>
+            <td>  Nomor Telepon : {{$data->noTelpKonsumen}}   </td>
+          </tr>
+      </table>
       <hr/>
       <div>
-        <table>
+        <table class="table-detail" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
                     <th>Kode</th>

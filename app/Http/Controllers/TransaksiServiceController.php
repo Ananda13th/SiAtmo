@@ -89,9 +89,15 @@ class TransaksiServiceController extends Controller
 
     public function edit($kodeNota)
     {
-        $dataNota = TransaksiService::find($kodeNota);
-
-        return view('transaksiService.edit', ['dataNota'=>$dataNota]);
+        $dataNota = TransaksiPenjualan::find($kodeNota);
+        $detil = DetilTransaksiService::where('kodeNota', $kodeNota)
+        ->leftJoin('service', 'service.kodeService', '=', 'detiltransaksiservice.kodeService')
+        ->leftJoin('users', 'users.email', '=', 'detiltransaksiservice.emailPegawai')
+        ->get();
+        $service = Service::all();
+        $konsumen   = KendaraanKonsumen::all();
+        $pegawai    = User::all();
+        return view('transaksiService.edit', ['pegawai'=>$pegawai, 'konsumen'=>$konsumen, 'dataNota'=>$dataNota, 'detil'=>$detil, 'service'=>$service]);
 
     }
 
@@ -114,7 +120,38 @@ class TransaksiServiceController extends Controller
 
     public function update(Request $request, $kodeNota)
     {
-        
+        $tService = TransaksiPenjualan::find($kodeNota);
+        $countSubtotal = count($request->biayaServiceTransaksi);
+        $subtotal= $tService->subtotal;
+        for($i = 0; $i<$countSubtotal; $i++)
+        {
+            $subtotal += $request->biayaServiceTransaksi[$i];
+        }
+
+        $transaksi = TransaksiPenjualan::updateOrCreate(
+        ['kodeNota' => $request->kodeNota],
+        [
+            'tanggalTransaksi'=>Carbon::now(), 
+            'statusTransaksi'=>'sedang dikerjakan',
+            'subtotal'=>$subtotal, 
+            'total'=>$subtotal,
+            'namaKonsumen'=>$request->namaKonsumen, 
+            'noTelpKonsumen'=>$request->noTelpKonsumen, 
+            'alamatKonsumen'=>$request->alamatKonsumen,
+        ]);
+
+        $count = count($request->kodeService);
+        for($i = 0; $i<$count; $i++)
+        {
+            $detiltransaksi = DetilTransaksiService::updateOrCreate([
+                'kodeNota'=>$transaksi->kodeNota,
+                'biayaServiceTransaksi'=>$request->biayaServiceTransaksi[$i], 
+                'platNomorKendaraan'=>$request->platNomorKendaraan[$i], 
+                'emailPegawai'=>$request->emailPegawai[$i], 
+                'kodeService'=>$request->kodeService[$i]
+            ]);
+        }
+        return redirect()->route('transaksiService.index');
     }
 
     public function destroy($kodeNota)

@@ -22,13 +22,20 @@
 				list-style-position: inside;
 				margin-left: 8px;
         margin-right: 30px;
-			}	
-      table, td, th {
+			}
+      .table-supplier {
+        text-align: left;
+        border: 1;
+        width: 50%;
+        border-collapse: collapse;
+      }	
+      .table-supplier td{
+        text-align: left;
+        border: 0;
+      }	
+      .table-detail, td, th {
         border: 1px solid black;
         text-align: center;
-      }
-
-      table {
         border-collapse: collapse;
         width: 100%;
       }
@@ -42,19 +49,29 @@
   <h1> <img src="{{ public_path().$image_path }}" width=700> </h1>
   <body>
   <div class="default-list-upper-alpha">
+      <div class="text-right"> No : {{$data->noPemesanan}} </div>
       <div class="text-right"> {{$data->tanggalPemesanan}} </div>
-      Kepada Yth. <br>
-      {{$data->namaPerusahaan}}                                   
-      <br>
-      @foreach($supplier as $s)
-        @if($s->namaPerusahaan == $data->namaPerusahaan)
-        <label>{{$s->alamatSupplier}} </label> <br>
-        @endif
-      @endforeach
+      <table class="table-supplier">
+        <tr>
+          <td> Kepada Yth. </td>
+        </tr>
+        <tr>
+          <td> {{$data->namaPerusahaan}} </td>
+        </tr>
+        <tr>
+          <td>
+          @foreach($supplier as $s)
+            @if($s->namaPerusahaan == $data->namaPerusahaan)
+            <label>{{$s->alamatSupplier}} </label>
+            @endif
+          @endforeach
+          </td>
+        </tr>
+      </table>
       <br>
       Mohon Untuk Disediakan barang-barang berikut : <br>
       <div>
-        <table>
+        <table class="table-detail">
             <thead>
                 <tr>
                     <th>Nama Sparepart</th>

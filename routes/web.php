@@ -116,8 +116,8 @@ Route::group(['middleware'=>'cekRoleCS'], function(){
         'uses'=>'TransaksiSparepartController@downloadPDF']);
     
     //Transaksi
-    Route::get('daftarKendaraanKonsumen', 'KendaraanController@createKonsumen');
-    Route::post('daftarKendaraanKonsumen/create', 'KendaraanController@saveKendaraanKonsumen');
+    Route::get('daftarKendaraanKonsumen', 'KendaraanController@createKonsumen')->name('daftarKendaraanKonsumen');
+    Route::post('daftarKendaraanKonsumen/create', 'KendaraanController@saveKendaraanKonsumen')->name('daftarKendaraanKonsumen/create');
     Route::resource('transaksiService', 'TransaksiServiceController');
     Route::resource('transaksiSparepart', 'TransaksiSparepartController');
 });

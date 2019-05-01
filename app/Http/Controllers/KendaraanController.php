@@ -82,7 +82,7 @@ class KendaraanController extends Controller
         return view('kendaraan/createKonsumen', ['kendaraan'=>$kendaraan]);
     }
 
-    public function saveKendaraanKonsumen($request)
+    public function saveKendaraanKonsumen(Request $request)
     {
         $this->validate($request, [
             'platNomorKendaraan'=>'required',
@@ -94,5 +94,6 @@ class KendaraanController extends Controller
             'merkKendaraan'=>$request->merkKendaraan,
             'platNomorKendaraan'=>$request->platNomorKendaraan,
         ]);
+        return view('cs');
     }
 }

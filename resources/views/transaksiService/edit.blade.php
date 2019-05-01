@@ -15,30 +15,30 @@
     </div>
 @endif
 
-<form method="POST" action="{{ route('transaksiService.store') }}" enctype="multipart/form-data">
+{{ Form::model($dataNota, ['method' => 'PATCH', 'route'=>['transaksiService.update', $dataNota->kodeNota]]) }}
     @csrf
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Kode Nota</label>
         <div class="col-sm-4">
-            <input class="form-control" type="text" id="kodeNota" name="kodeNota">
+            <input class="form-control" type="text" id="kodeNota" name="kodeNota" value="{{$dataNota['kodeNota']}}" readonly>
         </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Nama Konsumen</label>
         <div class="col-sm-4">
-            <input class="form-control" type="text" id="namaKonsumen" name="namaKonsumen">
+            <input class="form-control" type="text" id="namaKonsumen" name="namaKonsumen" value="{{$dataNota['namaKonsumen']}}">
         </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Nomor Telpon Konsumen</label>
         <div class="col-sm-4">
-            <input class="form-control" type="text" id="noTelpKonsumen" name="noTelpKonsumen">
+            <input class="form-control" type="text" id="noTelpKonsumen" name="noTelpKonsumen" value="{{$dataNota['noTelpKonsumen']}}">
         </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Alamat Konsumen</label>
         <div class="col-sm-4">
-            <input class="form-control" type="text" id="alamatKonsumen" name="alamatKonsumen">
+            <input class="form-control" type="text" id="alamatKonsumen" name="alamatKonsumen" value="{{$dataNota['alamatKonsumen']}}">
         </div>
     </div>
     <div class="form-group row">
@@ -61,6 +61,14 @@
     </thead>
     <tbody>
     <div class="field_wrapper">
+        @foreach($detil as $d)
+            <tr>
+                <td> <input class="form-control" type="text" disabled value="{{$d->keterangan}}">  </td>
+                <td> <input class="form-control" type="text" disabled value="{{$d->biayaServiceTransaksi}}">  </td>
+                <td> <input class="form-control" type="text" disabled value="{{$d->platNomorKendaraan}}"> </td>
+                <td> <input class="form-control" type="text" disabled value="{{$d->name}}">  </td>
+            </tr>
+        @endforeach
         <tr>
             <td>
                 <select class="custom-select" id="kodeService" name="kodeService[]">
@@ -100,43 +108,13 @@
     </tbody>
     </table>
     <br>
-    <table class="table table-striped table-hover table-bordered" id="tb" style="visibility:hidden">
-    <thead>
-        <tr>
-            <th>Sparepart</th>
-            <th>Harga</th>
-            <th>Jumlah</th>
-            <th> <button class="btn add-more" id="addMore" type="button">+</button> </th>
-        </tr>
-    </thead>
-    <tbody>
-    <div class="field_wrapper">
-        <tr>
-            <td>
-                <select class="custom-select" id="kodeSparepart" name="kodeSparepart[]">
-                    <option value=""> --Pilih Sparepart-- </option>";
-                    @foreach($sparepart as $s) {
-                            <option value="{{ $s['kodeSparepart'] }}" data-price="{{ $s->hargaJual }}"> {{ $s['namaSparepart'] }} </option>";
-                    }
-                    @endforeach
-                </select>
-            </td> 
-            <td> 
-                <input class="form-control" type="text" id="hargaJualTransaksi" name="hargaJualTransaksi[]" autocomplete="off" readonly> </td>
-            </td>
-            <td> <input type="number" id="jumlahSparepart" name="jumlahSparepart" step="1"> </td>
-            <td> <button class="btn add-more" id="remove" type="button">x</button> </td>
-        </tr>
-    </tbody>
-    </table>
-    <br>
     <button type="submit" class="btn btn-info"><i class="oi oi-task"></i> Simpan</button>
     <button type="reset" class="btn btn-warning"><i class="oi oi-circle-x"></i> Batal</button>
-</form>
-<script>
+    {{ Form::close() }}
+    <script>
     $(function(){
         $('#addMore').on('click', function() {
-                var data = $("#tb tr:eq(1)").clone(true).appendTo("#tb");
+                var data = $("#tb tr:eq(2)").clone(true).appendTo("#tb");
                 data.find("input").val('');
         });
         $(document).on('click', '#remove', function() {

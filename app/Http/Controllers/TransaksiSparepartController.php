@@ -47,21 +47,20 @@ class TransaksiSparepartController extends Controller
             $subtotal += $request->hargaJualTransaksi[$i]*$request->jumlahSparepart[$i];
         }
 
+        $transaksi = TransaksiPenjualan::create([
+            'kodeNota'          =>$request->kodeNota,
+            'tanggalTransaksi'  =>Carbon::now(), 
+            'statusTransaksi'   =>'sedang dikerjakan',
+            'subtotal'          =>$subtotal, 
+            'total'             =>$subtotal,
+            'namaKonsumen'      =>$request->namaKonsumen, 
+            'noTelpKonsumen'    =>$request->noTelpKonsumen, 
+            'alamatKonsumen'    =>$request->alamatKonsumen,
+        ]);
         $user = Auth::user();
         $pegawaiOnDuty = PegawaiOnDuty::create([
-             'emailPegawai'=> $user->email,
-             'kodeNota'=>$request->kodeNota
-        ]);
-
-        $transaksi = TransaksiPenjualan::create([
-            'kodeNota'=>$request->kodeNota,
-            'tanggalTransaksi'=>Carbon::now(), 
-            'statusTransaksi'=>'sedang dikerjakan',
-            'subtotal'=>$subtotal, 
-            'total'=>$subtotal,
-            'namaKonsumen'=>$request->namaKonsumen, 
-            'noTelpKonsumen'=>$request->noTelpKonsumen, 
-            'alamatKonsumen'=>$request->alamatKonsumen,
+             'emailPegawai' => $user->email,
+             'kodeNota'     =>$transaksi->kodeNota
         ]);
 
         $count = count($request->kodeSparepart);
@@ -76,10 +75,10 @@ class TransaksiSparepartController extends Controller
 
             Sparepart::where('kodeSparepart', '=', $request->kodeSparepart[$i])->decrement('jumlahStok', $request->jumlahSparepart[$i]);
             $detiltransaksi = DetilTransaksiSparepart::create([
-                'kodeNota'=>$transaksi->kodeNota,
+                'kodeNota'          =>$transaksi->kodeNota,
                 'hargaJualTransaksi'=>$request->hargaJualTransaksi[$i], 
-                'jumlahSparepart'=>$request->jumlahSparepart[$i], 
-                'kodeSparepart'=>$request->kodeSparepart[$i]
+                'jumlahSparepart'   =>$request->jumlahSparepart[$i], 
+                'kodeSparepart'     =>$request->kodeSparepart[$i]
             ]);
 
         }

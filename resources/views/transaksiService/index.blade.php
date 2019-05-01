@@ -44,24 +44,6 @@
             @endforeach
         </tbody>
     </table>
-    <!-- Modal -->
-	<div id="myModal" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">{{$data['kodeNota']}}</h4>
-				</div>
-				<div class="modal-body">
-					Plat Nomor  : {{$data['platNomorKendaraan']}} <br>
-                    Konsumen    : {{$data['namaKonsumen']}} <br>
-                    Total Bayar  : {{$data['total']}} <br>
-				</div>
-				<div class="modal-footer">
-
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 @endsection
