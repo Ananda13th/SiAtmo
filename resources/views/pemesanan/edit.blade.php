@@ -18,8 +18,12 @@
 {{ Form::model($pemesanan, ['method' => 'PATCH', 'route'=>['pemesanan.update', $pemesanan->noPemesanan ]]) }}
     @csrf
     <div class="form-group row">
+        <label class="col-sm-2" col-form-label>No Pemesanan</label>
+        <input class="col-sm-3" type="text" value="{{ $pemesanan->noPemesanan }}" name=noPemesanan readonly>
+    </div>
+    <div class="form-group row">
         <label class="col-sm-2" col-form-label>Nama Perusahaan</label>
-        <input class="col-sm-3" type="text" value="{{ $pemesanan->namaPerusahaan }}">
+        <input class="col-sm-3" type="text" value="{{ $pemesanan->namaPerusahaan }}" readonly>
     </div>
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Detail Pemesanan</label>
@@ -34,15 +38,11 @@
     </thead>
     <tbody>
     <div class="field_wrapper">
-        @foreach($detil as $data)
+        @foreach($detil as $d)
             <tr>
-                <td>
-                    <?= $data['kodeSparepart']?>
-                </td>
-
-                <td>
-                    <?= $data['jumlahPemesanan']?>
-                </td> 
+                <td> <input class="form-control" type="text" value="{{$d->namaSparepart}}">  </td>
+                <td> <input class="form-control" type="number" value="{{$d->jumlahPemesanan}}">  </td>
+                <td> <input class="form-control" type="text" value="{{$d->satuan}}"> </td>
             </tr>
         @endforeach
         <tr>
@@ -69,14 +69,13 @@
     <br>
     <button type="submit" class="btn btn-info"><i class="oi oi-task"></i> Simpan</button>
     <button type="reset" class="btn btn-warning"><i class="oi oi-circle-x"></i> Batal</button>
-{{ Form::close() }}
-<script>
-     $(function(){
+    {{ Form::close() }}
+    <script>
+    $(function(){
         $('#addMore').on('click', function() {
-                var data = $("#tb tr:eq(1)").clone(true).appendTo("#tb");
+                var data = $("#tb tr:eq(2)").clone(true).appendTo("#tb");
                 data.find("input").val('');
         });
-        
         $(document).on('click', '#remove', function() {
             var trIndex = $(this).closest("tr").index();
                 if(trIndex>=1) {
@@ -86,13 +85,18 @@
             }
         });
     });    
-    
+
     $(function() {
-        $('#kodeSparepart').on('change', function(){
+        $('#kodeService').on('change', function(){
             var price = $(this).children('option:selected').data('price');
-            $('#hargaJualTransaksi').val(price);
+            $('#biayaServiceTransaksi').val(price);
         });
     });
 
+    $(document).ready(function(){
+        $("#+sparepart").click(function(){
+            $("#tb").show();
+        });
+    }); 
 </script>
 @endsection

@@ -52,9 +52,11 @@ class SparepartController extends Controller
 
         if($request->hasFile('gambarSparepart'))
         {
-            $image = $request->file('gambarSparepart');
-            $filename = time() .$image->getClientOriginalName();
-            $image->move( public_path().'/image/',  $filename );
+            $file = $request->file('gambarSparepart');
+            $image = $file->openFile()->fread($file->getSize());
+            // $image = $request->file('gambarSparepart');
+            // $filename = time() .$image->getClientOriginalName();
+            // $image->move( public_path().'/image/',  $filename );
             try{
                 $addSparepart = Sparepart::create([
                     'kodeSparepart' => $request->kodeSparepart,

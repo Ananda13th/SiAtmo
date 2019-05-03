@@ -60,7 +60,11 @@
                 <select class="custom-select kodeSparepart" name="kodeSparepart[]">
                     <option value=""> --Pilih Sparepart-- </option>";
                     @foreach($sparepart as $s) {
+                        @if($s->jumlahStok>0)
+                        {
                             <option value="{{ $s['kodeSparepart'] }}" data-price="{{ $s->hargaJual }}"> {{ $s['namaSparepart'] }} </option>";
+                        }
+                        @endif
                     }
                     @endforeach
                 </select>

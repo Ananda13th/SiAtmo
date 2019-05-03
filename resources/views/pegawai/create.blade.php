@@ -37,7 +37,7 @@
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Nomor Telp</label>
         <div class="col-sm-4">
-            <input class="form-control" type="text" id="nomorTelpon" name="nomorTelpon">
+            <input class="form-control" type="number" id="nomorTelpon" name="nomorTelpon">
         </div>
     </div>
     <div class="form-group row">

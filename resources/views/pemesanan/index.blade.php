@@ -25,6 +25,7 @@
         </thead>
         <tbody>
             @foreach($pemesanan as $data)
+                @if($data->statusPemesanan == "On Process")
                 <tr>
                     <td><?=++$no?></td>
                     <td><?= $data['namaPerusahaan']?></td>
@@ -33,10 +34,32 @@
                     <td>
                     {{ Form::open(array('route' => array('pemesanan.destroy', $data['noPemesanan']), 'method' => 'DELETE')) }}
                         <button type="submit" class="btn btn-sm btn-danger"> <i class="oi oi-trash"></i> Hapus</button>
-                        <a class="btn btn-sm btn-primary" href="{{ route('pemesanan.downloadPDF', $data['noPemesanan']) }}"><span class="oi oi-eye"></span> Lihat</button>
+                        <!-- <a class="btn btn-sm btn-info" href="{{ route('pemesanan.edit', $data['noPemesanan']) }}"><span class="oi oi-pencil"></span> Edit</a> -->
+                        <a class="btn btn-sm btn-primary" href="{{ route('pemesanan.downloadPDF', $data['noPemesanan']) }}"><span class="oi oi-eye"></span> Lihat</a>
                     {{ Form::close() }}
                     </td>
                 </tr>
+                @elseif($data->statusPemesanan == "shipping")
+                <tr>
+                    <td><?=++$no?></td>
+                    <td><?= $data['namaPerusahaan']?></td>
+                    <td><?= $data->tanggalPemesanan ?></td>
+                    <td><?= $data->statusPemesanan ?></td>
+                    <td>
+                    {{ Form::open(array('route' => array('pemesanan.selesaiOrder', $data['noPemesanan']), 'method' => 'PATCH')) }}
+                        <button type="submit" class="btn btn-sm btn-success"> <i class="oi oi-circle-check"></i> Sampai </button>
+                    {{ Form::close() }}
+                    </td>
+                </tr>
+                @else
+                <tr>
+                    <td><?=++$no?></td>
+                    <td><?= $data['namaPerusahaan']?></td>
+                    <td><?= $data->tanggalPemesanan ?></td>
+                    <td><?= $data->statusPemesanan ?></td>
+                    <td></td>
+                </tr>
+                @endif
             @endforeach
         </tbody>
     </table>

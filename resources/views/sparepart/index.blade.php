@@ -53,8 +53,8 @@
             @foreach($sparepart as $data)
             <tr>
                 <td><?=++$no?></td>
-                <td><img src="{{ asset('image/'.$data['gambarSparepart'])}}" width="100"></td>
-                <!-- <td><img src="$data->gambarSparepart/jpeg;base64,'.base64_encode($data->gambarSparepart) .'"></td> -->
+                <td><img src="data:image/JPG;base64,'.base64_encode($data['gambarSparepart']).'"/></td>
+                <!-- <td><img src="{{ asset('image/'.$data['gambarSparepart'])}}" width="100"></td> -->
                 <td><?= $data->kodeSparepart?></td>
                 <td><?= $data->namaSparepart ?></td>
                 <td><?= $data->tipeSparepart?></td>

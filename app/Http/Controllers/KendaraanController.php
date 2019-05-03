@@ -89,11 +89,16 @@ class KendaraanController extends Controller
             'merkKendaraan'=>'required',
         ]
         );
-        
+        try{
         $kendaraan = KendaraanKonsumen::create([
             'merkKendaraan'=>$request->merkKendaraan,
             'platNomorKendaraan'=>$request->platNomorKendaraan,
         ]);
+        }
+        catch(Exception $exception)
+        {
+            return redirect()->route('kendaraan.index')->with('failed','Plat Nomor Sudah Ada');
+        }
         return view('cs');
     }
 }

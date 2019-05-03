@@ -15,7 +15,7 @@ class PemesananController extends Controller
 {
     public function index()
     {
-        $pemesanan = Pemesanan::all();
+        $pemesanan = Pemesanan::orderBy('statusPemesanan', 'DESC')->get();
         return view('pemesanan/index', ['pemesanan'=>$pemesanan, 'no'=>0, ]);
     }
 
@@ -34,7 +34,6 @@ class PemesananController extends Controller
         $countPemesanan=count($request->kodeSparepart);
         $pemesanan = Pemesanan::create([
             'tanggalPemesanan'=>Carbon::now(),
-            'statusPemesanan'=>'sedang dikirim', 
             'namaPerusahaan'=>$request->namaPerusahaan
         ]);
         
@@ -47,12 +46,7 @@ class PemesananController extends Controller
                 'satuan'            =>$request->satuan[$i], 
                 'kodeSparepart'     =>$request->kodeSparepart[$i] 
             ]);
-
-            HistorySparepart::create([
-                'jumlah'        =>$request->jumlahPemesanan[$i], 
-                'kodeSparepart' =>$request->kodeSparepart[$i],
-                'tanggal'       =>Carbon::now()
-            ]);
+           
         }
 
         return redirect()->route('pemesanan.index')->with('success', 'Data berhasil ditambah');
@@ -60,12 +54,12 @@ class PemesananController extends Controller
 
     public function edit($noPemesanan)
     {
-        $detilPesan = Pemesanan::where('pemesanan.noPemesanan', '=', $noPemesanan)->first();
-        $sparepart   = Sparepart::all();
-        $supplier    = Supplier::all();
-        
-        $detilBarang = DetilPemesanan::where('noPemesanan', '=', $noPemesanan)->get();
-        return view('pemesanan/edit', ['pemesanan'=>$detilPesan, 'detil'=>$detilBarang, 'sparepart'=>$sparepart, 'supplier'=>$supplier]); 
+        $detilPesan     = Pemesanan::find($noPemesanan);
+        $sparepart      = Sparepart::all();
+        $detilBarang    = DetilPemesanan::where('noPemesanan', '=', $noPemesanan) 
+        ->leftJoin('sparepart', 'detilpemesanan.kodeSparepart', '=', 'sparepart.kodeSparepart')
+        ->get();
+        return view('pemesanan/edit', ['pemesanan'=>$detilPesan, 'detil'=>$detilBarang, 'sparepart'=>$sparepart]); 
     }
 
     public function show($noPemesanan)
@@ -75,14 +69,11 @@ class PemesananController extends Controller
 
     public function update(Request $request, $noPemesanan)
     {
-        $pemesanan  = Pemesanan::find($noPemesanan)->leftJoin('detilpemesanan', 'pemesanan.noPemesanan', '=', 'detilpemesanan.noPemesanan')->get();
-        $detilpesan = DetilPemesanan::find($noPemesanan);
-        
+        $pemesanan  = Pemesanan::where('noPemesanan', $noPemesanan)->first();
         $countSparepart = count($request->kodeSparepart);
-
         for($i=0;$i<$countSparepart;$i+1)
         {
-            DetilPemesanan::create([
+            DetilPemesanan::updateOrCreate(['noPemesanan', $request->noPemesanan], [
                 'noPemesanan'       =>$pemesanan->noPemesanan, 
                 'jumlahPemesanan'   =>$request->jumlahPemesanan[$i], 
                 'satuan'            =>$request->satuan[$i], 
@@ -93,11 +84,24 @@ class PemesananController extends Controller
         return redirect()->route('pemesanan.index');
     }
 
-    public function endPesan($noPemesanan)
+
+    public function endPesanan($noPemesanan)
     {
+        $detilPesan = DetilPemesanan::where('noPemesanan', $noPemesanan)->get();
+        $jumlah = $detilPesan->count();
         $pemesanan = Pemesanan::find($noPemesanan);
-        $pemesanan->statusPemesanan = "selesai";
+        $pemesanan->statusPemesanan = "Arrived";
         $pemesanan->update();
+
+        for($i=0;$i<$jumlah;$i++)
+        {
+            Sparepart::where('kodeSparepart', $detilPesan[$i]->kodeSparepart)->increment('jumlahStok', $detilPesan[$i]->jumlahPemesanan);
+            HistorySparepart::create([
+                'jumlah'        =>$detilPesan[$i]->jumlahPemesanan, 
+                'kodeSparepart' =>$detilPesan[$i]->kodeSparepart,
+                'tanggal'       =>Carbon::now()
+            ]);
+        }
         return redirect()->route('pemesanan.index');
     }
 
@@ -122,7 +126,9 @@ class PemesananController extends Controller
         $pemesanan = Pemesanan::find($noPemesanan);
         $detilPesan = DetilPemesanan::leftJoin('sparepart', 'detilpemesanan.kodeSparepart', '=', 'sparepart.kodeSparepart')->get();
         $supplier = Supplier::all();
-  
+        $pemesanan->statusPemesanan = "Shipping";
+        $pemesanan->update();
+
         $pdf = PDF::loadView('pdf.pemesanan', ['data'=>$pemesanan, 'detil'=>$detilPesan, 'supplier'=>$supplier]);
         return $pdf->stream();
   

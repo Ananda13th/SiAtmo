@@ -11,6 +11,12 @@
     <p>{{ $message }}</p>
 </div>
 @endif
+
+@if ($message = Session::get('failed'))
+<div class="alert alert-danger mt-3 pb-0">
+    <p>{{ $message }}</p>
+</div>
+@endif
 <br>
 <br>
 <form action="service/search" method="POST" role="search">
@@ -83,7 +89,7 @@
             table = document.getElementById("table");
             tr = table.getElementsByTagName("tr");
             for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[3];
+                td = tr[i].getElementsByTagName("td")[2];
                 if (td) {
                     txtValue = td.textContent || td.innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {

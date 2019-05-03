@@ -38,15 +38,20 @@ Route::group(['middleware'=>'cekRole'], function(){
     //Sorting
     Route::get('sparepart/byHarga', 
     [   
-        'as'=>'sparepart.byHarga',
-        'uses'=>'SparepartController@ByHarga']);
+        'as'    =>'sparepart.byHarga',
+        'uses'  =>'SparepartController@ByHarga']);
         
     Route::get('sparepart/byStok', 
     [   
-        'as'=>'sparepart.byStok',
-        'uses'=>'SparepartController@ByStok']);
+        'as'    =>'sparepart.byStok',
+        'uses'  =>'SparepartController@ByStok']);
 
     //CRUD
+    Route::patch('pemesanan/endOrder/{noPemesanan}',
+    [   
+        'as'    =>'pemesanan.selesaiOrder',
+        'uses'  =>'PemesananController@endPesanan']);
+
     Route::get('owner', 'HomeController@index')->name('home');
     Route::resource('pegawai', 'PegawaiController');
     Route::resource('sparepart', 'SparepartController');
