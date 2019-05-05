@@ -133,4 +133,13 @@ class PemesananController extends Controller
         return $pdf->stream();
   
       }
+
+      public function printPreview($noPemesanan)
+      {
+        $pemesanan = Pemesanan::find($noPemesanan);
+        $detilPesan = DetilPemesanan::leftJoin('sparepart', 'detilpemesanan.kodeSparepart', '=', 'sparepart.kodeSparepart')->get();
+        $supplier = Supplier::all();
+
+        return view('printPreview.pemesanan', ['data'=>$pemesanan, 'detil'=>$detilPesan, 'supplier'=>$supplier]);
+      }
 }

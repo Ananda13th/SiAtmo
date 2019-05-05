@@ -28,13 +28,20 @@ Route::group(['middleware'=>'cekRole'], function(){
     [
         'as'=>'pemesanan.downloadPDF',
         'uses'=>'PemesananController@downloadPDF']);
-    
+
+     //Print Preview
+     Route::get('pemesanan/printPreview/{noPemesanan}',
+     [
+         'as'=>'pemesanan. printPreview',
+         'uses'=>'PemesananController@printPreview']);
+
     //Report
     Route::get('laporan/pendapatanBulanan',
     [
         'as'=>'laporan.pendapatanBulanan',
         'uses'=>'ReportController@LaporanPendapatanBulanan']);
     Route::get('laporan/pendapatanAPI', 'ReportController@ApiLaporanBulanan');
+    
     //Sorting
     Route::get('sparepart/byHarga', 
     [   

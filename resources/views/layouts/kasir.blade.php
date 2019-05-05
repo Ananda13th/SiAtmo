@@ -39,7 +39,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white" href="{{route('pegawai.index')}}">
+            <a class="nav-link text-white" href="{{route('dataTransaksi.index')}}">
                 <i class="oi oi-person"></i> Data Transaksi
             </a>
         <li class="nav-item">

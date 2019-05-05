@@ -33,13 +33,14 @@
                     <td><?= $data->statusPemesanan ?></td>
                     <td>
                     {{ Form::open(array('route' => array('pemesanan.destroy', $data['noPemesanan']), 'method' => 'DELETE')) }}
-                        <button type="submit" class="btn btn-sm btn-danger"> <i class="oi oi-trash"></i> Hapus</button>
+                        <button class="btn btn-sm btn-danger" type="submit"> <i class="oi oi-trash" data-target="#myModal"></i> Hapus</button>
                         <!-- <a class="btn btn-sm btn-info" href="{{ route('pemesanan.edit', $data['noPemesanan']) }}"><span class="oi oi-pencil"></span> Edit</a> -->
                         <a class="btn btn-sm btn-primary" href="{{ route('pemesanan.downloadPDF', $data['noPemesanan']) }}"><span class="oi oi-eye"></span> Lihat</a>
+                        <a class="btn btn-sm btn-success" href="{{ route('pemesanan. printPreview', $data['noPemesanan']) }}"><span class="oi oi-print"></span> Cetak</a>
                     {{ Form::close() }}
                     </td>
                 </tr>
-                @elseif($data->statusPemesanan == "shipping")
+                @elseif($data->statusPemesanan == "Shipping")
                 <tr>
                     <td><?=++$no?></td>
                     <td><?= $data['namaPerusahaan']?></td>
@@ -72,7 +73,7 @@
 					<h4 class="modal-title">Data Pemesanan</h4>
 				</div>
 				<div class="modal-body">
-                    Nama Perusahaan           : {{$data->namaPerusahaan}} <br>
+                    <!-- Nama Perusahaan           : {{$data->namaPerusahaan}} <br>
                     Tanggal Pemesanan         : {{$data->tanggalPemesanan}} <br>
                     Status                    : {{$data->statusPemesanan}} <br>
                     Detail Pemesanan : <br>
@@ -85,14 +86,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                          
+                       
                         </tbody>
-                    </table>
+                    </table> -->
 				<div class="modal-footer">
+                    {{ Form::open(array('route' => array('pemesanan.destroy', 'noPemesanan'=>'noPemesanan'), 'method' => 'DELETE')) }}
+                        <button type="submit" href="route('pemesanan.destroy', )" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span> Ya</button>
+                        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
+                    {{ Form::close() }}
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
 @endsection

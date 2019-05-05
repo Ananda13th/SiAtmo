@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title> Pemesanan</title>
+    <link href="/css/print.css" rel="stylesheet" media="print" type="text/css">
     <style type="text/css" media="all">
       .text-center {text-align: center;}
       .text-right {
@@ -102,6 +103,39 @@
       <br>
       <br>
       <div class="text-right-c"> Owner </div>
+      <input type="button" value="Print" class="btn" onclick="PrintDoc()"/>
+
     </div>
   </body>
+
+  <script type="text/javascript">
+
+/*--This JavaScript method for Print command--*/
+
+    function PrintDoc() {
+
+       window.print();
+    }
+
+/*--This JavaScript method for Print Preview command--*/
+
+    function PrintPreview() {
+
+        var toPrint = document.getElementById('printarea');
+
+        var popupWin = window.open('', '_blank', 'width=350,height=150,location=no,left=200px');
+
+        popupWin.document.open();
+
+        popupWin.document.write('<html><title>::Print Preview::</title><link rel="stylesheet" type="text/css" href="Print.css" media="screen"/></head><body">')
+
+        popupWin.document.write(toPrint.innerHTML);
+
+        popupWin.document.write('</html>');
+
+        popupWin.document.close();
+
+    }
+
+</script>
 </html>

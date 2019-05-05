@@ -19,12 +19,7 @@ class TransaksiFullController extends Controller
 {
     public function index()
     {
-        $transaksiFull = TransaksiPenjualan::leftJoin('detiltransaksisparepart','transaksipenjualan.kodenota','=','detiltransaksisparepart.kodenota')
-            ->leftJoin('detiltransaksiservice','transaksipenjualan.kodenota','=','detiltransaksiservice.kodenota')
-            ->leftJoin('sparepart','sparepart.kodeSparepart','=','detiltransaksisparepart.kodeSparepart')
-            ->leftJoin('kendaraankonsumen','kendaraankonsumen.platNomorKendaraan','=','detiltransaksiservice.platNomorKendaraan')
-            ->leftJoin('service','service.kodeService','=','detiltransaksiservice.kodeService')
-            ->get();
+        $transaksiFull = TransaksiPenjualan::where('kodeNota', 'LIKE', '%SS%')->get();
         return view('transaksiFull/index', ['tFull'=>$transaksiFull, 'no'=>0, ]);
     }
 
@@ -62,7 +57,9 @@ class TransaksiFullController extends Controller
             $subtotalService += $request->biayaServiceTransaksi[$i];
         }
 
-        $total= $subtotalService+$subtotalSparepart;
+        $subtotal= $subtotalService+$subtotalSparepart;
+
+        $total=$subtotal;
 
         $transaksi = TransaksiPenjualan::create([
             'kodeNota'=>$request->kodeNota,
@@ -109,7 +106,6 @@ class TransaksiFullController extends Controller
 
     public function edit($kodeNota)
     {
-
     }
 
     public function show($kodeNota)
