@@ -11,19 +11,23 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script type="text/javascript" >
+    <!-- <script type="text/javascript" >
             function preventBack(){window.history.forward();}
                 setTimeout("preventBack()", 0);
                 window.onunload=function(){null};
-        </script>
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+        </script> -->
+   <!-- Fonts -->
+   <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/iconic-bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha256-m/h/cUDAhf6/iBRixTbuc8+Rg2cIETQtPcH9D3p2Kg0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" integrity="sha256-BJ/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ=" crossorigin="anonymous" />
 </head>
 <body class="h-100">
 <nav class="navbar navbar-expand-sm navbar-dark sticky-top bg-info">
@@ -61,7 +65,7 @@
                     </a>
                 </li>
                 <li class="list-group-item bg-dark">
-                    <a class="nav-link text-white" href="{{route('pegawai.index')}}">
+                    <a class="nav-link text-white" href="{{route('dataTransaksi.index')}}">
                         <i class="oi oi-person"></i> Data Transaksi
                     </a>
                 </li>

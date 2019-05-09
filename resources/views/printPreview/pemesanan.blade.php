@@ -103,39 +103,14 @@
       <br>
       <br>
       <div class="text-right-c"> Owner </div>
+      <br>
       <input type="button" value="Print" class="btn" onclick="PrintDoc()"/>
-
     </div>
   </body>
-
   <script type="text/javascript">
+      function PrintDoc() {
 
-/*--This JavaScript method for Print command--*/
-
-    function PrintDoc() {
-
-       window.print();
-    }
-
-/*--This JavaScript method for Print Preview command--*/
-
-    function PrintPreview() {
-
-        var toPrint = document.getElementById('printarea');
-
-        var popupWin = window.open('', '_blank', 'width=350,height=150,location=no,left=200px');
-
-        popupWin.document.open();
-
-        popupWin.document.write('<html><title>::Print Preview::</title><link rel="stylesheet" type="text/css" href="Print.css" media="screen"/></head><body">')
-
-        popupWin.document.write(toPrint.innerHTML);
-
-        popupWin.document.write('</html>');
-
-        popupWin.document.close();
-
-    }
-
-</script>
+        window.print();
+      }
+  </script>
 </html>

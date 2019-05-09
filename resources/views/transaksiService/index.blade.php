@@ -19,9 +19,6 @@
                 <th>No</th>
                 <th>Kode Nota</th>
                 <th>Tanggal Transaksi</th>
-                <!-- <th>Plat Nomor Kendaraan</th>
-                <th>Jenis Service</th>
-                <th>Status</th>-->
                 <th>Aksi</th>
             </tr>
         </thead>

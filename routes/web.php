@@ -20,6 +20,46 @@ Route::get('/kasir', function () {
     return view('kasir');
 });
 
+//Konsumen
+Route::get('konsumen/katalog',
+[
+    'as'    =>'konsumen.katalog',
+    'uses'  =>'KonsumenController@katalog'
+]);
+
+Route::get('konsumen/riwayat',
+[
+    'as'    =>'konsumen.riwayat',
+    'uses'  =>'KonsumenController@riwayat'
+]);
+//
+
+
+Route::get('transaksiService/downloadPDF/{noPemesanan}',
+[
+    'as'=>'transaksiService.downloadPDF',
+    'uses'=>'TransaksiServiceController@downloadPDF']);
+
+Route::get('transaksiService/downloadPDFLunas/{noPemesanan}',
+[
+    'as'=>'transaksiService.downloadPDFLunas',
+    'uses'=>'TransaksiServiceController@downloadPDFLunas']);
+
+Route::get('transaksiSparepart/downloadPDF/{noPemesanan}',
+[
+    'as'=>'transaksiSparepart.downloadPDF',
+    'uses'=>'TransaksiSparepartController@downloadPDF']);
+
+Route::get('transaksiService/printPreview/{noPemesanan}',
+[
+    'as'=>'transaksiService.printPreview',
+    'uses'=>'TransaksiServiceController@printPreview']);
+    
+Route::get('transaksiSparepart/printPreview/{noPemesanan}',
+[
+    'as'=>'transaksiSparepart.printPreview',
+    'uses'=>'TransaksiSparepartController@printPreview']);
+
 Auth::routes();
 
 Route::group(['middleware'=>'cekRole'], function(){
@@ -40,8 +80,7 @@ Route::group(['middleware'=>'cekRole'], function(){
     [
         'as'=>'laporan.pendapatanBulanan',
         'uses'=>'ReportController@LaporanPendapatanBulanan']);
-    Route::get('laporan/pendapatanAPI', 'ReportController@ApiLaporanBulanan');
-    
+        
     //Sorting
     Route::get('sparepart/byHarga', 
     [   
@@ -117,16 +156,6 @@ Route::group(['middleware'=>'cekRole'], function(){
 });
 
 Route::group(['middleware'=>'cekRoleCS'], function(){
-    Route::get('transaksiService/downloadPDF/{noPemesanan}',
-    [
-        'as'=>'transaksiService.downloadPDF',
-        'uses'=>'TransaksiServiceController@downloadPDF']);
-    
-    Route::get('transaksiSparepart/downloadPDF/{noPemesanan}',
-    [
-        'as'=>'transaksiSparepart.downloadPDF',
-        'uses'=>'TransaksiSparepartController@downloadPDF']);
-    
     //Transaksi
     Route::get('daftarKendaraanKonsumen', 'KendaraanController@createKonsumen')->name('daftarKendaraanKonsumen');
     Route::post('daftarKendaraanKonsumen/create', 'KendaraanController@saveKendaraanKonsumen')->name('daftarKendaraanKonsumen/create');
@@ -135,5 +164,5 @@ Route::group(['middleware'=>'cekRoleCS'], function(){
 });
 
 Route::group(['middleware'=>'cekRoleKasir'], function(){
-    //
+    Route::resource('dataTransaksi', 'KasirController');
 });

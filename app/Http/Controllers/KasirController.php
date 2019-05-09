@@ -4,6 +4,7 @@ namespace SiAtmo\Http\Controllers;
 
 use Illuminate\Http\Request;
 use SiAtmo\TransaksiPenjualan;
+use Carbon\Carbon;
 
 class KasirController extends Controller
 {
@@ -15,7 +16,7 @@ class KasirController extends Controller
         ->get();
         $transaksiFull = TransaksiPenjualan::where('transaksipenjualan.kodeNota', 'like', '%'.'SS'.'%')
         ->get();
-        return view('dataTransaksi/index', ['transaksiService'=>$$transaksiService, 'transaksiSparepart'=>$transaksiSparepart, 'transaksiFull'=>$transaksiFull,'no'=>0, ]);
+        return view('dataTransaksi/index', ['transaksiService'=>$transaksiService, 'transaksiSparepart'=>$transaksiSparepart, 'transaksiFull'=>$transaksiFull,'no'=>0, ]);
     }
 
     public function create()
@@ -32,7 +33,7 @@ class KasirController extends Controller
     {
         $transaksi = TransaksiPenjualan::find($kodeNota);
 
-        return view('dataTransaksi/finalisasi', ['transaki'=>$transaksi]);
+        return view('dataTransaksi/finalisasi', ['dataNota'=>$transaksi]);
     }
 
     public function show($kodeNota)
@@ -43,8 +44,13 @@ class KasirController extends Controller
     public function update(Request $request, $kodeNota)
     {
         $transaksi = TransaksiPenjualan::find($kodeNota);
-        Transaksi::where('kodeNota', $request->kodeNota)->decrement('total', $request->diskon);
+        $transaksi->diskon = $request['diskon'];
+        $transaksi->tanggalLunas = Carbon::now();
         $transaksi->statusTransaksi = 'Selesai';
+        $transaksi->update();
+        TransaksiPenjualan::where('kodeNota', $request->kodeNota)->decrement('total', $request->diskon);
+       
+        return redirect()->route('dataTransaksi.index')->with('success', 'Total bayar : {{$transaksi->total}}');
     }
 
     public function destroy($kodeNota)

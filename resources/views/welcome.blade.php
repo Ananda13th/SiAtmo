@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript" >
             function preventBack(){window.history.forward();}
                 setTimeout("preventBack()", 0);
@@ -11,7 +12,7 @@
         <title>SiAtmo</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Styles -->
         <style>
             html, body {
@@ -64,23 +65,83 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+
+            .navbar {
+            overflow: hidden;
+            background-color: #333;
+            }
+
+            .navbar a {
+            float: left;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            }
+
+            .dropdown {
+            float: right;
+            overflow: hidden;
+            }
+
+            .dropdown .dropbtn {
+            font-size: 16px;  
+            border: none;
+            outline: none;
+            color: gray;
+            background-color: inherit;
+            font-family: : 'Nunito', sans-serif;
+            margin: 0;
+            }
+
+            .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            }
+
+            .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            }
+
+            .dropdown-content a:hover {
+            background-color: #ddd;
+            }
+
+            .dropdown:hover .dropdown-content {
+            display: block;
+            }
         </style>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        <a class="oi oi-account-logout"> Konsumen </a>
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="{{ route('konsumen.riwayat')}}">Riwayat</a>
+                        <a href="{{ route('konsumen.katalog')}}">Katalog</a>
+                    </div>
+                </div>
                     @auth
-                        <!-- <a href="{{ url('/home') }}">Home</a> -->
                         <a class="nav-link text-white" href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="oi oi-account-logout"></i> Logout
                         </a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
-
-                        <!-- <@if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif -->
                     @endauth
                 </div>
             @endif

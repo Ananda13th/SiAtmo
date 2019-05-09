@@ -43,7 +43,7 @@ class LoginController extends Controller
         {
             return redirect()->intended('/cs');
         }
-        else if($user->idPosisi == 2)
+        else if($user->idPosisi == 3)
         {
             return redirect()->intended('/kasir');
         }

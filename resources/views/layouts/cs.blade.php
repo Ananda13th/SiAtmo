@@ -12,11 +12,11 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" >
+    <!-- <script type="text/javascript" >
             function preventBack(){window.history.forward();}
                 setTimeout("preventBack()", 0);
                 window.onunload=function(){null};
-        </script>
+        </script> -->
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

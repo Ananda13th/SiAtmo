@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="css/bootstrap.css"> -->
     <style type="text/css" media="all">
       .text-center {text-align: center;}
+      .text-center-title {
+        text-align:center;
+        margin-top:1px;
+        margin-bottom:1px;
+      }
       .text-right {
         text-align: right;
         margin-right: 30px;
@@ -14,6 +19,10 @@
       .text-right-c{
         text-align: right;
         margin-right: 50px;
+      }
+      .text-left{
+        text-align: left;
+        margin-left: 50px;
       }
 			.fw600 {font-weight: 600;}
 			.mb8 {margin-bottom: 8px;}
@@ -26,6 +35,10 @@
       table, td, th {
         border: 1px solid black;
         text-align: center;
+      }
+
+      .table-invisible {
+        border: 0;
       }
 
       table {
@@ -44,19 +57,34 @@
         margin: 1em 0;
         padding: 0;
       }
+
+      td.invisible {
+        border: none;
+      }
     </style>
   </head>
   <?php $image_path = '/image/Logo2.PNG'; ?>
   <h1> <img src="{{ public_path().$image_path }}" width=700> </h1>
   <body>
   <div class="default-list-upper-alpha">
-      <div class="text-right"> {{$data->tanggalTransaksi}} </div>
-      {{$data->kodeNota}} <br>
-      <p> Cust          : {{$data->namaKonsumen}}  <span> <div class="text-right"> CS : {{$pegawai->name}} </div> </span> </p>    
-      <br>
-      Nomor Telepon : {{$data->noTelpKonsumen}}   
+  <table class=table-invisible>
+      <tr>
+        <td class="invisible"></td>
+        <td class="invisible"> <div class="text-right">{{$data->tanggalTransaksi}} </div> </td>
+      </tr>
+      <tr>
+        <td class="invisible"> <div class="text-left"> {{$data->kodeNota}} </div> </td>
+      </tr>
+      <tr>
+        <td class="invisible"> <div class="text-left"> Cust    : {{$data->namaKonsumen}} </div> </td>
+        <td class="invisible"> <div class="text-right"> CS      : {{$pegawai->name}} </div> </td> 
+      </tr>
+      <tr>
+        <td class="invisible">   <div class="text-left">Nomor Telepon : {{$data->noTelpKonsumen}}  </div>  </td>
+      </tr>
+  </table>
       <hr/>
-      <div class="text-center">Sparepart</div> :
+      <div class="text-center-title">Sparepart</div>
       <hr/>
       <div>
         <table>

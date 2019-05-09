@@ -112,8 +112,16 @@ class TransaksiSparepartController extends Controller
         $detil = DetilTransaksiSparepart::leftJoin('sparepart', 'detiltransaksisparepart.kodeSparepart', '=', 'sparepart.kodeSparepart')->get();
         $pdf = PDF::loadView('pdf.notaLunasSparepart', ['data'=>$transaksiSparepart, 'detil'=>$detil, 'pegawai'=>$pegawai]);
         return $pdf->stream();
-  
-      }
+    }
+
+    public function printPreview($kodeNota)
+    {
+        $pegawai = Auth::user();
+        $transaksiSparepart   = TransaksiPenjualan::find($kodeNota);
+        $detil = DetilTransaksiSparepart::leftJoin('sparepart', 'detiltransaksisparepart.kodeSparepart', '=', 'sparepart.kodeSparepart')->get();
+
+      return view('printPreview.notaLunasSparepart', ['data'=>$transaksiSparepart, 'detil'=>$detil, 'pegawai'=>$pegawai]);
+    }
 
    
 

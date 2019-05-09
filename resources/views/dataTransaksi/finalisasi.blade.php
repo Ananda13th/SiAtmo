@@ -15,7 +15,7 @@
     </div>
 @endif
 
-{{ Form::model($dataNota, ['method' => 'PATCH', 'route'=>['transaksi.update', $dataNota->kodeNota]]) }}
+{{ Form::model($dataNota, ['method' => 'PATCH', 'route'=>['dataTransaksi.update', $dataNota->kodeNota]]) }}
     @csrf
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Kode Nota</label>

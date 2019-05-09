@@ -41,11 +41,11 @@
             <input class="form-control" type="text" id="alamatKonsumen" name="alamatKonsumen">
         </div>
     </div>
-    <div class="form-group row">
+    <!-- <div class="form-group row">
         <div class="col-sm-4">
             <a class="btn btn-primary" id="+sparepart"> Tambah Sparepart</a>
         </div>
-    </div>
+    </div> -->
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Detail Service</label>
     </div>
@@ -161,6 +161,17 @@
             $("#tb").show();
         });
     }); 
+
+    var $select = $("select");
+    $select.on("change", function() {
+        var selected = [];  
+        $.each($select, function(index, select) {           
+            if (select.value !== "") { selected.push(select.value); }
+        });         
+    $("option").prop("disabled", false);         
+    for (var index in selected) { $('option[value="'+selected[index]+'"]').prop("disabled", true); }
+    });
 </script>
+
 
 @endsection

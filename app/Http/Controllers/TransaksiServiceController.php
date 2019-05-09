@@ -110,8 +110,7 @@ class TransaksiServiceController extends Controller
         $user = Auth::user();
         $pdf = PDF::loadView('pdf.SPKService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
         return $pdf->stream();
-  
-      }
+    }
 
     public function show($kodeNota)
     {
@@ -157,6 +156,29 @@ class TransaksiServiceController extends Controller
     public function destroy($kodeNota)
     {
 
+    }
+
+    public function downloadPDFLunas($kodeNota)
+    {
+        $tService = TransaksiPenjualan::find($kodeNota);
+        $detil = DetilTransaksiService::leftJoin('service', 'detiltransaksiservice.kodeService', '=', 'service.kodeService')
+        ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
+        ->get();
+        $user = Auth::user();
+        $pdf = PDF::loadView('pdf.notaLunasService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
+        return $pdf->stream();
+    }
+
+
+    public function printPreview($kodeNota)
+    {
+        $tService = TransaksiPenjualan::find($kodeNota);
+        $detil = DetilTransaksiService::leftJoin('service', 'detiltransaksiservice.kodeService', '=', 'service.kodeService')
+        ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
+        ->get();
+        $user = Auth::user();
+
+      return view('printPreview.notaLunasService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
     }
 
 }

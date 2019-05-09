@@ -52,6 +52,10 @@
         margin: 1em 0;
         padding: 0;
       }
+
+      td.invisible {
+        border: none;
+      }
     </style>
   </head>
   <?php $image_path = '/image/Logo2.PNG'; ?>
@@ -60,18 +64,18 @@
   <div class="default-list-upper-alpha">
       <table class=table-invisible>
           <tr>
-            <td></td>
-            <td> <div class="text-right">{{$data->tanggalTransaksi}} </div> </td>
+            <td class="invisible"></td>
+            <td class="invisible"> <div class="text-right">{{$data->tanggalTransaksi}} </div> </td>
           </tr>
           <tr>
-            <td> {{$data->kodeNota}} </div> </td>
+            <td class="invisible"> <div class="text-left"> {{$data->kodeNota}} </div> </td>
           </tr>
           <tr>
-            <td>  Cust          : {{$data->namaKonsumen}} </td>
-            <td> <div class="text-right"> CS : {{$pegawai->name}} </div> </td> 
+            <td class="invisible"> <div class="text-left"> Cust    : {{$data->namaKonsumen}} </div> </td>
+            <td class="invisible"> <div class="text-right"> CS      : {{$pegawai->name}} </div> </td> 
           </tr>
           <tr>
-            <td>  Nomor Telepon : {{$data->noTelpKonsumen}}   </td>
+            <td class="invisible">   <div class="text-left">Nomor Telepon : {{$data->noTelpKonsumen}}  </div>  </td>
           </tr>
       </table>
       <hr/>

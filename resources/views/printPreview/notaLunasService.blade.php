@@ -44,19 +44,38 @@
         margin: 1em 0;
         padding: 0;
       }
+      .table-invisible {
+        border: 0;
+      }
+      td.invisible {
+        border: none;
+      }
+      .text-left{
+        text-align: left;
+        margin-left: 50px;
+      }
     </style>
   </head>
   <?php $image_path = '/image/Logo2.PNG'; ?>
   <h1> <img src="{{ public_path().$image_path }}" width=700> </h1>
   <body>
   <div class="default-list-upper-alpha">
-      <div class="text-right"> {{$data->tanggalTransaksi}} </div>
-      {{$data->kodeNota}} <br>
-      <p> Cust          : {{$data->namaKonsumen}}  <span> <div class="text-right"> CS : {{$pegawai->name}} </div> </span> </p>    
-      <br>
-      Nomor Telepon : {{$data->noTelpKonsumen}}   
-      <hr/>
-      <div class="text-center">Sparepart</div> :
+  <table class=table-invisible>
+      <tr>
+        <td class="invisible"></td>
+        <td class="invisible"> <div class="text-right">{{$data->tanggalTransaksi}} </div> </td>
+      </tr>
+      <tr>
+        <td class="invisible"> <div class="text-left"> {{$data->kodeNota}} </div> </td>
+      </tr>
+      <tr>
+        <td class="invisible"> <div class="text-left"> Cust    : {{$data->namaKonsumen}} </div> </td>
+        <td class="invisible"> <div class="text-right"> CS      : {{$pegawai->name}} </div> </td> 
+      </tr>
+      <tr>
+        <td class="invisible">   <div class="text-left">Nomor Telepon : {{$data->noTelpKonsumen}}  </div>  </td>
+      </tr>
+  </table>
       <hr/>
       <div>
         <table>
@@ -73,7 +92,7 @@
                     <tr>
                         <td>{{$d->kodeService}} </td>
                         <td>{{$d->keterangan}} </td>
-                        <td>{{$d->biayaTransaksiService}} </td>
+                        <td>{{$d->biayaServiceTransaksi}} </td>
                     </tr>
                 @endif
                 @endforeach
@@ -91,13 +110,15 @@
                 </tr>
             </tbody>
         </table>
-        </div>
+      </div>
+      <br>
       <input type="button" value="Print" class="btn" onclick="PrintDoc()"/>
-</body>
-<script type="text/javascript">
-  function PrintDoc() {
+    </div>
+  </body>
+  <script type="text/javascript">
+      function PrintDoc() {
 
-    window.print();
-  }
-</script>
+        window.print();
+      }
+  </script>
 </html>
