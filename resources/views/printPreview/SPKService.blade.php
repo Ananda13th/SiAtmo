@@ -58,8 +58,7 @@
       }
     </style>
   </head>
-  <?php $image_path = '/image/Logo2.PNG'; ?>
-  <h1> <img src="{{ public_path().$image_path }}" width=700> </h1>
+  <h1> <img  src="{{ asset('image/Logo2.PNG') }}" width=1400> </h1>
   <body>
   <div class="default-list-upper-alpha">
       <table class=table-invisible>

@@ -1,6 +1,6 @@
 <?php
 
-namespace SiAtmo\Http\Controllers;
+namespace SiAtmo\Http\Controllers\ApiControllers;
 
 use Illuminate\Http\Request;
 use DB;

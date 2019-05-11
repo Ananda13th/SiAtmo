@@ -15,6 +15,8 @@ Route::get('/', function () {
 Route::get('/cs', function () {
     return view('cs');
 });
+//Report
+
 
 Route::get('/kasir', function () {
     return view('kasir');
@@ -74,12 +76,26 @@ Route::group(['middleware'=>'cekRole'], function(){
      [
          'as'=>'pemesanan. printPreview',
          'uses'=>'PemesananController@printPreview']);
-
+    
     //Report
     Route::get('laporan/pendapatanBulanan',
+        [
+            'as'=>'laporan.pendapatanBulanan',
+            'uses'=>'ReportController@LaporanPendapatanBulanan']);
+
+    Route::get('laporan/stokTerlaris',
+        [
+            'as'=>'laporan.stokTerlaris',
+            'uses'=>'ReportController@LaporanStokTerlaris']);
+
+    Route::get('laporan/sisaStok',
     [
-        'as'=>'laporan.pendapatanBulanan',
-        'uses'=>'ReportController@LaporanPendapatanBulanan']);
+        'as'=>'laporan.sisaStok',
+        'uses'=>'ReportController@LaporanSisaStok']);
+    Route::post('laporan/sisaStok',
+    [
+        'as'=>'laporan.sisaStok',
+        'uses'=>'ReportController@LaporanSisaStok']);
         
     //Sorting
     Route::get('sparepart/byHarga', 

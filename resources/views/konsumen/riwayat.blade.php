@@ -27,10 +27,28 @@
                 <td><?= $data->namaKonsumen ?></td>
                 <td><?= $data->noTelpKonsumen ?></td>
                 <td><?= $data->statusTransaksi ?></td>
+                <td><a data-item="{{ $data }}" class="btn btn-block details-button" data-toggle="modal" data-target="#modalDetail" id="detailButton">Detail</a></td>
             </tr>
             @endforeach
         </tbody>
     </table>
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="modalDetail" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body edit-content">
+                <label class="text-center" id="kodeNota">
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -53,5 +71,11 @@
             }       
         }
     }
+
+    $(document).on('click', '#detailButton', function (e) {
+      e.preventDefault();
+      var item = $(this).data('item');
+      $('#modalDetail #kodeNota').text(item.kodeNota);
+    });
 </script>
 @endsection
