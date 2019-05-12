@@ -13,11 +13,11 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="text/javascript" >
+    <!-- <script type="text/javascript" >
             function preventBack(){window.history.forward();}
                 setTimeout("preventBack()", 0);
                 window.onunload=function(){null};
-        </script>
+        </script> -->
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">

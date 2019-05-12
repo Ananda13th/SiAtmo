@@ -5,20 +5,24 @@ namespace SiAtmo\Http\Controllers;
 use Illuminate\Http\Request;
 use SiAtmo\User;
 use SiAtmo\Posisi;
+use SiAtmo\Cabang;
 use Illuminate\Support\Facades\Hash;
 
 class PegawaiController extends Controller
 {
     public function index()
     {
-        $pegawai = User::leftJoin('posisi','posisi.idPosisi','=','users.idPosisi')->get();
+        $pegawai = User::leftJoin('posisi','posisi.idPosisi','=','users.idPosisi')->
+        leftJoin('cabang', 'cabang.idCabang', 'users.idCabang')->
+        get();
         return view('pegawai/index', ['users'=>$pegawai, 'no'=>0]);
     }
 
     public function create()
     {
         $posisi = Posisi::all();
-        return view('pegawai/create',['posisi'=>$posisi]);
+        $cabang = Cabang::all();
+        return view('pegawai/create',['posisi'=>$posisi, 'cabang'=>$cabang]);
 
     }
 

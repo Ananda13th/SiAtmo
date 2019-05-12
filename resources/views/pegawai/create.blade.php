@@ -60,8 +60,9 @@
         <label for="cabang" class="col-sm-2 col-form-label">Cabang</label>
         <select class="custom-select" id="idCabang" name="idCabang">
             <option value="">-Pilih Posisi-</option>
-            <option value=1> Babarsari </option>
-            <option value=2> Nologaten </option>
+            @foreach($cabang as $c)
+            <option value="{{$c->idCabang}}"> {{$c->namaCabang}} </option>
+            @endforeach
         </select>
     </div>
     <br>

@@ -34,6 +34,7 @@
                 <th>Email</th>
                 <th>Posisi</th>
                 <th>Gaji</th>
+                <th>Cabang</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -46,6 +47,7 @@
                     <td><?= $data['email'] ?></td>
                     <td><?= $data['keteranganPosisi']?></td>
                     <td><?= $data['gaji']?></td>
+                    <td><?= $data['namaCabang']?></td>
                     <td>
                         {{ Form::open(array('route' => array('pegawai.destroy', $data['email']), 'method' => 'DELETE')) }}
                             <button type="submit" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span> Hapus </button>

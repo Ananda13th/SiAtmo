@@ -14,13 +14,15 @@
     </div>
 @endif
 
-<form method="POST" action="{{ route('laporan.pendapatanBulanan') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('laporan.cabang') }}" enctype="multipart/form-data">
     @csrf
     <div class="form-group-row">
         <label for="cabang" class="col-sm-2 col-form-label">Cabang</label>
-        <select class="custom-select" id="tahun" name="tahun">
-            <option value="">-Pilih Tahun-</option>
-            <option value=2019> 2019 </option>
+        <select class="custom-select" id="cabang" name="cabang">
+            <option value="">-Pilih Cabang-</option>
+            @foreach($cabang as $cabang)
+                <option value="{{$cabang->idCabang}}"> {{$cabang->namaCabang}} </option>
+            @endforeach
         </select>
     </div>
     <br>

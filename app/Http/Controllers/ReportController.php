@@ -9,6 +9,7 @@ use DateTime;
 use SiAtmo\TransaksiPenjualan;
 use Carbon\Carbon;
 use SiAtmo\Sparepart;
+use SiAtmo\Cabang;
 
 class ReportController extends Controller
 {
@@ -90,6 +91,37 @@ class ReportController extends Controller
             }
 
             return view('printPreview/pengeluaranBulanan',  ['data'=>$query, 'bulan'=>$label, 'pengeluaran'=>$data]);
+        }
+    }
+
+    public function LaporanCabang(Request $request)
+    {
+        if($request->cabang == "")
+        {
+            $cabang = Cabang::all();
+            return view('laporan/pendapatanCabang', ['cabang'=>$cabang]);
+        }
+        else{
+            $query = DB::table("transaksipenjualan")->select(DB::raw('EXTRACT(MONTH FROM tanggalTransaksi) AS Bulan, SUM(total) as Pendapatan'))
+            ->leftJoin('pegawaionduty', 'pegawaionduty.kodeNota', 'transaksipenjualan.kodeNota')
+            ->leftJoin('users', 'pegawaionduty.emailPegawai', 'users.email')
+            ->leftJoin('cabang', 'users.idCabang', 'cabang.idCabang')
+            ->where('users.idCabang', 'LIKE', '%'.$request->cabang.'%')
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM transaksiPenjualan.tanggalTransaksi)'))
+            ->get();
+
+            $count=count($query);
+            $label  = [];
+            $data   = [];
+            $cabang = [];
+
+            for($i=0;$i<$count;$i++)
+            {
+                $label[$i]  = $query[$i]->Bulan;
+                $data[$i]   = $query[$i]->Pendapatan;
+            }
+
+            return view('printPreview/pendapatanCabang',  ['data'=>$query, 'bulan'=>$label, 'pendapatan'=>$data]);
         }
     }
 }

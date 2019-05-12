@@ -116,6 +116,14 @@ Route::group(['middleware'=>'cekRole'], function(){
     [
         'as'=>'laporan.sisaStok',
         'uses'=>'ReportController@LaporanSisaStok']);
+    Route::get('laporan/cabang',
+    [
+        'as'=>'laporan.cabang',
+        'uses'=>'ReportController@LaporanCabang']);
+    Route::post('laporan/cabang',
+    [
+        'as'=>'laporan.cabang',
+        'uses'=>'ReportController@LaporanCabang']);
         
     //Sorting
     Route::get('sparepart/byHarga', 
