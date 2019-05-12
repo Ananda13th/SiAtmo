@@ -40,9 +40,10 @@
     <div class="field_wrapper">
         @foreach($detil as $d)
             <tr>
-                <td> <input class="form-control" type="text" value="{{$d->namaSparepart}}">  </td>
-                <td> <input class="form-control" type="number" value="{{$d->jumlahPemesanan}}">  </td>
-                <td> <input class="form-control" type="text" value="{{$d->satuan}}"> </td>
+                <td> <input class="form-control" type="text" value="{{$d->namaSparepart}}" id="kodeSparepart" name="kodeSparepart[]">  </td>
+                <td> <input class="form-control" type="number" value="{{$d->jumlahPemesanan}}" id="jumlahPemesanan" name="jumlahPemesanan[]">  </td>
+                <td> <input class="form-control" type="text" value="{{$d->satuan}}" id="satuan" name="satuan[]"> </td>
+                <td> <button class="btn add-more" id="remove" type="button">x</button> </td>
             </tr>
         @endforeach
         <tr>
@@ -55,7 +56,7 @@
                     @endforeach
                 </select>
             </td> 
-            <td> <input type="number" id="jumlahPemesanan" name="jumlahPemesanan[]" step="1"> </td>
+            <td> <input class="form-control" type="number" id="jumlahPemesanan" name="jumlahPemesanan[]" step="1"> </td>
             <td>
             <select class="custom-select" id="satuan" name="satuan[]">
                 <option value="buah"> Buah </option>";
@@ -73,16 +74,13 @@
     <script>
     $(function(){
         $('#addMore').on('click', function() {
-                var data = $("#tb tr:eq(2)").clone(true).appendTo("#tb");
+                var data = $("#tb tr:eq(1)").clone(true).appendTo("#tb");
                 data.find("input").val('');
         });
         $(document).on('click', '#remove', function() {
             var trIndex = $(this).closest("tr").index();
-                if(trIndex>=1) {
-                $(this).closest("tr").remove();
-            } else {
-                alert("Sorry!! Can't remove first row!");
-            }
+            $(this).closest("tr").remove();
+            
         });
     });    
 

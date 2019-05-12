@@ -14,7 +14,7 @@
     </div>
 @endif
 
-<form method="POST" action="{{ route('laporan.pendapatanBulanan') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('laporan.pengeluaranBulanan') }}" enctype="multipart/form-data">
     @csrf
     <div class="form-group-row">
         <label for="cabang" class="col-sm-2 col-form-label">Cabang</label>
@@ -23,5 +23,6 @@
             <option value=2019> 2019 </option>
         </select>
     </div>
+    <br>
     <button type="submit" class="btn btn-info"><i class="oi oi-task"></i> Cari </button>
 @endsection

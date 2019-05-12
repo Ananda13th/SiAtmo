@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title> Pendapatan Bulanan</title>
+    <title> Pengeluaran Bulanan</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.3/js/bootstrap-select.min.js" charset="utf-8"></script>
@@ -44,11 +44,6 @@
       img {
         width : 100%;
       }
-
-      .graph {
-        width : 100%;
-        height : 100%;
-      }
     </style>
   </head>
   <h1> <img  src="{{ asset('image/Logo2.PNG') }}" width=700> </h1>
@@ -59,14 +54,14 @@
             <thead>
                 <tr>
                     <th>Bulan</th>
-                    <th>Pendapatan</th>
+                    <th>Pengeluaran</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($data as $d)
                     <tr>
                         <td>{{ date("F", mktime(0, 0, 0, $d->Bulan, 1)) }} </td>
-                        <td>{{$d->Pendapatan}} </td>
+                        <td>{{$d->Pengeluaran}} </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -78,7 +73,7 @@
        <div class="col-md-10 col-md-offset-1">
            <div class="panel panel-default">
                <div class="panel-body">
-                   <canvas id="canvas" class="graph"></canvas>
+                   <canvas id="canvas" height="280" width="600"></canvas>
                </div>
            </div>
        </div>
@@ -98,12 +93,12 @@
 
           var ctx = document.getElementById("canvas").getContext('2d');
               var myChart = new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: {{ json_encode($bulan) }},
                     datasets: [{
-                        label: 'Nilai Pendapatan',
-                        data: {{ json_encode($pendapatan) }},
+                        label: {{ json_encode($pengeluaran) }},
+                        data: [100000, 200000],
                         borderWidth: 1
                     }]
                 },

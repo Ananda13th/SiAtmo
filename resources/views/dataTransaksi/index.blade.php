@@ -25,6 +25,7 @@
         </thead>
         <tbody>
             @foreach($transaksiService as $data)
+                @if($data->statusTransaksi != "Selesai")
                 <tr>
                     <td><?=++$no?></td>
                     <td><?= $data['kodeNota']?></td>
@@ -36,9 +37,20 @@
                     <a class="btn btn-sm btn-info" href="{{ route('transaksiService.downloadPDFLunas', $data['kodeNota']) }}"><span class="oi oi-eye"></span> Lihat</a>
                     <a class="btn btn-sm btn-success" href="{{ route('transaksiService.printPreview', $data['kodeNota']) }}"><span class="oi oi-print"></span> Cetak</a>
                     </td>
+                @else
+                    <td><?=++$no?></td>
+                    <td><?= $data['kodeNota']?></td>
+                    <td><?= $data->tanggalTransaksi ?></td>
+                    <td><?= $data->total ?></td>
+                    <td><?= $data->statusTransaksi ?></td>
+                    <td>
+                    <a class="btn btn-sm btn-info" href="{{ route('transaksiService.downloadPDFLunas', $data['kodeNota']) }}"><span class="oi oi-eye"></span> Lihat</a>
+                    <a class="btn btn-sm btn-success" href="{{ route('transaksiService.printPreview', $data['kodeNota']) }}"><span class="oi oi-print"></span> Cetak</a>
+                @endif
                 </tr>
             @endforeach
             @foreach($transaksiSparepart as $data)
+                @if($data->statusTransaksi != "Selesai")
                 <tr>
                     <td><?=++$no?></td>
                     <td><?= $data['kodeNota']?></td>
@@ -50,6 +62,17 @@
                     <a class="btn btn-sm btn-info" href="{{ route('transaksiSparepart.downloadPDF', $data['kodeNota']) }}"><span class="oi oi-eye"></span> Lihat</a>
                     <a class="btn btn-sm btn-success" href="{{ route('transaksiSparepart.printPreview', $data['kodeNota']) }}"><span class="oi oi-print"></span> Cetak</a>
                     </td>
+                @else
+                    <td><?=++$no?></td>
+                    <td><?= $data['kodeNota']?></td>
+                    <td><?= $data->tanggalTransaksi ?></td>
+                    <td><?= $data->total ?></td>
+                    <td><?= $data->statusTransaksi ?></td>
+                    <td>
+                    <a class="btn btn-sm btn-info" href="{{ route('transaksiSparepart.downloadPDF', $data['kodeNota']) }}"><span class="oi oi-eye"></span> Lihat</a>
+                    <a class="btn btn-sm btn-success" href="{{ route('transaksiSparepart.printPreview', $data['kodeNota']) }}"><span class="oi oi-print"></span> Cetak</a>
+                    </td>
+                @endif
                 </tr>
             @endforeach
             @foreach($transaksiFull as $data)

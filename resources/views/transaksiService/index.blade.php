@@ -34,7 +34,8 @@
                     <td><?= $data['statusTransaksi']?></td> -->
                     <td>
                         <a class="btn btn-sm btn-info" href="{{ route('transaksiService.edit', $data['kodeNota']) }}"> <i class="oi oi-pencil"></i> Edit</a>
-                        <a class="btn btn-sm btn-primary" href="{{ route('transaksiService.downloadPDF', $data['kodeNota']) }}"><span class="oi oi-eye"></span> Lihat</button>
+                        <a class="btn btn-sm btn-primary" href="{{ route('transaksiService.downloadPDF', $data['kodeNota']) }}"><span class="oi oi-eye"></span> Lihat</a>
+                        <a class="btn btn-sm btn-success" href="{{ route('SPK.printPreview', $data['kodeNota']) }}"><span class="oi oi-print"></span> Cetak</a>
                     </td>
                 </tr>
                 @endif

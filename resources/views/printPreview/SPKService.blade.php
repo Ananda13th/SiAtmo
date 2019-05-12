@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title> Pemesanan</title>
+    <title> Surat Perintah Kerja</title>
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap.css"> -->
     <style type="text/css" media="all">
@@ -56,9 +56,13 @@
       td.invisible {
         border: none;
       }
+
+      img {
+        width : 100%
+      }
     </style>
   </head>
-  <h1> <img  src="{{ asset('image/Logo2.PNG') }}" width=1400> </h1>
+  <h1> <img  src="{{ asset('image/Logo2.PNG') }}"> </h1>
   <body>
   <div class="default-list-upper-alpha">
       <table class=table-invisible>
@@ -102,6 +106,13 @@
             </tbody>
         </table>
       </div>
+      <input type="button" value="Print" class="btn" onclick="PrintDoc()"/>
     </div>
   </body>
+  <script type="text/javascript">
+      function PrintDoc() {
+
+        window.print();
+      }
+  </script>
 </html>

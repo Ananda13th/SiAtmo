@@ -56,6 +56,12 @@ Route::get('transaksiService/printPreview/{noPemesanan}',
 [
     'as'=>'transaksiService.printPreview',
     'uses'=>'TransaksiServiceController@printPreview']);
+
+Route::get('transaksiService/spk/printPreview/{noPemesanan}',
+    [
+        'as'=>'SPK.printPreview',
+        'uses'=>'TransaksiServiceController@printPreviewSPK']);
+        
     
 Route::get('transaksiSparepart/printPreview/{noPemesanan}',
 [
@@ -82,7 +88,21 @@ Route::group(['middleware'=>'cekRole'], function(){
         [
             'as'=>'laporan.pendapatanBulanan',
             'uses'=>'ReportController@LaporanPendapatanBulanan']);
+    Route::post('laporan/pendapatanBulanan',
+    [
+        'as'=>'laporan.pendapatanBulanan',
+        'uses'=>'ReportController@LaporanPendapatanBulanan']);
 
+    Route::get('laporan/pengeluaranBulanan',
+    [
+        'as'=>'laporan.pengeluaranBulanan',
+        'uses'=>'ReportController@LaporanPengeluaranBulanan']);
+
+    Route::post('laporan/pengeluaranBulanan',
+    [
+        'as'=>'laporan.pengeluaranBulanan',
+        'uses'=>'ReportController@LaporanPengeluaranBulanan']);
+        
     Route::get('laporan/stokTerlaris',
         [
             'as'=>'laporan.stokTerlaris',

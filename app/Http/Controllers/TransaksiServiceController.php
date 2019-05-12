@@ -181,4 +181,16 @@ class TransaksiServiceController extends Controller
       return view('printPreview.notaLunasService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
     }
 
+    public function printPreviewSPK($kodeNota)
+    {
+        $tService = TransaksiPenjualan::find($kodeNota);
+        $detil = DetilTransaksiService::leftJoin('service', 'detiltransaksiservice.kodeService', '=', 'service.kodeService')
+        ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
+        ->get();
+        $user = Auth::user();
+
+      return view('printPreview.SPKService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
+    }
+
+
 }

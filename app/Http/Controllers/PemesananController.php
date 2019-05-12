@@ -70,10 +70,21 @@ class PemesananController extends Controller
     public function update(Request $request, $noPemesanan)
     {
         $pemesanan  = Pemesanan::where('noPemesanan', $noPemesanan)->first();
-        $countSparepart = count($request->kodeSparepart);
-        for($i=0;$i<$countSparepart;$i+1)
+        $detil      = DetilPemesanan::all();
+        $jumlah     = count($detil);
+
+        for($i=0;$i<$jumlah;$i++)
         {
-            DetilPemesanan::updateOrCreate(['noPemesanan', $request->noPemesanan], [
+            if($detil[$i]->noPemesanan == $noPemesanan)
+            {
+                $detil[$i]->delete();
+            }
+        }
+        
+        $countSparepart = count($request->kodeSparepart);
+        for($i=0;$i<$countSparepart;$i++)
+        {
+            DetilPemesanan::updateOrCreate([
                 'noPemesanan'       =>$pemesanan->noPemesanan, 
                 'jumlahPemesanan'   =>$request->jumlahPemesanan[$i], 
                 'satuan'            =>$request->satuan[$i], 

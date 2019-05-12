@@ -12,23 +12,32 @@ use SiAtmo\Sparepart;
 
 class ReportController extends Controller
 {
-    public function LaporanPendapatanBulanan()
+    public function LaporanPendapatanBulanan(Request $request)
     {
-        $query = DB::table("transaksipenjualan")->select(DB::raw('EXTRACT(MONTH FROM tanggaltransaksi) AS Bulan, SUM(total) as Pendapatan'))
-        ->groupBy(DB::raw('EXTRACT(MONTH FROM tanggaltransaksi)'))
-        ->get();
-        
-        $count=count($query);
-        $label  = [];
-        $data   = [];
-
-        for($i=0;$i<$count;$i++)
+        if($request->tahun == "")
         {
-            $label[$i]  = $query[$i]->Bulan;
-            $data[$i]   = $query[$i]->Pendapatan;
+            return view('laporan/laporanBulanan');
         }
-        $pdf = PDF::loadView('pdf.pendapatanBulanan', ['data'=>$query, 'bulan'=>$label, 'pendapatan'=>$data]);
-        return $pdf->stream();
+        else{
+            $query = DB::table("transaksipenjualan")->select(DB::raw('EXTRACT(MONTH FROM tanggaltransaksi) AS Bulan, SUM(total) as Pendapatan'))
+            ->where('tanggalTransaksi', 'LIKE', '%'.$request->tahun.'%')
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM tanggaltransaksi)'))
+            ->get();
+            
+            $count=count($query);
+            $label  = [];
+            $data   = [];
+
+            for($i=0;$i<$count;$i++)
+            {
+                $label[$i]  = $query[$i]->Bulan;
+                $data[$i]   = $query[$i]->Pendapatan;
+            }
+
+            return view('printPreview/pendapatanBulanan',  ['data'=>$query, 'bulan'=>$label, 'pendapatan'=>$data]);
+            // $pdf = PDF::loadView('pdf.pendapatanBulanan', ['data'=>$query, 'bulan'=>$label, 'pendapatan'=>$data]);
+            // return $pdf->stream();
+        }
     }
 
 
@@ -36,8 +45,8 @@ class ReportController extends Controller
 
         if($request->kode == "")
         {
-            $sparepart = Sparepart::all();
-            return view('laporan/sisaStok')->with(['sparepart' => $sparepart]);
+            $spareparts = Sparepart::all();
+            return view('laporan/sisaStok')->with(['spareparts' => $spareparts]);
         }
         else {
             $query = DB::table("historisparepart")->select(DB::raw('EXTRACT(MONTH FROM tanggal) AS Bulan, SUM(jumlah) as Sisa'))
@@ -46,8 +55,6 @@ class ReportController extends Controller
             ->get();
             return view('printPreview/sisaStok', ['data'=>$query]);
         }
-
-       
     }
 
     public function LaporanStokTerlaris()
@@ -58,5 +65,31 @@ class ReportController extends Controller
         ->get();
 
         dd($query);
+    }
+
+    public function LaporanPengeluaranBulanan(Request $request)
+    {
+        if($request->tahun == "")
+        {
+            return view('laporan/pengeluaranBulanan');
+        }
+        else{
+            $query = DB::table("pemesanan")->select(DB::raw('EXTRACT(MONTH FROM tanggalPemesanan) AS Bulan, SUM(totalPengeluaran) as Pengeluaran'))
+            ->where('tanggalPemesanan', 'LIKE', '%'.$request->tahun.'%')
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM tanggalPemesanan)'))
+            ->get();
+            
+            $count=count($query);
+            $label  = [];
+            $data   = [];
+
+            for($i=0;$i<$count;$i++)
+            {
+                $label[$i]  = $query[$i]->Bulan;
+                $data[$i]   = $query[$i]->Pengeluaran;
+            }
+
+            return view('printPreview/pengeluaranBulanan',  ['data'=>$query, 'bulan'=>$label, 'pengeluaran'=>$data]);
+        }
     }
 }

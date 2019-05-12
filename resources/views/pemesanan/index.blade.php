@@ -34,7 +34,7 @@
                     <td>
                     {{ Form::open(array('route' => array('pemesanan.destroy', $data['noPemesanan']), 'method' => 'DELETE')) }}
                         <button class="btn btn-sm btn-danger" type="submit"> <i class="oi oi-trash" data-target="#myModal"></i> Hapus</button>
-                        <!-- <a class="btn btn-sm btn-info" href="{{ route('pemesanan.edit', $data['noPemesanan']) }}"><span class="oi oi-pencil"></span> Edit</a> -->
+                        <a class="btn btn-sm btn-info" href="{{ route('pemesanan.edit', $data['noPemesanan']) }}"><span class="oi oi-pencil"></span> Edit</a>
                         <a class="btn btn-sm btn-primary" href="{{ route('pemesanan.downloadPDF', $data['noPemesanan']) }}"><span class="oi oi-eye"></span> Lihat</a>
                         <a class="btn btn-sm btn-success" href="{{ route('pemesanan. printPreview', $data['noPemesanan']) }}"><span class="oi oi-print"></span> Cetak</a>
                     {{ Form::close() }}
