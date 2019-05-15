@@ -7,6 +7,8 @@ use DB;
 use PDF;
 use DateTime;
 use SiAtmo\TransaksiPenjualan;
+use SiAtmo\DetilTransaksiSparepart;
+use SiAtmo\DetilTransaksiService;
 use Carbon\Carbon;
 use SiAtmo\Sparepart;
 use SiAtmo\Cabang;
@@ -58,14 +60,78 @@ class ReportController extends Controller
         }
     }
 
-    public function LaporanStokTerlaris()
+    public function LaporanSparepartTerlaris()
     {
-        $query = DB::table("transaksipenjualan")->select(DB::raw('EXTRACT(MONTH FROM tanggaltransaksi) AS Bulan, detiltransaksisparepart.jumlahStok, sparepart.namaSparepart, sparepart.tipeSparepart'))
-        ->leftJoin('detiltransaksisparepart', 'transaksipenjualan.kodeNota', '=', 'detiltransaksisparepart.kodesparepart')
-        ->leftJoin('spareapart', 'sparepart.kodeSparepart', '=', 'detiltransaksisparepart.kodeSparepart')
+        // $result = DB::table("detiltransaksisparepart")
+        // ->leftJoin('sparepart', 'sparepart.kodeSparepart', 'detiltransaksisparepart.kodeSparepart')
+        // ->leftJoin('transaksipenjualan', 'transaksipenjualan.kodeNota', 'detiltransaksisparepart.kodeNota')
+        // ->select('sparepart.namaSparepart', DB::raw('COUNT(*) as total'))
+        // ->groupBy(DB::raw('EXTRACT(MONTH FROM transaksipenjualan.tanggalTransaksi)'), 'sparepart.namaSparepart')
+        // ->havingRaw("COUNT(*) > 0")
+        // ->get();
+
+        $result = DB::select('SELECT sparepart.namaSparepart, COUNT(*) AS total, MONTHNAME(transaksipenjualan.tanggalTransaksi) AS Bulan
+        FROM sparepart JOIN detiltransaksisparepart ON sparepart.kodeSparepart = detiltransaksisparepart.kodeSparepart JOIN
+        transaksipenjualan ON transaksipenjualan.kodeNota = detiltransaksisparepart.kodeNota GROUP BY MONTHNAME(transaksipenjualan.tanggalTransaksi), sparepart.namaSparepart');
+        $count      = count($result);
+        $store      = $result[0]->total;
+        $tampung    = $result[0]->Bulan;
+        $bulan      = [];
+        $jumlah     = [];
+        $keterangan = [];
+        for($i=1;$i<$count;$i++)
+        {
+            if($result[$i]->Bulan != $result[$i-1]->Bulan)
+            {
+                $bulan[$i]          = $result[$i]->Bulan;
+                $tampung            = $result[$i]->Bulan;
+                if($result[$i]->total > $store)
+                {
+                    $store          = $result[$i]->total;
+                    $jumlah[$i]     = $result[$i]->total;
+                    $keterangan[$i] = $result[$i]->namaSparepart;
+                }
+            }
+            else 
+            {
+                $bulan[$i]      = $tampung;
+                if($result[$i]->total > $store)
+                {
+                    $store          = $result[$i]->total;
+                    $jumlah[$i]     = $result[$i]->total;
+                    $keterangan[$i] = $result[$i]->namaSparepart;
+                }
+            }
+            
+        }
+        dd($result);
+        return view('printPreview/sparepartTerlaris', ['jumlah'=>$jumlah, 'keterangan'=>$keterangan]);
+    }
+
+    public function LaporanServiceTerlaris()
+    {
+        $result = DB::table("detiltransaksiservice")
+        ->leftJoin('service', 'service.kodeService', 'detiltransaksiservice.kodeService')
+        ->leftJoin('transaksipenjualan', 'transaksipenjualan.kodeNota', 'detiltransaksiservice.kodeNota')
+        ->select(DB::raw('EXTRACT(MONTH FROM transaksipenjualan.tanggalTransaksi) as Bulan'), 'service.keterangan', DB::raw('COUNT(*) as total'))
+        ->groupBy(DB::raw('EXTRACT(MONTH FROM transaksipenjualan.tanggalTransaksi)'), 'service.keterangan')
+        ->havingRaw("COUNT(*) > 0")
         ->get();
 
-        dd($query);
+        dd($result);
+        $count      = count($result);
+        $store      = 0;
+        for($i=0;$i<$count;$i++)
+        {
+            if($result[$i]->total > $store)
+            {
+                $store      = $result[$i]->total;
+                $jumlah     = $result[$i]->total;
+                $keterangan = $result[$i]->keterangan;
+            }
+            
+        }
+        return view('printPreview/serviceTerlaris', ['jumlah'=>$jumlah, 'keterangan'=>$keterangan]);
     }
 
     public function LaporanPengeluaranBulanan(Request $request)
@@ -81,6 +147,7 @@ class ReportController extends Controller
             ->get();
             
             $count=count($query);
+            //dd($count);
             $label  = [];
             $data   = [];
 
@@ -90,6 +157,7 @@ class ReportController extends Controller
                 $data[$i]   = $query[$i]->Pengeluaran;
             }
 
+            return json_encode(array('label'=>$label, 'data'=>$data));
             return view('printPreview/pengeluaranBulanan',  ['data'=>$query, 'bulan'=>$label, 'pengeluaran'=>$data]);
         }
     }

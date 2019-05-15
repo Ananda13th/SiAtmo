@@ -6,7 +6,26 @@ use SiAtmo\Service;
 use SiAtmo\Supplier;
 use SiAtmo\Kendaraan;
 
+Route::get('laporan/terlaris/service',
+    [
+        'as'=>'laporan.serviceTerlaris',
+        'uses'=>'ReportController@LaporanServiceTerlaris']);
 
+Route::post('laporan/terlaris/service',
+[
+    'as'=>'laporan.serviceTerlaris',
+    'uses'=>'ReportController@LaporanServiceTerlaris']);
+
+Route::get('laporan/terlaris/sparepart',
+[
+    'as'=>'laporan.stokTerlaris',
+    'uses'=>'ReportController@LaporanSparepartTerlaris']);
+    
+Route::post('laporan/terlaris/sparepart',
+[
+    'as'=>'laporan.stokTerlaris',
+    'uses'=>'ReportController@LaporanSparepartTerlaris']);
+    
 
 Route::get('/', function () {
     return view('welcome');
