@@ -142,16 +142,7 @@ class ReportController extends Controller
         //     ->groupBy(DB::raw('EXTRACT(MONTH FROM tanggalPemesanan)'))
         //     ->get();
             
-        //     $count=count($query);
-        //     //dd($count);
-        //     $label  = [];
-        //     $data   = [];
-
-        //     for($i=0;$i<$count;$i++)
-        //     {
-        //         $label[$i]  = $query[$i]->Bulan;
-        //         $data[$i]   = $query[$i]->Pengeluaran;
-        //     }
+            
         //     return view('printPreview/pengeluaranBulanan',  ['data'=>$query, 'bulan'=>$label, 'pengeluaran'=>$data]);
         // }
         $query = DB::select(
@@ -172,8 +163,16 @@ class ReportController extends Controller
             where YEAR(p.tanggalPemesanan)='2019' or YEAR(P.tanggalPemesanan) is null
             GROUP BY m.bulan, YEAR(p.tanggalPemesanan)"
         );
+        $count=count($query);
+        $label  = [];
+        $data   = [];
 
-        return view('printPreview/pengeluaranBulanan',  ['data'=>$query]);
+        for($i=0;$i<$count;$i++)
+        {
+            $label[$i]  = $query[$i]->Bulan;
+            $data[$i]   = $query[$i]->Total;
+        }
+        return view('printPreview/pengeluaranBulanan',  ['data'=>$query, 'bulan'=>$label, 'pengeluaran'=>$data]);
     }
 
     public function LaporanCabang(Request $request)

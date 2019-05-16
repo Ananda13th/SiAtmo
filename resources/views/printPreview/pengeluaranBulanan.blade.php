@@ -61,8 +61,8 @@
             <tbody>
                 @foreach($data as $d)
                     <tr>
-                        <td>{{ date("F", mktime(0, 0, 0, $d->Bulan, 1)) }} </td>
-                        <td>{{$d->Pengeluaran}} </td>
+                        <td>{{ $d->Bulan}} </td>
+                        <td>{{$d->Total}} </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -96,7 +96,8 @@
               var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: {{ json_encode($bulan) }},
+                    labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni"
+                      ,"Juli", "Agustus", "September", "Oktober", "November", "Desember"],
                     datasets: [{
                         label: 'Pengeluaran',
                         data: {{ json_encode($pengeluaran) }},
