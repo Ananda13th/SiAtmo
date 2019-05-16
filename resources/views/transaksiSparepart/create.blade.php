@@ -98,15 +98,6 @@
             }
         });
     });  
-
-    //fill hargaJualTransaksi field
-    // $(function() {
-    //     $('#kodeSparepart').on('change', function(){
-    //         var price = $(this).children('option:selected').data('price');
-    //         $('#hargaJualTransaksi').val(price);
-    //     });
-    // });
-
     $(function() {
         $('body').on('change', '.kodeSparepart', function(){
             var price = $(this).children('option:selected').data('price');

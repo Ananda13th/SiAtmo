@@ -10,8 +10,8 @@ class KonsumenController extends Controller
 {
     public function riwayat() {
 
-        $transaksi = TransaksiPenjualan::all();
-
+        $transaksi = TransaksiPenjualan::leftJoin('detiltransaksiservice', 'detiltransaksiservice.kodeNota', '=', 'transaksiPenjualan.kodeNota')
+        ->leftJoin('detiltransaksisparepart', 'detiltransaksisparepart.kodeNota', '=', 'transaksiPenjualan.kodeNota')->get();
         return view('konsumen.riwayat', ['transaksi'=>$transaksi]);
 
     }

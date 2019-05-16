@@ -39,6 +39,7 @@ class TransaksiServiceController extends Controller
 
     public function store(Request $request)
     {
+   
         $this->validate($request, [
             'kodeNota'=>'required|max:13',
             'namaKonsumen'=>'required', 
@@ -57,31 +58,31 @@ class TransaksiServiceController extends Controller
         }
 
         $transaksi = TransaksiPenjualan::create([
-            'kodeNota'=>$request->kodeNota,
-            'tanggalTransaksi'=>Carbon::now(), 
-            'statusTransaksi'=>'sedang dikerjakan',
-            'subtotal'=>$subtotal, 
-            'total'=>$subtotal,
-            'namaKonsumen'=>$request->namaKonsumen, 
-            'noTelpKonsumen'=>$request->noTelpKonsumen, 
-            'alamatKonsumen'=>$request->alamatKonsumen,
+            'kodeNota'          =>$request->kodeNota,
+            'tanggalTransaksi'  =>Carbon::now(), 
+            'statusTransaksi'   =>'Sedang Dikerjakan',
+            'subtotal'          =>$subtotal, 
+            'total'             =>$subtotal,
+            'namaKonsumen'      =>$request->namaKonsumen, 
+            'noTelpKonsumen'    =>$request->noTelpKonsumen, 
+            'alamatKonsumen'    =>$request->alamatKonsumen,
         ]);
 
         $user = Auth::user();
         $pegawaiOnDuty = PegawaiOnDuty::create([
-            'emailPegawai'=> $user['email'],
-            'kodeNota'=>$transaksi['kodeNota']
+            'emailPegawai'=> $user->email,
+            'kodeNota'=>$transaksi->kodeNota
         ]);
 
         $count = count($request->kodeService);
         for($i = 0; $i<$count; $i++)
         {
             $detiltransaksi = DetilTransaksiService::create([
-                'kodeNota'=>$transaksi->kodeNota,
-                'biayaServiceTransaksi'=>$request->biayaServiceTransaksi[$i], 
-                'platNomorKendaraan'=>$request->platNomorKendaraan[$i], 
-                'emailPegawai'=>$request->emailPegawai[$i], 
-                'kodeService'=>$request->kodeService[$i]
+                'kodeNota'              =>$transaksi->kodeNota,
+                'biayaServiceTransaksi' =>$request->biayaServiceTransaksi[$i], 
+                'platNomorKendaraan'    =>$request->platNomorKendaraan[$i], 
+                'emailPegawai'          =>$request->emailPegawai[$i], 
+                'kodeService'           =>$request->kodeService[$i]
             ]);
         }
         return redirect()->route('transaksiService.index')->with('success', 'Data berhasil ditambah');
@@ -94,7 +95,7 @@ class TransaksiServiceController extends Controller
         ->leftJoin('service', 'service.kodeService', '=', 'detiltransaksiservice.kodeService')
         ->leftJoin('users', 'users.email', '=', 'detiltransaksiservice.emailPegawai')
         ->get();
-        $service = Service::all();
+        $service    = Service::all();
         $konsumen   = KendaraanKonsumen::all();
         $pegawai    = User::all();
         return view('transaksiService.edit', ['pegawai'=>$pegawai, 'konsumen'=>$konsumen, 'dataNota'=>$dataNota, 'detil'=>$detil, 'service'=>$service]);
@@ -131,7 +132,7 @@ class TransaksiServiceController extends Controller
         ['kodeNota' => $request->kodeNota],
         [
             'tanggalTransaksi'=>Carbon::now(), 
-            'statusTransaksi'=>'sedang dikerjakan',
+            'statusTransaksi'=>'Sedang Dikerjakan',
             'subtotal'=>$subtotal, 
             'total'=>$subtotal,
             'namaKonsumen'=>$request->namaKonsumen, 

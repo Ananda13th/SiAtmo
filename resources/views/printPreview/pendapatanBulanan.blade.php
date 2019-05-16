@@ -59,14 +59,18 @@
             <thead>
                 <tr>
                     <th>Bulan</th>
-                    <th>Pendapatan</th>
+                    <th>Sparepart</th>
+                    <th>Service</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($data as $d)
                     <tr>
-                        <td>{{ date("F", mktime(0, 0, 0, $d->Bulan, 1)) }} </td>
-                        <td>{{$d->Pendapatan}} </td>
+                        <td rowspan="2">{{ $d->Bulan }} </td>
+                    </tr>
+                    <tr>
+                      <td>{{$d->Sparepart}} </td>
+                      <td>{{$d->Service}} </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -100,10 +104,11 @@
               var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: {{ json_encode($bulan) }},
+                    labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni"
+                      ,"Juli", "Agustus", "September", "Oktober", "November", "Desember"],
                     datasets: [{
                         label: 'Nilai Pendapatan',
-                        data: {{ json_encode($pendapatan) }},
+                        data: {{ json_encode($total)}},
                         borderWidth: 1
                     }]
                 },

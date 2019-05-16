@@ -54,16 +54,20 @@
             <thead>
                 <tr>
                     <th>Bulan</th>
-                    <th>Pengeluaran</th>
+                    <th>Sparepart</th>
+                    <th>Pembelian</th>
+                    <th>Jumlah</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($data as $d)
-                    <tr>
-                        <td>{{ date("F", mktime(0, 0, 0, $d->Bulan, 1)) }} </td>
-                        <td>{{$d->Pengeluaran}} </td>
-                    </tr>
-                @endforeach
+              @foreach($data as $d)
+                <tr>
+                  <td>{{$d->Bulan}}</td>
+                  <td>{{$d->NamaBarang}} </td>
+                  <td>{{$d->TipeBarang}} </td>
+                  <td>{{$d->JumlahPenjualan}} </td>
+                </tr>
+              @endforeach
             </tbody>
         </table>
       </div>
@@ -80,25 +84,21 @@
      </div>
      <input type="button" value="Print" class="btn" onclick="PrintDoc()"/>
     </div>
-  </body>
+    </body>
 
-  <script type="text/javascript">
+    <script type="text/javascript">
+        function PrintDoc() {
+        window.print();
+        }
 
-/*--This JavaScript method for Print command--*/
-
-    function PrintDoc() {
-
-       window.print();
-    }
-
-          var ctx = document.getElementById("canvas").getContext('2d');
-              var myChart = new Chart(ctx, {
+        var ctx = document.getElementById("canvas").getContext('2d');
+            var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: {{ json_encode($bulan) }},
+                    labels: ,
                     datasets: [{
-                        label: 'Pengeluaran',
-                        data: {{ json_encode($pengeluaran) }},
+                        label: 'Jumlah Pembelian',
+                        data: ,
                         borderWidth: 1
                     }]
                 },
@@ -113,5 +113,4 @@
                 }
             });
     </script>
-  </body>
 </html>

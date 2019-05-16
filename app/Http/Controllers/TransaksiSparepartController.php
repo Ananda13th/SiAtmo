@@ -50,7 +50,7 @@ class TransaksiSparepartController extends Controller
         $transaksi = TransaksiPenjualan::create([
             'kodeNota'          =>$request->kodeNota,
             'tanggalTransaksi'  =>Carbon::now(), 
-            'statusTransaksi'   =>'sedang dikerjakan',
+            'statusTransaksi'   =>'Sedang Dikerjakan',
             'subtotal'          =>$subtotal, 
             'total'             =>$subtotal,
             'namaKonsumen'      =>$request->namaKonsumen, 

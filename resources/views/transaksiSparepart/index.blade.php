@@ -35,46 +35,6 @@
             @endforeach
         </tbody>
     </table>
-
-    <!-- Modal -->
-	<div id="myModal" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">{{$data['kodeNota']}}</h4>
-				</div>
-				<div class="modal-body">
-                    Nama Konsumen           : {{$data->namaKonsumen}} <br>
-                    Alamat Konsumen         : {{$data->alamatKonsumen}} <br>
-                    Nomor Telpon  Konsumen  : {{$data->noTelpKonsumen}} <br>
-                    Detail Transaksi : <br>
-                    <table class="table table-striped table-hover table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Kode Sparepart</th>
-                                <th>Harga</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($tSparepart as $detilSparepart)
-                                @if($detilSparepart->kodeNota == $data->kodeNota)
-                                    <tr>
-                                        <td><?=++$noDetil?></td>
-                                        <td><?= $detilSparepart->kodeSparepart?></td>
-                                        <td><?= $detilSparepart->hargaJualTransaksi ?></td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <br>
-                    Nama CS         : {{$pegawai->name}}
-				<div class="modal-footer">
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 @endsection

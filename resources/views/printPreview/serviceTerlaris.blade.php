@@ -54,16 +54,16 @@
             <thead>
                 <tr>
                     <th>Bulan</th>
-                    <th>Pengeluaran</th>
+                    <th>Sparepart</th>
+                    <th>Pembelian</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($data as $d)
                     <tr>
-                        <td>{{ date("F", mktime(0, 0, 0, $d->Bulan, 1)) }} </td>
-                        <td>{{$d->Pengeluaran}} </td>
+                        <td>{{$bulan}} </td>
+                        <td>{{$keterangan}} </td>
+                        <td>{{$jumlah}} </td>
                     </tr>
-                @endforeach
             </tbody>
         </table>
       </div>
@@ -83,35 +83,30 @@
   </body>
 
   <script type="text/javascript">
-
-/*--This JavaScript method for Print command--*/
-
     function PrintDoc() {
-
        window.print();
     }
 
-          var ctx = document.getElementById("canvas").getContext('2d');
-              var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: {{ json_encode($bulan) }},
-                    datasets: [{
-                        label: 'Pengeluaran',
-                        data: {{ json_encode($pengeluaran) }},
-                        borderWidth: 1
+    var ctx = document.getElementById("canvas").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ json_encode($keterangan) }},
+                datasets: [{
+                    label: 'Jumlah Pembelian',
+                    data: {{ json_encode($jumlah) }},
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
                     }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero:true
-                            }
-                        }]
-                    }
                 }
-            });
-    </script>
-  </body>
+            }
+        });
+  </script>
 </html>

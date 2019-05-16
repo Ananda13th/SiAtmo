@@ -17,6 +17,7 @@
                 <th>Nama Kosumen </th>
                 <th>Nomor Telpon </th>
                 <th>Status Transaksi</th>
+                <th>Plat Nomor</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,7 @@
                 <td><?= $data->namaKonsumen ?></td>
                 <td><?= $data->noTelpKonsumen ?></td>
                 <td><?= $data->statusTransaksi ?></td>
+                <td><?= $data->platNomorKendaraan ?></td>
                 <td><a data-item="{{ $data }}" class="btn btn-block details-button" data-toggle="modal" data-target="#modalDetail" id="detailButton">Detail</a></td>
             </tr>
             @endforeach

@@ -41,11 +41,7 @@
             <input class="form-control" type="text" id="alamatKonsumen" name="alamatKonsumen">
         </div>
     </div>
-    <!-- <div class="form-group row">
-        <div class="col-sm-4">
-            <a class="btn btn-primary" id="+sparepart"> Tambah Sparepart</a>
-        </div>
-    </div> -->
+
     <div class="form-group row">
         <label class="col-sm-2" col-form-label>Detail Service</label>
     </div>
@@ -100,36 +96,6 @@
     </tbody>
     </table>
     <br>
-    <table class="table table-striped table-hover table-bordered" id="tb" style="visibility:hidden">
-    <thead>
-        <tr>
-            <th>Sparepart</th>
-            <th>Harga</th>
-            <th>Jumlah</th>
-            <th> <button class="btn add-more" id="addMore" type="button">+</button> </th>
-        </tr>
-    </thead>
-    <tbody>
-    <div class="field_wrapper">
-        <tr>
-            <td>
-                <select class="custom-select" id="kodeSparepart" name="kodeSparepart[]">
-                    <option value=""> --Pilih Sparepart-- </option>";
-                    @foreach($sparepart as $s) {
-                            <option value="{{ $s['kodeSparepart'] }}" data-price="{{ $s->hargaJual }}"> {{ $s['namaSparepart'] }} </option>";
-                    }
-                    @endforeach
-                </select>
-            </td> 
-            <td> 
-                <input class="form-control hargaJualTransaksi" type="text" name="hargaJualTransaksi[]" autocomplete="off" readonly> </td>
-            </td>
-            <td> <input type="number" id="jumlahSparepart" name="jumlahSparepart" step="1"> </td>
-            <td> <button class="btn add-more" id="remove" type="button">x</button> </td>
-        </tr>
-    </tbody>
-    </table>
-    <br>
     <button type="submit" class="btn btn-info"><i class="oi oi-task"></i> Simpan</button>
     <button type="reset" class="btn btn-warning"><i class="oi oi-circle-x"></i> Batal</button>
 </form>
@@ -139,6 +105,7 @@
                 var data = $("#tb tr:eq(1)").clone(true).appendTo("#tb");
                 data.find("input").val('');
         });
+        
         $(document).on('click', '#remove', function() {
             var trIndex = $(this).closest("tr").index();
                 if(trIndex>=1) {
@@ -155,12 +122,6 @@
             $(this).closest('tr').find('.biayaServiceTransaksi').val(price);
         });
     });
-
-    $(document).ready(function(){
-        $("#+sparepart").click(function(){
-            $("#tb").show();
-        });
-    }); 
 
     var $select = $("select");
     $select.on("change", function() {

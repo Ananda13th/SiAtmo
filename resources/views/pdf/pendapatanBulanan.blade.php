@@ -79,10 +79,10 @@
       var myChart = new Chart(ctx, {
           type: 'bar',
           data: {
-              labels: bulan,
+              labels: {{ json_encode($bulan) }},
               datasets: [{
                   label: 'Nilai Pendapatan',
-                  data: pendapatan,
+                  data: {{ json_encode($pendapatan) }},
                   backgroundColor: [
                       'rgba(255, 99, 132, 0.2)',
                       'rgba(54, 162, 235, 0.2)',
