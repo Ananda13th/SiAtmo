@@ -23,30 +23,19 @@ class ReportController extends Controller
         }
         else{
             $query = DB::select(
-                "SELECT MONTHNAME(STR_TO_DATE((m.bulan), '%m')) as Bulan, COALESCE(SUM(d.hargaJualTransaksi),0) as Sparepart, COALESCE(SUM(e.biayaServiceTransaksi),0) as Service,COALESCE((SUM(p.total)),0) as Total FROM (SELECT '01' AS
-                bulan
-                UNION SELECT '02' AS
-                bulan
-                UNION SELECT '03' AS
-                bulan
-                UNION SELECT '04' AS
-                bulan
-                UNION SELECT '05' AS
-                bulan
-                UNION SELECT '06' AS
-                bulan
-                UNION SELECT '07'AS
-                bulan
-                UNION SELECT '08'AS
-                bulan
-                UNION SELECT '09' AS
-                bulan
-                UNION SELECT '10' AS
-                bulan
-                UNION SELECT '11' AS
-                bulan
-                UNION SELECT '12' AS
-                bulan
+                "SELECT MONTHNAME(STR_TO_DATE((m.bulan), '%m')) as Bulan, COALESCE(SUM(d.hargaJualTransaksi),0) as Sparepart, COALESCE(SUM(e.biayaServiceTransaksi),0) as Service,COALESCE((SUM(p.total)),0) as Total FROM (
+                    SELECT '01' AS bulan
+                    UNION SELECT '02' AS bulan
+                    UNION SELECT '03' AS bulan
+                    UNION SELECT '04' AS bulan
+                    UNION SELECT '05' AS bulan
+                    UNION SELECT '06' AS bulan
+                    UNION SELECT '07' AS bulan
+                    UNION SELECT '08' AS bulan
+                    UNION SELECT '09' AS bulan
+                    UNION SELECT '10' AS bulan
+                    UNION SELECT '11' AS bulan
+                    UNION SELECT '12' AS bulan
                 ) AS m LEFT JOIN transaksipenjualan p ON MONTHNAME(p.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) 
                 LEFT JOIN detiltransaksisparepart d ON p.kodeNota=d.kodeNota
                 LEFT JOIN detiltransaksiservice e ON p.kodeNota=e.kodeNota
@@ -91,7 +80,7 @@ class ReportController extends Controller
     {
         $result = DB::select(
             "SELECT MONTHNAME(STR_TO_DATE((m.bulan), '%m')) AS Bulan, Coalesce((SELECT s.namaSparepart 
-            from detiltransaksisparepart t 
+            FROM detiltransaksisparepart t 
             inner join sparepart s on t.kodeSparepart = s.kodeSparepart inner join transaksipenjualan a on t.kodeNota = a.kodeNota
             where MONTHNAME(a.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) 
             group by t.kodeSparepart 
@@ -143,28 +132,48 @@ class ReportController extends Controller
 
     public function LaporanPengeluaranBulanan(Request $request)
     {
-        if($request->tahun == "")
-        {
-            return view('laporan/pengeluaranBulanan');
-        }
-        else{
-            $query = DB::table("pemesanan")->select(DB::raw('EXTRACT(MONTH FROM tanggalPemesanan) AS Bulan, SUM(totalPengeluaran) as Pengeluaran'))
-            ->where('tanggalPemesanan', 'LIKE', '%'.$request->tahun.'%')
-            ->groupBy(DB::raw('EXTRACT(MONTH FROM tanggalPemesanan)'))
-            ->get();
+        // if($request->tahun == "")
+        // {
+        //     return view('laporan/pengeluaranBulanan');
+        // }
+        // else{
+        //     $query = DB::table("pemesanan")->select(DB::raw('EXTRACT(MONTH FROM tanggalPemesanan) AS Bulan, SUM(totalPengeluaran) as Pengeluaran'))
+        //     ->where('tanggalPemesanan', 'LIKE', '%'.$request->tahun.'%')
+        //     ->groupBy(DB::raw('EXTRACT(MONTH FROM tanggalPemesanan)'))
+        //     ->get();
             
-            $count=count($query);
-            //dd($count);
-            $label  = [];
-            $data   = [];
+        //     $count=count($query);
+        //     //dd($count);
+        //     $label  = [];
+        //     $data   = [];
 
-            for($i=0;$i<$count;$i++)
-            {
-                $label[$i]  = $query[$i]->Bulan;
-                $data[$i]   = $query[$i]->Pengeluaran;
-            }
-            return view('printPreview/pengeluaranBulanan',  ['data'=>$query, 'bulan'=>$label, 'pengeluaran'=>$data]);
-        }
+        //     for($i=0;$i<$count;$i++)
+        //     {
+        //         $label[$i]  = $query[$i]->Bulan;
+        //         $data[$i]   = $query[$i]->Pengeluaran;
+        //     }
+        //     return view('printPreview/pengeluaranBulanan',  ['data'=>$query, 'bulan'=>$label, 'pengeluaran'=>$data]);
+        // }
+        $query = DB::select(
+            "SELECT MONTHNAME(STR_TO_DATE((m.bulan), '%m')) as Bulan, COALESCE((SUM(p.totalPengeluaran)),0) as Total FROM (
+                SELECT '01' AS bulan
+                UNION SELECT '02' AS bulan
+                UNION SELECT '03' AS bulan
+                UNION SELECT '04' AS bulan
+                UNION SELECT '05' AS bulan
+                UNION SELECT '06' AS bulan
+                UNION SELECT '07' AS bulan
+                UNION SELECT '08' AS bulan
+                UNION SELECT '09' AS bulan
+                UNION SELECT '10' AS bulan
+                UNION SELECT '11' AS bulan
+                UNION SELECT '12' AS bulan
+            ) AS m LEFT JOIN pemesanan p ON MONTHNAME(p.tanggalPemesanan) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) 
+            where YEAR(p.tanggalPemesanan)='2019' or YEAR(P.tanggalPemesanan) is null
+            GROUP BY m.bulan, YEAR(p.tanggalPemesanan)"
+        );
+
+        return view('printPreview/pengeluaranBulanan',  ['data'=>$query]);
     }
 
     public function LaporanCabang(Request $request)

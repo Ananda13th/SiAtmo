@@ -50,6 +50,7 @@
   <body>
   <div class="default-list-upper-alpha">
       <div>
+      <label>Tahun : 2019</label>
         <table>
             <thead>
                 <tr>
@@ -73,15 +74,6 @@
       </div>
     </div>
     <br>
-    <div class="row">
-       <div class="col-md-10 col-md-offset-1">
-           <div class="panel panel-default">
-               <div class="panel-body">
-                   <canvas id="canvas" height="280" width="600"></canvas>
-               </div>
-           </div>
-       </div>
-     </div>
      <input type="button" value="Print" class="btn" onclick="PrintDoc()"/>
     </div>
     </body>
@@ -90,27 +82,5 @@
         function PrintDoc() {
         window.print();
         }
-
-        var ctx = document.getElementById("canvas").getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ,
-                    datasets: [{
-                        label: 'Jumlah Pembelian',
-                        data: ,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero:true
-                            }
-                        }]
-                    }
-                }
-            });
     </script>
 </html>
