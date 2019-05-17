@@ -132,19 +132,6 @@ class ReportController extends Controller
 
     public function LaporanPengeluaranBulanan(Request $request)
     {
-        // if($request->tahun == "")
-        // {
-        //     return view('laporan/pengeluaranBulanan');
-        // }
-        // else{
-        //     $query = DB::table("pemesanan")->select(DB::raw('EXTRACT(MONTH FROM tanggalPemesanan) AS Bulan, SUM(totalPengeluaran) as Pengeluaran'))
-        //     ->where('tanggalPemesanan', 'LIKE', '%'.$request->tahun.'%')
-        //     ->groupBy(DB::raw('EXTRACT(MONTH FROM tanggalPemesanan)'))
-        //     ->get();
-            
-            
-        //     return view('printPreview/pengeluaranBulanan',  ['data'=>$query, 'bulan'=>$label, 'pengeluaran'=>$data]);
-        // }
         $query = DB::select(
             "SELECT MONTHNAME(STR_TO_DATE((m.bulan), '%m')) as Bulan, COALESCE((SUM(p.totalPengeluaran)),0) as Total FROM (
                 SELECT '01' AS bulan

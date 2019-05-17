@@ -122,16 +122,6 @@
             $(this).closest('tr').find('.biayaServiceTransaksi').val(price);
         });
     });
-
-    var $select = $("select");
-    $select.on("change", function() {
-        var selected = [];  
-        $.each($select, function(index, select) {           
-            if (select.value !== "") { selected.push(select.value); }
-        });         
-    $("option").prop("disabled", false);         
-    for (var index in selected) { $('option[value="'+selected[index]+'"]').prop("disabled", true); }
-    });
 </script>
 
 

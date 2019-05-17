@@ -92,9 +92,6 @@
   </body>
 
   <script type="text/javascript">
-
-/*--This JavaScript method for Print command--*/
-
     function PrintDoc() {
 
        window.print();

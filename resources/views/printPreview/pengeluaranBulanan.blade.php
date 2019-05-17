@@ -44,6 +44,10 @@
       img {
         width : 100%;
       }
+      @media print {
+      @page { margin: 0; }
+      body { margin: 1.6cm; }
+}
     </style>
   </head>
   <h1> <img  src="{{ asset('image/Logo2.PNG') }}" width=700> </h1>
@@ -91,7 +95,7 @@
 
        window.print();
     }
-
+    
           var ctx = document.getElementById("canvas").getContext('2d');
               var myChart = new Chart(ctx, {
                 type: 'bar',
