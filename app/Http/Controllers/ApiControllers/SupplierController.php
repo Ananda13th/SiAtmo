@@ -14,6 +14,13 @@ class SupplierController extends Controller
         return response()->json(($supplier), 200);
     }
 
+    public function namaPerusahaan()
+    {
+        $supplier = Supplier::all('namaPerusahaan');
+
+        return response()->json(($supplier), 200);
+    }
+
     public function create()
     {
         $supplier = Supplier::all();
@@ -39,7 +46,7 @@ class SupplierController extends Controller
         ]);
 
 
-        return response()->json($service, 201);
+        return response()->json($registrasi, 201);
     }
 
     public function edit($namaPerusahaan)
@@ -71,13 +78,21 @@ class SupplierController extends Controller
         $supplier->update();
 
   
-        return response()->json($service, 200);
+        return response()->json($supplier, 200);
     }
 
     public function destroy($namaPerusahaan)
     {
+        // $supplier = Supplier::find($namaPerusahaan);
+        // $supplier->delete();
+        // return response()->json($service, 200);
+
         $supplier = Supplier::find($namaPerusahaan);
-        $supplier->delete();
-        return response()->json($service, 200);
+        if($supplier)
+            $supplier->delete();
+        else
+            return response()->json(error);
+
+        return response()->json($supplier, 200);
     }
 }

@@ -18,92 +18,162 @@ class PemesananController extends Controller
         return response()->json(($pemesanan), 200);
     }
 
-    public function create()
-    {
-        $sparepart   = Sparepart::all();
-        $supplier    = Supplier::all();
-        return view('pemesanan/create', ['sparepart'=>$sparepart, 'supplier'=>$supplier]);
-    }
+    // public function store(Request $request)
+    // {
+    //     $this->validate($request, [
+            
+    //     ]);
+    //     $countPemesanan=count($request->kodeSparepart);
+    //     $pemesanan = Pemesanan::create([
+    //         'tanggalPemesanan'=>Carbon::now(),
+    //         'statusPemesanan'=>'sedang dikirim', 
+    //         'namaPerusahaan'=>$request->namaPerusahaan
+    //     ]);
+        
+    //     $countPemesanan=count($request->kodeSparepart);
+    //     for($i = 0;$i<$countPemesanan;$i++)
+    //     {
+    //         DetilPemesanan::create([
+    //             'noPemesanan'       =>$pemesanan->noPemesanan, 
+    //             'jumlahPemesanan'   =>$request->jumlahPemesanan[$i], 
+    //             'satuan'            =>$request->satuan[$i], 
+    //             'kodeSparepart'     =>$request->kodeSparepart[$i] 
+    //         ]);
+    //     }
+    //     $response = "Sukses";
+
+    //     return response()->json(($response), 201);
+    // }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        // $this->validate($request, [
             
-        ]);
-        $countPemesanan=count($request->kodeSparepart);
+        // ]);
+        // $countPemesanan=count($request->kodeSparepart);
         $pemesanan = Pemesanan::create([
             'tanggalPemesanan'=>Carbon::now(),
-            'statusPemesanan'=>'sedang dikirim', 
+            'statusPemesanan'=>'On Process', 
             'namaPerusahaan'=>$request->namaPerusahaan
         ]);
         
-        $countPemesanan=count($request->kodeSparepart);
-        for($i = 0;$i<$countPemesanan;$i++)
-        {
+        // $countPemesanan=count($request->kodeSparepart);
+        // for($i = 0;$i<$countPemesanan;$i++)
+        // {
             DetilPemesanan::create([
                 'noPemesanan'       =>$pemesanan->noPemesanan, 
-                'jumlahPemesanan'   =>$request->jumlahPemesanan[$i], 
-                'satuan'            =>$request->satuan[$i], 
-                'kodeSparepart'     =>$request->kodeSparepart[$i] 
+                'jumlahPemesanan'   =>$request->jumlahPemesanan, 
+                'satuan'            =>$request->satuan, 
+                'kodeSparepart'     =>$request->kodeSparepart 
             ]);
-        }
-        $response = "Sukses";
-
-        return response()->json(($response), 201);
+        // }
+        return response()->json(($pemesanan), 200);
     }
 
-    public function edit($noPemesanan)
-    {
-        $detilPesan = Pemesanan::where('pemesanan.noPemesanan', '=', $noPemesanan)->first();
-        $sparepart   = Sparepart::all();
-        $supplier    = Supplier::all();
+    public function addStore(Request $request) {
+        $cek = Pemesanan::where('noPemesanan', $request->noPemesanan);
+
+        // if($cek->statusPemesanan === 'Shipping' or $cek->statusPemesanan === 'Arrived') {
+        //     return response()->json(error);
+        // }
+        // else {
+            $addPemesanan = DetilPemesanan::create([
+                'noPemesanan'       =>$request->noPemesanan, 
+                'jumlahPemesanan'   =>$request->jumlahPemesanan, 
+                'satuan'            =>$request->satuan, 
+                'kodeSparepart'     =>$request->kodeSparepart 
+            ]);
+            
+            return response()->json(($addPemesanan), 201);
+        // }
+    }
+
+    // public function edit($noPemesanan)
+    // {
+    //     $detilPesan = Pemesanan::where('pemesanan.noPemesanan', '=', $noPemesanan)->first();
+    //     $sparepart   = Sparepart::all();
+    //     $supplier    = Supplier::all();
         
-        $detilBarang = DetilPemesanan::where('noPemesanan', '=', $noPemesanan)->get();
-        return view('pemesanan/edit', ['pemesanan'=>$detilPesan, 'detil'=>$detilBarang, 'sparepart'=>$sparepart, 'supplier'=>$supplier]); 
-    }
+    //     $detilBarang = DetilPemesanan::where('noPemesanan', '=', $noPemesanan)->get();
+    //     return view('pemesanan/edit', ['pemesanan'=>$detilPesan, 'detil'=>$detilBarang, 'sparepart'=>$sparepart, 'supplier'=>$supplier]); 
+    // }
+
+    // public function update(Request $request, $noPemesanan)
+    // {
+    //     $pemesanan  = Pemesanan::find($noPemesanan)->leftJoin('detilpemesanan', 'pemesanan.noPemesanan', '=', 'detilpemesanan.noPemesanan')->get();
+    //     $detilpesan = DetilPemesanan::find($noPemesanan);
+        
+    //     $countSparepart = count($request->kodeSparepart);
+
+    //     for($i=0;$i<$countSparepart;$i+1)
+    //     {
+    //         DetilPemesanan::create([
+    //             'noPemesanan'       =>$pemesanan->noPemesanan, 
+    //             'jumlahPemesanan'   =>$request->jumlahPemesanan[$i], 
+    //             'satuan'            =>$request->satuan[$i], 
+    //             'kodeSparepart'     =>$request->kodeSparepart[$i] 
+    //         ]);
+
+    //     }
+    //     $response = "Sukses";
+    //     return response()->json(($response), 200);
+    // }
 
     public function show($noPemesanan)
     {
         return redirect()->route('pemesanan.index');
     }
 
-    public function update(Request $request, $noPemesanan)
+    public function showDetil($noPemesanan)
     {
-        $pemesanan  = Pemesanan::find($noPemesanan)->leftJoin('detilpemesanan', 'pemesanan.noPemesanan', '=', 'detilpemesanan.noPemesanan')->get();
-        $detilpesan = DetilPemesanan::find($noPemesanan);
-        
-        $countSparepart = count($request->kodeSparepart);
+        $detil = DetilPemesanan::where('noPemesanan', $noPemesanan)->get();
 
-        for($i=0;$i<$countSparepart;$i+1)
-        {
-            DetilPemesanan::create([
-                'noPemesanan'       =>$pemesanan->noPemesanan, 
-                'jumlahPemesanan'   =>$request->jumlahPemesanan[$i], 
-                'satuan'            =>$request->satuan[$i], 
-                'kodeSparepart'     =>$request->kodeSparepart[$i] 
-            ]);
-
-        }
-        $response = "Sukses";
-        return response()->json(($response), 200);
+        return response()->json($detil, 200);
     }
 
-    public function endPesan($noPemesanan)
-    {
+    public function updateStatus(Request $request, $noPemesanan) {
+        $detilPesan = DetilPemesanan::where('noPemesanan', $noPemesanan)->get();
+        $jumlah = $detilPesan->count();
         $pemesanan = Pemesanan::find($noPemesanan);
-        $pemesanan->statusPemesanan = "selesai";
+        $pemesanan->statusPemesanan = $request->statusPemesanan;
         $pemesanan->update();
-        $response = "Sukses";
-        return response()->json(($response), 200);
+
+        for($i=0;$i<$jumlah;$i++)
+        {
+            Sparepart::where('kodeSparepart', $detilPesan[$i]->kodeSparepart)->increment('jumlahStok', $detilPesan[$i]->jumlahPemesanan);
+            HistorySparepart::create([
+                'jumlah'        =>$detilPesan[$i]->jumlahPemesanan, 
+                'kodeSparepart' =>$detilPesan[$i]->kodeSparepart,
+                'tanggal'       =>Carbon::now()
+            ]);
+        }
+        
+        return response()->json($detilPesan, 200);
     }
+
+    // public function endPesan($noPemesanan)
+    // {
+    //     $pemesanan = Pemesanan::find($noPemesanan);
+    //     $pemesanan->statusPemesanan = "selesai";
+    //     $pemesanan->update();
+    //     $response = "Sukses";
+    //     return response()->json(($response), 200);
+    // }
 
     public function destroy($noPemesanan)
     {
         $pemesanan  = Pemesanan::find($noPemesanan);
-        $pemesanan->delete();
-        $response = "Sukses";
-        return response()->json(($response), 200);
+        if($pemesanan->statusPemesanan === "Shipping" or $pemesanan->statusPemesanan === "Arrived") {
+            return response()->json(error);
+        }
+        else {
+            $pemesanan->delete();
 
+            $detil = DetilPemesanan::where('noPemesanan', $noPemesanan)->first();
+            $detil->delete();
+         
+            return response()->json(($detil), 200);
+        }
     }
 
     public function downloadPDF($noPemesanan)

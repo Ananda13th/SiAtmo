@@ -105,29 +105,31 @@ class ReportController extends Controller
 
     public function LaporanServiceTerlaris()
     {
-        $result = DB::table("detiltransaksiservice")
-        ->leftJoin('service', 'service.kodeService', 'detiltransaksiservice.kodeService')
-        ->leftJoin('transaksipenjualan', 'transaksipenjualan.kodeNota', 'detiltransaksiservice.kodeNota')
-        ->select(DB::raw('EXTRACT(MONTH FROM transaksipenjualan.tanggalTransaksi) as Bulan'), 'service.keterangan', DB::raw('COUNT(*) as total'))
-        ->groupBy(DB::raw('EXTRACT(MONTH FROM transaksipenjualan.tanggalTransaksi)'), 'service.keterangan')
-        ->havingRaw("COUNT(*) > 0")
-        ->get();
 
-        //dd($result);
-        $count      = count($result);
-        $store      = 0;
-        for($i=0;$i<$count;$i++)
-        {
-            if($result[$i]->total > $store)
-            {
-                $store      = $result[$i]->total;
-                $bulan      = $result[$i]->Bulan;
-                $jumlah     = $result[$i]->total;
-                $keterangan = $result[$i]->keterangan;
-            }
-            
-        }
-        return view('printPreview/serviceTerlaris', ['bulan'=>$bulan, 'jumlah'=>$jumlah, 'keterangan'=>$keterangan]);
+        $result = DB::select(
+            "SELECT MONTHNAME(STR_TO_DATE((m.bulan), '%m')) AS Bulan, Coalesce((SELECT s.keterangan
+            FROM detiltransaksiservice t 
+            inner join service s on t.kodeService = s.kodeService inner join transaksipenjualan a on t.kodeNota = a.kodeNota
+            where MONTHNAME(a.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) 
+            group by t.kodeService 
+            order by COUNT(*) as total
+            DESC LIMIT 1),'-') AS NamaBarang, Coalesce((select s.tipeSparepart from detiltransaksisparepart t inner join sparepart s on t.kodeSparepart = s.kodeSparepart inner join transaksipenjualan a on t.kodeNota = a.kodeNota where MONTHNAME(a.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) group by t.kodeSparepart order by sum(t.jumlahSparepart) DESC LIMIT 1),'-') AS TipeBarang, Coalesce((select sum(jumlahSparepart) from detiltransaksisparepart t inner join transaksipenjualan a on t.kodeNota = a.kodeNota where MONTHNAME(a.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) group by kodeSparepart order by sum(jumlahSparepart) DESC LIMIT 1),'-') AS JumlahPenjualan
+            FROM(
+            SELECT '01' AS bulan
+            UNION SELECT '02' AS bulan
+            UNION SELECT '03' AS bulan
+            UNION SELECT '04' AS bulan
+            UNION SELECT '05' AS bulan
+            UNION SELECT '06' AS bulan
+            UNION SELECT '07' AS bulan
+            UNION SELECT '08' AS bulan
+            UNION SELECT '09' AS bulan
+            UNION SELECT '10' AS bulan
+            UNION SELECT '11' AS bulan
+            UNION SELECT '12' AS bulan
+            ) AS m");
+
+        return view('printPreview/serviceTerlaris', ['data'=>$result]);
     }
 
     public function LaporanPengeluaranBulanan(Request $request)

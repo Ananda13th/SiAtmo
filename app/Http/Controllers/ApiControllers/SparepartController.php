@@ -14,6 +14,32 @@ class SparepartController extends Controller
         return response()->json(($sparepart), 200);
     }
 
+    public function kodeSparepart() {
+        $sparepart =  Sparepart::all('kodeSparepart');
+
+        return response()->json($sparepart, 200);
+    }
+
+    public function bystok()
+    {
+        $sparepart= Sparepart::orderBy("jumlahStok", "ASC")->get();
+
+        return response()->json(($sparepart), 200);
+    }
+
+    public function byharga()
+    {
+        $sparepart= Sparepart::orderBy("hargaBeli", "ASC")->get();
+
+        return response()->json(($sparepart), 200);
+    }
+
+    public function pushNotif() {
+        $sparepart = Sparepart::where('jumlahStok', '<', 10)->get();
+
+        return response()->json($sparepart, 200);
+    }
+
     public function create()
     {
         $sparepart= Sparepart::all();
@@ -23,7 +49,7 @@ class SparepartController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'kodeSparepart'=>'required|max:12|min:12',
+            'kodeSparepart'=>'required|max:12|min:11',
             'namaSparepart'=>'required',
             'tipeSparepart'=>'required',
             'merkSparepart'=>'required',
@@ -80,15 +106,18 @@ class SparepartController extends Controller
         $sparepart->hargaJual=$request['hargaJual'];
         $sparepart->hargaBeli=$request['hargaBeli'];
         $sparepart->update();
-        // $pegawai = User::findOrFail($email);
-        // $pegawai->update($request->all());
-        return response()->json($service, 200);
+
+        return response()->json($sparepart, 200);
     }
 
     public function destroy($kodeSparepart)
     {
         $sparepart = Sparepart::find($kodeSparepart);
-        $sparepart->delete();
-        return response()->json($service, 200);
+        if($sparepart)
+            $sparepart->delete();
+        else
+            return response()->json(error);
+
+        return response()->json($sparepart, 200);
     }
 }

@@ -224,6 +224,7 @@ Route::group(['middleware'=>'cekRoleCS'], function(){
     Route::post('daftarKendaraanKonsumen/create', 'KendaraanController@saveKendaraanKonsumen')->name('daftarKendaraanKonsumen/create');
     Route::resource('transaksiService', 'TransaksiServiceController');
     Route::resource('transaksiSparepart', 'TransaksiSparepartController');
+    Route::resource('transaksiFull', 'TransaksiFullController');
 });
 
 Route::group(['middleware'=>'cekRoleKasir'], function(){

@@ -60,6 +60,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link text-white" href="{{route('transaksiFull.index')}}">
+            <i class="oi oi-cog"></i> Full
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-white" href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="oi oi-account-logout"></i> Logout
             </a>
@@ -90,6 +95,11 @@
                 <li class="list-group-item bg-dark">
                     <a class="nav-link text-white" href="{{route('transaksiService.index')}}">
                     <i class="oi oi-cog"></i> Service
+                    </a>
+                </li>
+                <li class="list-group-item bg-dark">
+                    <a class="nav-link text-white" href="{{route('transaksiFull.index')}}">
+                    <i class="oi oi-cog"></i> Full
                     </a>
                 </li>
                 <li class="list-group-item bg-dark">

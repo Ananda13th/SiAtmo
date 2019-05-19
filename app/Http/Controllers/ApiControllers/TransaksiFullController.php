@@ -21,11 +21,26 @@ class TransaksiFullController extends Controller
     {
         $transaksiFull = TransaksiPenjualan::leftJoin('detiltransaksisparepart','transaksipenjualan.kodenota','=','detiltransaksisparepart.kodenota')
             ->leftJoin('detiltransaksiservice','transaksipenjualan.kodenota','=','detiltransaksiservice.kodenota')
-            ->leftJoin('sparepart','sparepart.kodeSparepart','=','detiltransaksisparepart.kodeSparepart')
+            // ->leftJoin('sparepart','sparepart.kodeSparepart','=','detiltransaksisparepart.kodeSparepart')
             ->leftJoin('kendaraankonsumen','kendaraankonsumen.platNomorKendaraan','=','detiltransaksiservice.platNomorKendaraan')
             ->leftJoin('service','service.kodeService','=','detiltransaksiservice.kodeService')
             ->get();
-        return view('transaksiFull/index', ['tSparepart'=>$transaksiFull, 'no'=>0, ]);
+        // return view('transaksiFull/index', ['tSparepart'=>$transaksiFull, 'no'=>0, ]);
+        return response()->json($transaksiFull, 200);
+    }
+
+    public function showIndex(Request $request) {
+            $transaksiFull = TransaksiPenjualan::leftJoin('detiltransaksisparepart','transaksipenjualan.kodenota','=','detiltransaksisparepart.kodenota')
+            ->leftJoin('detiltransaksiservice','transaksipenjualan.kodenota','=','detiltransaksiservice.kodenota')
+            ->leftJoin('sparepart','sparepart.kodeSparepart','=','detiltransaksisparepart.kodeSparepart')
+            ->leftJoin('kendaraankonsumen','kendaraankonsumen.platNomorKendaraan','=','detiltransaksiservice.platNomorKendaraan')
+            ->leftJoin('service','service.kodeService','=','detiltransaksiservice.kodeService')
+            ->where('kendaraankonsumen.platNomorKendaraan', $request->platNomorKendaraan)
+            ->where('transaksipenjualan.noTelpKonsumen', $request->noTelpKonsumen)
+            ->get();
+    
+        // return view('transaksiFull/index', ['tSparepart'=>$transaksiFull, 'no'=>0, ]);
+        return response()->json($transaksiFull, 200);
     }
 
     public function create()

@@ -2,9 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use App\User;
-use App\Sparepart;
-use App\Service;
+use SiAtmo\User;
+use SiAtmo\Sparepart;
+use SiAtmo\Service;
+use SiAtmo\Supplier;
+use SiAtmo\Kendaraan;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,45 +19,44 @@ use App\Service;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-//Route::post('login', 'ApiControllers\LoginController');
-//Auth::routes();
-
-//Route::get('laporan/pendapatanBulanan', 'ReportController@LaporanPendapatanBulanan');
-
-Route::get('pegawai', 'ApiControllers\PegawaiController@index');
-Route::post('pegawai', 'ApiControllers\PegawaiController@store');
-Route::patch('pegawai/{$email}', 'ApiControllers\PegawaiController@update');
-Route::delete('pegawai/{$email}', 'ApiControllers\PegawaiController@destroy');
+Route::post('login', 'ApiControllers\LoginController@login');
 
 Route::get('service', 'ApiControllers\ServiceController@index');
 Route::post('service', 'ApiControllers\ServiceController@store');
-Route::patch('service/{$kodeService}', 'ApiControllers\ServiceController@update');
-Route::delete('service/{$kodeService}', 'ApiControllers\ServiceController@destroy');
+Route::patch('service/{kodeService}', 'ApiControllers\ServiceController@update');
+Route::delete('service/{kodeService}', 'ApiControllers\ServiceController@destroy');
 
 Route::get('sparepart', 'ApiControllers\SparepartController@index');
+Route::get('sparepart/pushnotif', 'ApiControllers\SparepartController@pushNotif');
+Route::get('sparepart/kodesparepart', 'ApiControllers\SparepartController@kodeSparepart');
+Route::get('sparepart/bystok', 'ApiControllers\SparepartController@bystok');
+Route::get('sparepart/byharga', 'ApiControllers\SparepartController@byharga');
 Route::post('sparepart', 'ApiControllers\SparepartController@store');
-Route::patch('sparepart/{$kodeSparepart}', 'ApiControllers\SparepartController@update');
-Route::delete('sparepart/{$kodeSparepart}', 'ApiControllers\SparepartController@destroy');
+Route::patch('sparepart/{kodeSparepart}', 'ApiControllers\SparepartController@update');
+Route::delete('sparepart/{kodeSparepart}', 'ApiControllers\SparepartController@destroy');
 
 Route::get('supplier', 'ApiControllers\SupplierController@index');
+Route::get('supplier/namaperusahaan', 'ApiControllers\SupplierController@namaPerusahaan');
 Route::post('supplier', 'ApiControllers\SupplierController@store');
-Route::patch('supplier/{$kodeSparepart}', 'ApiControllers\SupplierController@update');
-Route::delete('supplier/{$kodeSparepart}', 'ApiControllers\SupplierController@destroy');
-
-Route::get('kendaraan', 'ApiControllers\KendaraanController@index');
-Route::post('kendaraan', 'ApiControllers\KendaraanController@store');
-Route::patch('kendaraan/{$kodeSparepart}', 'ApiControllers\KendaraanController@update');
-Route::delete('kendaraan/{$kodeSparepart}', 'ApiControllers\KendaraanController@destroy');
+Route::patch('supplier/{namaPerusahaan}', 'ApiControllers\SupplierController@update');
+Route::delete('supplier/{namaPerusahaan}', 'ApiControllers\SupplierController@destroy');
 
 Route::get('pemesanan', 'ApiControllers\PemesananController@index');
 Route::post('pemesanan', 'ApiControllers\PemesananController@store');
-Route::patch('pemesanan/{$kodeSparepart}', 'ApiControllers\PemesananController@update');
-Route::delete('pemesanan/{$kodeSparepart}', 'ApiControllers\PemesananController@destroy');
+Route::post('pemesanan/add', 'ApiControllers\PemesananController@addStore');
+Route::post('pemesanan/{noPemesanan}', 'ApiControllers\PemesananController@showDetil');
+Route::post('pemesanan/status/{noPemesanan}', 'ApiControllers\PemesananController@updateStatus');
+Route::delete('pemesanan/{noPemesanan}', 'ApiControllers\PemesananController@destroy');
 
+// Route::get('transaksisparepart', 'ApiControllers\TransaksiSparepartController@index');
+// Route::get('transaksisparepart/{kodeNota}', 'ApiControllers\TransaksiSparepartController@showDetil');
+// Route::get('transaksiservice', 'ApiControllers\TransaksiServiceController@index');
+
+Route::get('cekhistorytransaksi', 'ApiControllers\TransaksiFullController@index');
+Route::post('historytransaksi', 'ApiControllers\TransaksiFullController@showIndex');
+
+
+//Search
 Route::any('pegawai/search',function()
 {
     $q = Input::get ( 'name' );
@@ -83,4 +84,48 @@ Route::any('sparepart/search',function()
     else return response()->json('Data Tidak Ditemukan');
 });
 
+//Proto Laporan
+Route::get('pemesanan/downloadPDF/{noPemesanan}',[
+    'as'=>'pemesanan.downloadPDF',
+    'uses'=>'PemesananController@downloadPDF'
+]);
 
+Route::get('pemesanan/printPreview/{noPemesanan}',[
+    'as'=>'pemesananMobile. printPreview',
+    'uses'=>'PemesananController@printPreview']);
+
+    
+//Laporan
+Route::get('laporan/pendapatanBulanan/{tahun}',[
+    'as'=>'laporan.pendapatanBulanan',
+    'uses'=>'ApiControllers\ReportController@LaporanPendapatanBulanan']);
+    
+// Route::post('laporan/pendapatanBulanan',[
+//     'as'=>'laporan.pendapatanBulanan',
+//     'uses'=>'ReportController@LaporanPendapatanBulanan']);
+
+Route::get('laporan/pengeluaranBulanan/{tahun}',[
+    'as'=>'laporan.pengeluaranBulanan',
+    'uses'=>'ApiControllers\ReportController@LaporanPengeluaranBulanan']);
+
+// Route::post('laporan/pengeluaranBulanan',[
+//     'as'=>'laporan.pengeluaranBulanan',
+//     'uses'=>'ReportController@LaporanPengeluaranBulanan']);
+        
+Route::get('laporan/sparepartterlaris',[
+    'as'=>'laporan.stokTerlaris',
+    'uses'=>'ApiControllers\ReportController@LaporanSparepartTerlaris']);
+
+Route::get('laporan/sisaStok',[
+    'as'=>'laporan.sisaStok',
+    'uses'=>'ApiControllers\ReportController@LaporanSisaStok']);
+Route::post('laporan/sisaStok',[
+    'as'=>'laporan.sisaStok',
+    'uses'=>'ApiControllers\ReportController@LaporanSisaStok']);
+
+Route::get('laporan/cabang/{cabang}',[
+    'as'=>'laporan.cabang',
+    'uses'=>'ApiControllers\ReportController@LaporanCabang']);
+// Route::post('laporan/cabang',[
+//     'as'=>'laporan.cabang',
+//     'uses'=>'ReportController@LaporanCabang']);

@@ -42,23 +42,24 @@ class TransaksiFullController extends Controller
             'hargaJualTransaksi'=>'required', 
             'kodeSparepart'=>'required'
         ]);
-          
-        $countSubtotalSparepart = count($request->hargaJualTransaksi);
+        
+
+        $countSubtotalSparepart = count($request->kodeSparepart);
+        $countSubtotalService = count($request->kodeService);
         $subtotalSparepart=0;
+        $subtotalService=0;
+
         for($i = 0; $i<$countSubtotalSparepart; $i++)
         {
             $subtotalSparepart += $request->hargaJualTransaksi[$i]*$request->hargaJualTransaksi[$i];
         }
 
-        $countSubtotalService = count($request->biayaServiceTransaksi);
-        $subtotalService=0;
-        for($i = 0; $i<$countSubtotal; $i++)
+        for($i = 0; $i<$countSubtotalService; $i++)
         {
             $subtotalService += $request->biayaServiceTransaksi[$i];
         }
 
         $subtotal= $subtotalService+$subtotalSparepart;
-
         $total=$subtotal;
 
         $transaksi = TransaksiPenjualan::create([
@@ -71,15 +72,14 @@ class TransaksiFullController extends Controller
             'noTelpKonsumen'=>$request->noTelpKonsumen, 
             'alamatKonsumen'=>$request->alamatKonsumen,
         ]);
-        
+
         $user = Auth::user();
         $pegawaiOnDuty = PegawaiOnDuty::create([
             'email'=> $user->email,
-            'kodeNota'=>$transaksi->kodeNota
+            'kodeNota'=>$request->kodeNota
         ]);
 
-        $count = count($request->kodeSparepart);
-        for($i = 0; $i<$count; $i++)
+        for($i = 0; $i<$countSubtotalSparepart; $i++)
         {
             $detiltransaksi = DetilTransaksiSparepart::create([
                 'kodeNota'=>$transaksi->kodeNota,
@@ -88,9 +88,7 @@ class TransaksiFullController extends Controller
                 'kodeSparepart'=>$request->kodeSparepart[$i]
             ]);
         }
-
-        $count = count($request->kodeService);
-        for($i = 0; $i<$count; $i++)
+        for($i = 0; $i<$countSubtotalService; $i++)
         {
             $detiltransaksi = DetilTransaksiService::create([
                 'kodeNota'=>$transaksi->kodeNota,

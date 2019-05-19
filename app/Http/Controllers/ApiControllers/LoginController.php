@@ -36,31 +36,9 @@ class LoginController extends Controller
                     ->first();
         Auth::login($user);
         if($user->idPosisi == 1) {
-            $response = "Ownner";
-            return json_encode(array("posisi"=>$response, "user"=>$user));
+            return response()->json($user);
         }
-        else if($user->idPosisi == 2)
-        {
-            $response = "CS";
-            return json_encode(array("posisi"=>$response, "user"=>$user));
-        }
-        else if($user->idPosisi == 2)
-        {
-            $response = "Kasir";
-            return json_encode(array("posisi"=>$response, "user"=>$user));
-        }
-    }
-
-   
-
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
+        else 
+            return response()->json(error);
     }
 }
