@@ -49,6 +49,20 @@
         width : 100%;
         height : 100%;
       }
+
+      @media print{
+        #pager,
+        form,
+        .no-print{
+          display : none !important;
+          height : 0;
+        }
+      }
+
+      @page {
+        margin:0;
+      }
+
     </style>
   </head>
   <h1> <img  src="{{ asset('image/Logo2.PNG') }}" width=700> </h1>
@@ -87,7 +101,7 @@
            </div>
        </div>
      </div>
-     <input type="button" value="Print" class="btn" onclick="PrintDoc()"/>
+     <input type="button" value="Print" class="btn no-print" onclick="PrintDoc()"/>
     </div>
   </body>
 
@@ -99,15 +113,23 @@
 
           var ctx = document.getElementById("canvas").getContext('2d');
               var myChart = new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni"
                       ,"Juli", "Agustus", "September", "Oktober", "November", "Desember"],
                     datasets: [{
-                        label: 'Nilai Pendapatan',
+                        label: 'Sparepart',
+                        data: {{ json_encode($sparepart)}},
+                        borderWidth: 1
+                    }, {
+                        label: 'Service',
+                        data: {{ json_encode($service)}},
+                        borderWidth: 1
+                    }, {
+                        label: 'Total',
                         data: {{ json_encode($total)}},
                         borderWidth: 1
-                    }]
+                    }], 
                 },
                 options: {
                     scales: {

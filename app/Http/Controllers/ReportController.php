@@ -23,7 +23,7 @@ class ReportController extends Controller
         }
         else{
             $query = DB::select(
-                "SELECT MONTHNAME(STR_TO_DATE((m.bulan), '%m')) as Bulan, COALESCE(SUM(d.hargaJualTransaksi),0) as Sparepart, COALESCE(SUM(e.biayaServiceTransaksi),0) as Service,COALESCE((SUM(p.total)),0) as Total FROM (
+                "SELECT MONTHNAME(STR_TO_DATE((m.bulan), '%m')) as Bulan, COALESCE(SUM(d.hargaJualTransaksi*d.jumlahSparepart),0) as Sparepart, COALESCE(SUM(e.biayaServiceTransaksi),0) as Service, COALESCE( COALESCE(SUM(d.hargaJualTransaksi*d.jumlahSparepart),0)+COALESCE(SUM(e.biayaServiceTransaksi),0),0) as Total FROM (
                     SELECT '01' AS bulan
                     UNION SELECT '02' AS bulan
                     UNION SELECT '03' AS bulan
@@ -42,20 +42,24 @@ class ReportController extends Controller
                 where YEAR(p.tanggalTransaksi)='2019' or YEAR(P.tanggalTransaksi) is null
                 GROUP BY m.bulan, YEAR(p.tanggalTransaksi)"
             );
-            
             $count=count($query);
             $label              = [];
             $totalPendapatan    = [];
             $bulan              = [];
+            $spareparts         = [];
+            $service            = [];
             $total              = 0;
 
             for($i=0;$i<$count;$i++)
             {
                 $bulan[$i]             = $query[$i]->Bulan;
+                $sparepart[$i]         = $query[$i]->Sparepart;
+                $service[$i]           = $query[$i]->Service;
                 $totalPendapatan[$i]   = $query[$i]->Total;
                 $total                 = $total+$query[$i]->Sparepart+$query[$i]->Service;
             }
-            return view('printPreview/pendapatanBulanan',  ['bulan'=>$bulan, 'data'=>$query, 'total'=>$totalPendapatan]);
+
+            return view('printPreview/pendapatanBulanan',  ['bulan'=>$bulan, 'sparepart'=>$sparepart, 'service'=>$service, 'data'=>$query, 'total'=>$totalPendapatan]);
         }
     }
 
@@ -112,8 +116,8 @@ class ReportController extends Controller
             inner join service s on t.kodeService = s.kodeService inner join transaksipenjualan a on t.kodeNota = a.kodeNota
             where MONTHNAME(a.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) 
             group by t.kodeService 
-            order by COUNT(*) as total
-            DESC LIMIT 1),'-') AS NamaBarang, Coalesce((select s.tipeSparepart from detiltransaksisparepart t inner join sparepart s on t.kodeSparepart = s.kodeSparepart inner join transaksipenjualan a on t.kodeNota = a.kodeNota where MONTHNAME(a.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) group by t.kodeSparepart order by sum(t.jumlahSparepart) DESC LIMIT 1),'-') AS TipeBarang, Coalesce((select sum(jumlahSparepart) from detiltransaksisparepart t inner join transaksipenjualan a on t.kodeNota = a.kodeNota where MONTHNAME(a.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) group by kodeSparepart order by sum(jumlahSparepart) DESC LIMIT 1),'-') AS JumlahPenjualan
+            order by sum(t.jumlahSewa)
+            DESC LIMIT 1),'-') AS NamaJasa, Coalesce((select sum(jumlahSewa) from detiltransaksiservice t inner join transaksipenjualan a on t.kodeNota = a.kodeNota where MONTHNAME(a.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) group by kodeService order by sum(jumlahSewa) DESC LIMIT 1),'-') AS JumlahPenjualan
             FROM(
             SELECT '01' AS bulan
             UNION SELECT '02' AS bulan

@@ -60,6 +60,18 @@
       img {
         width : 100%
       }
+      @media print{
+        #pager,
+        form,
+        .no-print{
+          display : none !important;
+          height : 0;
+        }
+      }
+
+      @page {
+        margin:0;
+      }
     </style>
   </head>
   <h1> <img  src="{{ asset('image/Logo2.PNG') }}"> </h1>
@@ -106,7 +118,7 @@
             </tbody>
         </table>
       </div>
-      <input type="button" value="Print" class="btn" onclick="PrintDoc()"/>
+      <input type="button" value="Print" class="btn no-print" onclick="PrintDoc()"/>
     </div>
   </body>
   <script type="text/javascript">

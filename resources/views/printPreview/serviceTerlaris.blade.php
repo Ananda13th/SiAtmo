@@ -44,26 +44,42 @@
       img {
         width : 100%;
       }
+      @media print{
+        #pager,
+        form,
+        .no-print{
+          display : none !important;
+          height : 0;
+        }
+      }
+
+      @page {
+        margin:0;
+      }
     </style>
   </head>
   <h1> <img  src="{{ asset('image/Logo2.PNG') }}" width=700> </h1>
   <body>
   <div class="default-list-upper-alpha">
       <div>
+      <label>Tahun : 2019</label>
+      <br>
         <table>
             <thead>
                 <tr>
                     <th>Bulan</th>
-                    <th>Sparepart</th>
+                    <th>Service</th>
                     <th>Pembelian</th>
                 </tr>
             </thead>
             <tbody>
-                    <tr>
-                        <td>{{$bulan}} </td>
-                        <td>{{$keterangan}} </td>
-                        <td>{{$jumlah}} </td>
-                    </tr>
+            @foreach($data as $d)
+                <tr>
+                  <td>{{$d->Bulan}}</td>
+                  <td>{{$d->NamaJasa}} </td>
+                  <td>{{$d->JumlahPenjualan}} </td>
+                </tr>
+              @endforeach
             </tbody>
         </table>
       </div>
@@ -78,35 +94,12 @@
            </div>
        </div>
      </div>
-     <input type="button" value="Print" class="btn" onclick="PrintDoc()"/>
+     <input type="button" value="Print" class="btn no-print" onclick="PrintDoc()"/>
     </div>
   </body>
-
   <script type="text/javascript">
-    function PrintDoc() {
-       window.print();
-    }
-
-    var ctx = document.getElementById("canvas").getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: {{ json_encode($keterangan) }},
-                datasets: [{
-                    label: 'Jumlah Pembelian',
-                    data: {{ json_encode($jumlah) }},
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
-                }
-            }
-        });
-  </script>
+        function PrintDoc() {
+        window.print();
+        }
+    </script>
 </html>
