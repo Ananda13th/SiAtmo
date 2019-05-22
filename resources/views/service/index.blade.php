@@ -48,43 +48,15 @@
                 <td><?= $data->keterangan ?></td>
                 <td><?= $data->biayaService?></td>
                 <td>
-                    <!-- {{ Form::open(array('route' => array('service.destroy', $data['kodeService']), 'method' => 'DELETE')) }}
+                    {{ Form::open(array('route' => array('service.destroy', $data['kodeService']), 'method' => 'DELETE')) }}
                         <button type="submit" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span> Hapus </button>
                         <a class="btn btn-sm btn-info" href="{{ route('service.edit', $data['kodeService']) }}"> <i class="oi oi-pencil"></i> Edit</a>
-                    {{ Form::close() }} -->
-                    <a class="btn btn-sm btn-info" href="{{ route('service.edit', $data['kodeService']) }}"> <i class="oi oi-pencil"></i> Edit</a>
-                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal"><span class="oi oi-trash"></span> Hapus</button>
+                    {{ Form::close() }}
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
-
-    <!-- Modal -->
-	<div id="myModal" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-			<!-- konten modal-->
-			<div class="modal-content">
-				<!-- heading modal -->
-				<div class="modal-header">
-					<h4 class="modal-title">PERINGATAN</h4>
-				</div>
-				<!-- body modal -->
-				<div class="modal-body">
-					<p>Yakin ingin menhapus jasa service?</p>
-                    {{$data['kodeService']}}
-				</div>
-				<!-- footer modal -->
-				<div class="modal-footer">
-                    {{ Form::open(array('route' => array('service.destroy', $data['kodeService']), 'method' => 'DELETE')) }}
-                        <button type="submit" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span> Ya</button>
-                        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
-                    {{ Form::close() }}
-					
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 <script>

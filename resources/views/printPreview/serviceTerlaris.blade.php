@@ -62,22 +62,25 @@
   <body>
   <div class="default-list-upper-alpha">
       <div>
-      <label>Tahun : 2019</label>
+      <label>Tahun : 2019</label> <br>
+      <label>Bulan : Mei <label>
       <br>
         <table>
             <thead>
                 <tr>
-                    <th>Bulan</th>
+                    <th>Merk</th>
+                    <th>Tipe</th>
                     <th>Service</th>
-                    <th>Pembelian</th>
+                    <th>Jumlah</th>
                 </tr>
             </thead>
             <tbody>
             @foreach($data as $d)
                 <tr>
-                  <td>{{$d->Bulan}}</td>
-                  <td>{{$d->NamaJasa}} </td>
-                  <td>{{$d->JumlahPenjualan}} </td>
+                  <td>{{$d->Merk}} </td>
+                  <td>{{$d->Tipe}} </td>
+                  <td>{{$d->NamaService}} </td>
+                  <td>{{$d->JumlahService}} </td>
                 </tr>
               @endforeach
             </tbody>

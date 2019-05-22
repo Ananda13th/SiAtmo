@@ -111,27 +111,29 @@ class ReportController extends Controller
     {
 
         $result = DB::select(
-            "SELECT MONTHNAME(STR_TO_DATE((m.bulan), '%m')) AS Bulan, Coalesce((SELECT s.keterangan
-            FROM detiltransaksiservice t 
-            inner join service s on t.kodeService = s.kodeService inner join transaksipenjualan a on t.kodeNota = a.kodeNota
-            where MONTHNAME(a.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) 
-            group by t.kodeService 
-            order by sum(t.jumlahSewa)
-            DESC LIMIT 1),'-') AS NamaJasa, Coalesce((select sum(jumlahSewa) from detiltransaksiservice t inner join transaksipenjualan a on t.kodeNota = a.kodeNota where MONTHNAME(a.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) group by kodeService order by sum(jumlahSewa) DESC LIMIT 1),'-') AS JumlahPenjualan
-            FROM(
-            SELECT '01' AS bulan
-            UNION SELECT '02' AS bulan
-            UNION SELECT '03' AS bulan
-            UNION SELECT '04' AS bulan
-            UNION SELECT '05' AS bulan
-            UNION SELECT '06' AS bulan
-            UNION SELECT '07' AS bulan
-            UNION SELECT '08' AS bulan
-            UNION SELECT '09' AS bulan
-            UNION SELECT '10' AS bulan
-            UNION SELECT '11' AS bulan
-            UNION SELECT '12' AS bulan
-            ) AS m");
+            "SELECT
+            p.merkKendaraan AS Merk,
+            p.tipeKendaraan AS Tipe,
+            s.keterangan AS `NamaService`,
+            Count( t.tanggalTransaksi ) AS `JumlahService`,
+            YEAR(t.tanggalTransaksi) AS Tahun ,
+            MONTHNAME(t.tanggalTransaksi) AS Bulan
+        FROM
+            kendaraan AS p
+            INNER JOIN kendaraankonsumen AS q ON q.kodeKendaraan = p.kodeKendaraan
+            INNER JOIN detiltransaksiservice AS r ON r.platNomorKendaraan = q.platNomorKendaraan
+            INNER JOIN transaksipenjualan AS t ON r.kodeNota = t.kodeNota
+            INNER JOIN service AS s ON s.kodeService = r.kodeService
+        WHERE
+            MONTHNAME( t.tanggalTransaksi ) = 'May' 
+            AND YEAR ( t.tanggalTransaksi ) = 2019 
+            AND t.kodeNota LIKE '%SV%'
+            OR t.kodeNota LIKE '%SS%'
+        GROUP BY
+            p.merkKendaraan,
+            p.tipeKendaraan,
+            s.keterangan");
+  
 
         return view('printPreview/serviceTerlaris', ['data'=>$result]);
     }
@@ -176,13 +178,15 @@ class ReportController extends Controller
             return view('laporan/pendapatanCabang', ['cabang'=>$cabang]);
         }
         else{
-            $query = DB::table("transaksipenjualan")->select(DB::raw('EXTRACT(MONTH FROM tanggalTransaksi) AS Bulan, SUM(total) as Pendapatan'))
-            ->leftJoin('pegawaionduty', 'pegawaionduty.kodeNota', 'transaksipenjualan.kodeNota')
-            ->leftJoin('users', 'pegawaionduty.emailPegawai', 'users.email')
-            ->leftJoin('cabang', 'users.idCabang', 'cabang.idCabang')
-            ->where('users.idCabang', 'LIKE', '%'.$request->cabang.'%')
-            ->groupBy(DB::raw('EXTRACT(MONTH FROM transaksiPenjualan.tanggalTransaksi)'))
-            ->get();
+            $query = DB::select(
+                "SELECT c.namaCabang AS Cabang, SUM(t.total) AS Total 
+                 FROM transaksipenjualan AS t 
+                 INNER JOIN pegawaionduty AS p ON p.kodeNota = t.kodeNota
+                 INNER JOIN users AS u ON u.email = p.emailPegawai
+                 INNER JOIN cabang AS c ON c.idCabang = u.idCabang
+                 WHERE YEAR(t.tanggalTransaksi) = 2019
+                 GROUP BY c.namaCabang"
+            );
 
             $count=count($query);
             $label  = [];
@@ -191,11 +195,11 @@ class ReportController extends Controller
 
             for($i=0;$i<$count;$i++)
             {
-                $label[$i]  = $query[$i]->Bulan;
-                $data[$i]   = $query[$i]->Pendapatan;
+                $label[$i]  = $query[$i]->Cabang;
+                $data[$i]   = $query[$i]->Total;
             }
 
-            return view('printPreview/pendapatanCabang',  ['data'=>$query, 'bulan'=>$label, 'pendapatan'=>$data]);
+            return view('printPreview/pendapatanCabang',  ['data'=>$query, 'cabang'=>$label, 'pendapatan'=>$data]);
         }
     }
 }

@@ -67,6 +67,7 @@
   <body>
   <div class="default-list-upper-alpha">
       <div>
+      <label>Tahun : 2019 </label> <br>
         <table>
             <thead>
                 <tr>
@@ -77,8 +78,8 @@
             <tbody>
                 @foreach($data as $d)
                     <tr>
-                        <td>{{ date("F", mktime(0, 0, 0, $d->Bulan, 1)) }} </td>
-                        <td>{{$d->Pendapatan}} </td>
+                        <td>{{ $d->Cabang }} </td>
+                        <td>{{ $d->Total }} </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -110,13 +111,13 @@
 
           var ctx = document.getElementById("canvas").getContext('2d');
               var myChart = new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
-                    labels: {{ json_encode($bulan) }},
+                    labels: ['Demangan', 'Kaliurang'],
                     datasets: [{
                         label: 'Nilai Pendapatan',
                         data: {{ json_encode($pendapatan) }},
-                        borderWidth: 1
+                        borderWidth: 0.5
                     }]
                 },
                 options: {
