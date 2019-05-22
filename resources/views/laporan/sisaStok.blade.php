@@ -7,10 +7,15 @@
 <form method="POST" action="{{ route('laporan.sisaStok') }}" enctype="multipart/form-data">
     @csrf
     <div class="form-group-row">
+    <label>Tahun</label>
+    <select id="tahun" name="tahun" class="custom-select">
+            <option value="2019">2019</option>
+    </select>
+    <br>
     <label>Sparepart </label>
-    <select id="kode" name="kode" class="custom-select">
+    <select id="tipe" name="tipe" class="custom-select">
         @foreach($spareparts as $sparepart)
-            <option value="{{$sparepart->kodeSparepart}}">{{$sparepart->namaSparepart}}</option>
+            <option value="{{$sparepart->tipeSparepart}}">{{$sparepart->namaSparepart}}</option>
         @endforeach
     </select>
     <br>

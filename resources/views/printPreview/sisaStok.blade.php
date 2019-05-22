@@ -69,8 +69,8 @@
             <tbody>
                 @foreach($data as $d)
                     <tr>
-                        <td>{{ date("F", mktime(0, 0, 0, $d->Bulan, 1)) }}</td>
-                        <td>{{$d->Sisa}} </td>
+                        <td>{{ $d->Bulan }}</td>
+                        <td>{{ $d->SisaStok }} </td>
                     </tr>
                 @endforeach
             </tbody>

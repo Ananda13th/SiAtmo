@@ -39,7 +39,7 @@ class ReportController extends Controller
                 ) AS m LEFT JOIN transaksipenjualan p ON MONTHNAME(p.tanggalTransaksi) = MONTHNAME(STR_TO_DATE((m.bulan), '%m')) 
                 LEFT JOIN detiltransaksisparepart d ON p.kodeNota=d.kodeNota
                 LEFT JOIN detiltransaksiservice e ON p.kodeNota=e.kodeNota
-                where YEAR(p.tanggalTransaksi)='2019' or YEAR(P.tanggalTransaksi) is null
+                where YEAR(p.tanggalTransaksi)=$request->tahun or YEAR(P.tanggalTransaksi) is null
                 GROUP BY m.bulan, YEAR(p.tanggalTransaksi)"
             );
             $count=count($query);
@@ -66,16 +66,48 @@ class ReportController extends Controller
 
     public function LaporanSisaStok(Request $request) {
 
-        if($request->kode == "")
+        if($request->tipe == "")
         {
             $spareparts = Sparepart::all();
             return view('laporan/sisaStok')->with(['spareparts' => $spareparts]);
         }
         else {
-            $query = DB::table("historisparepart")->select(DB::raw('EXTRACT(MONTH FROM tanggal) AS Bulan, SUM(jumlah) as Sisa'))
-            ->where('kodeSparepart', $request->kode)
-            ->groupBy(DB::raw('EXTRACT(MONTH FROM tanggal)'))
-            ->get();
+            $tipe = $request->tipe;
+            $tahun = $request->tahun;
+
+            $query = DB::select(
+                "SELECT
+                m.MONTH as 'Bulan',
+                COALESCE(s.SISA, 0) as 'SisaStok'
+                FROM ( 
+                    SELECT 'January' AS MONTH 
+                    UNION SELECT 'February' AS MONTH 
+                    UNION SELECT 'March' AS MONTH 
+                    UNION SELECT 'April' AS MONTH 
+                    UNION SELECT 'May' AS MONTH 
+                    UNION SELECT 'June' AS MONTH 
+                    UNION SELECT 'July' AS MONTH 
+                    UNION SELECT 'August' AS MONTH 
+                    UNION SELECT 'September' AS MONTH 
+                    UNION SELECT 'October' AS MONTH 
+                    UNION SELECT 'November' AS MONTH 
+                    UNION SELECT 'December' AS MONTH ) 
+                    AS m 
+                    
+                    LEFT JOIN
+                    (
+                        SELECT MONTHNAME(tanggal) as 'Tgl', 
+                        (SUM(IF(jumlah>0, jumlah, 0)) - SUM(IF(jumlah<0, jumlah, 0))
+                        + SUM(sparepart.jumlahStok)) AS 'SISA'
+                        FROM historisparepart
+                        INNER JOIN sparepart ON historisparepart.kodeSparepart = sparepart.kodeSparepart
+                        WHERE YEAR(tanggal) = '$tahun' AND sparepart.tipeSparepart = '$tipe'
+                        GROUP BY MONTHNAME(tanggal)
+                    ) as s ON s.Tgl = M.MONTH
+                GROUP BY m.MONTH
+                ORDER BY STR_TO_DATE(m.MONTH, '%M')"
+            );
+
             return view('printPreview/sisaStok', ['data'=>$query]);
         }
     }
@@ -172,34 +204,28 @@ class ReportController extends Controller
 
     public function LaporanCabang(Request $request)
     {
-        if($request->cabang == "")
+    
+        $query = DB::select(
+            "SELECT c.namaCabang AS Cabang, SUM(t.total) AS Total 
+                FROM transaksipenjualan AS t 
+                INNER JOIN pegawaionduty AS p ON p.kodeNota = t.kodeNota
+                INNER JOIN users AS u ON u.email = p.emailPegawai
+                INNER JOIN cabang AS c ON c.idCabang = u.idCabang
+                WHERE YEAR(t.tanggalTransaksi) = 2019
+                GROUP BY c.namaCabang"
+        );
+
+        $count=count($query);
+        $label  = [];
+        $data   = [];
+        $cabang = [];
+
+        for($i=0;$i<$count;$i++)
         {
-            $cabang = Cabang::all();
-            return view('laporan/pendapatanCabang', ['cabang'=>$cabang]);
+            $label[$i]  = $query[$i]->Cabang;
+            $data[$i]   = $query[$i]->Total;
         }
-        else{
-            $query = DB::select(
-                "SELECT c.namaCabang AS Cabang, SUM(t.total) AS Total 
-                 FROM transaksipenjualan AS t 
-                 INNER JOIN pegawaionduty AS p ON p.kodeNota = t.kodeNota
-                 INNER JOIN users AS u ON u.email = p.emailPegawai
-                 INNER JOIN cabang AS c ON c.idCabang = u.idCabang
-                 WHERE YEAR(t.tanggalTransaksi) = 2019
-                 GROUP BY c.namaCabang"
-            );
 
-            $count=count($query);
-            $label  = [];
-            $data   = [];
-            $cabang = [];
-
-            for($i=0;$i<$count;$i++)
-            {
-                $label[$i]  = $query[$i]->Cabang;
-                $data[$i]   = $query[$i]->Total;
-            }
-
-            return view('printPreview/pendapatanCabang',  ['data'=>$query, 'cabang'=>$label, 'pendapatan'=>$data]);
-        }
+        return view('printPreview/pendapatanCabang',  ['data'=>$query, 'cabang'=>$label, 'pendapatan'=>$data]);  
     }
 }

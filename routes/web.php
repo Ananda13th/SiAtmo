@@ -125,7 +125,11 @@ Route::group(['middleware'=>'cekRole'], function(){
     Route::get('laporan/stokTerlaris',
         [
             'as'=>'laporan.stokTerlaris',
-            'uses'=>'ReportController@LaporanStokTerlaris']);
+            'uses'=>'ReportController@LaporanSparepartTerlaris']);
+    Route::get('laporan/jumlahService',
+    [
+        'as'=>'laporan.jumlahService',
+        'uses'=>'ReportController@LaporanServiceTerlaris']);
 
     Route::get('laporan/sisaStok',
     [
