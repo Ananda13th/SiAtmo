@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use SiAtmo\Sparepart;
 use Exception;
 use Image;
+use DB;
 
 class SparepartController extends Controller
 {
@@ -38,8 +39,19 @@ class SparepartController extends Controller
 
     public function store(Request $request)
     {
+        $tempat         = $request->tempatPeletakan;
+        $penyimpanan    = $request->tempatSimpan;
+        $id             = [];
+        $id = DB::select(" SELECT kodeSparepart FROM sparepart WHERE kodeSparepart LIKE '%$tempat%' AND kodeSparepart LIKE '%$penyimpanan%' ORDER BY SUBSTRING(kodeSparepart, 11) + 0 DESC LIMIT 1");
+        if(!$id)
+            $no = 1;
+        else{
+            $no_str = substr($id[0]->kodeSparepart, 10);
+            $no     = ++$no_str+1;
+        }
+        $kodeBarang = $tempat.'-'.$penyimpanan.'-'.$no;
+
         $this->validate($request, [
-            'kodeSparepart'=>'required|max:12|min:12',
             'namaSparepart'=>'required',
             'tipeSparepart'=>'required',
             'merkSparepart'=>'required',
@@ -59,7 +71,7 @@ class SparepartController extends Controller
             // $image->move( public_path().'/image/',  $filename );
             try{
                 $addSparepart = Sparepart::create([
-                    'kodeSparepart' => $request->kodeSparepart,
+                    'kodeSparepart' => $kodeBarang,
                     'namaSparepart'=>$request->namaSparepart,
                     'tipeSparepart'=>$request->tipeSparepart,
                     'merkSparepart'=>$request->merkSparepart,
@@ -79,7 +91,7 @@ class SparepartController extends Controller
         {
             try{
                 $addSparepart = Sparepart::create([
-                    'kodeSparepart' => $request->kodeSparepart,
+                    'kodeSparepart' => $kodeBarang,
                     'namaSparepart'=>$request->namaSparepart,
                     'tipeSparepart'=>$request->tipeSparepart,
                     'merkSparepart'=>$request->merkSparepart,

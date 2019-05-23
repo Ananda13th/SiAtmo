@@ -62,7 +62,7 @@
                 <td><?= $data->hargaJual?></td>
                 <td><?= $data->hargaBeli?></td>
                 <td><?= $data->jumlahStok?></td>
-                <td>
+                <td width="20%">
                     {{ Form::open(array('route' => array('sparepart.destroy', $data['kodeSparepart']), 'method' => 'DELETE')) }}
                         <button type="submit" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span> Hapus </button>
                         <a class="btn btn-sm btn-info" href="{{ route('sparepart.edit', $data['kodeSparepart']) }}"> <i class="oi oi-pencil"></i> Edit</a>

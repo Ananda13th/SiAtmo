@@ -54,6 +54,9 @@
         text-align: left;
         margin-left: 50px;
       }
+      img{
+        width:100%;
+      }
       @media print{
         #pager,
         form,

@@ -65,7 +65,8 @@ class ReportController extends Controller
             ->where('kodeSparepart', $request->kode)
             ->groupBy(DB::raw('EXTRACT(MONTH FROM tanggal)'))
             ->get();
-            return view('printPreview/sisaStokMobile', ['data'=>$query]);
+            $pdf = PDF::loadView('printPreview/sisaStokMobile', ['data'=>$query]);
+            return $pdf->stream();
         }
     }
     public function LaporanSparepartTerlaris()
@@ -92,7 +93,8 @@ class ReportController extends Controller
             UNION SELECT '11' AS bulan
             UNION SELECT '12' AS bulan
             ) AS m");
-        return view('printPreview/sparepartTerlarisMobile', ['data'=>$result]);
+            $pdf = PDF::loadView('printPreview/sparepartTerlarisMobile', ['data'=>$result]);
+            return $pdf->stream();
     }
     public function LaporanServiceTerlaris()
     {

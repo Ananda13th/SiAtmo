@@ -14,6 +14,7 @@ use SiAtmo\PegawaiOnDuty;
 use SiAtmo\Sparepart;
 use Carbon\Carbon;
 use PDF;
+use DB;
 
 class TransaksiServiceController extends Controller
 {
@@ -39,9 +40,20 @@ class TransaksiServiceController extends Controller
 
     public function store(Request $request)
     {
+        $kode       = 'SV';
+        $tanggal    = Carbon::now()->format('dmy');
+        $id         = [];
+        $id = DB::select(" SELECT kodeNota FROM transaksipenjualan WHERE kodeNota LIKE '%$kode%' AND kodeNota LIKE '%$tanggal%' ORDER BY SUBSTRING(kodeNota, 11) + 0 DESC LIMIT 1");
+        
+        if(!$id)
+            $no = 1;
+        else{
+            $no_str = substr($id[0]->kodeNota, 10);
+            $no = ++$no_str;
+        }
+        $kodeNota = $kode.'-'.$tanggal.'-'.$no;
    
         $this->validate($request, [
-            'kodeNota'=>'required|max:13',
             'namaKonsumen'=>'required', 
             'noTelpKonsumen'=>'required', 
             'alamatKonsumen'=>'required',
@@ -58,7 +70,7 @@ class TransaksiServiceController extends Controller
         }
 
         $transaksi = TransaksiPenjualan::create([
-            'kodeNota'          =>$request->kodeNota,
+            'kodeNota'          =>$kodeNota,
             'tanggalTransaksi'  =>Carbon::now(), 
             'statusTransaksi'   =>'Sedang Dikerjakan',
             'subtotal'          =>$subtotal, 
@@ -78,7 +90,7 @@ class TransaksiServiceController extends Controller
         for($i = 0; $i<$count; $i++)
         {
             $detiltransaksi = DetilTransaksiService::create([
-                'kodeNota'              =>$transaksi->kodeNota,
+                'kodeNota'              =>$kodeNota,
                 'biayaServiceTransaksi' =>$request->biayaServiceTransaksi[$i], 
                 'platNomorKendaraan'    =>$request->platNomorKendaraan[$i], 
                 'emailPegawai'          =>$request->emailPegawai[$i], 
@@ -178,7 +190,6 @@ class TransaksiServiceController extends Controller
         ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
         ->get();
         $user = Auth::user();
-
       return view('printPreview.notaLunasService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
     }
 

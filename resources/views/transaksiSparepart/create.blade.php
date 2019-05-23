@@ -18,12 +18,6 @@
 <form method="POST" action="{{ route('transaksiSparepart.store') }}" enctype="multipart/form-data">
     @csrf
     <div class="form-group row">
-        <label class="col-sm-2" col-form-label>Kode Nota</label>
-        <div class="col-sm-4">
-            <input class="form-control" type="text" id="kodeNota" name="kodeNota">
-        </div>
-    </div>
-    <div class="form-group row">
         <label class="col-sm-2" col-form-label>Nama Konsumen</label>
         <div class="col-sm-4">
             <input class="form-control" type="text" id="namaKonsumen" name="namaKonsumen">

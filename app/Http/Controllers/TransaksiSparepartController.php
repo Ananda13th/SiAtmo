@@ -31,8 +31,20 @@ class TransaksiSparepartController extends Controller
 
     public function store(Request $request)
     {
+        $kode       = 'SP';
+        $tanggal    = Carbon::now()->format('dmy');
+        $id         = [];
+        $id = DB::select(" SELECT kodeNota FROM transaksipenjualan WHERE kodeNota LIKE '%$kode%' AND kodeNota LIKE '%$tanggal%' ORDER BY SUBSTRING(kodeNota, 11) + 0 DESC LIMIT 1");
+        
+        if(!$id)
+            $no = 1;
+        else{
+            $no_str = substr($id[0]->kodeNota, 10);
+            $no = ++$no_str;
+        }
+        $kodeNota = $kode.'-'.$tanggal.'-'.$no;
+
         $this->validate($request, [
-            'kodeNota'=>'required|max:13',
             'namaKonsumen'=>'required', 
             'noTelpKonsumen'=>'required', 
             'alamatKonsumen'=>'required',
@@ -48,7 +60,7 @@ class TransaksiSparepartController extends Controller
         }
 
         $transaksi = TransaksiPenjualan::create([
-            'kodeNota'          =>$request->kodeNota,
+            'kodeNota'          =>$kodeNota,
             'tanggalTransaksi'  =>Carbon::now(), 
             'statusTransaksi'   =>'Sedang Dikerjakan',
             'subtotal'          =>$subtotal, 
@@ -75,7 +87,7 @@ class TransaksiSparepartController extends Controller
 
             Sparepart::where('kodeSparepart', '=', $request->kodeSparepart[$i])->decrement('jumlahStok', $request->jumlahSparepart[$i]);
             $detiltransaksi = DetilTransaksiSparepart::create([
-                'kodeNota'          =>$transaksi->kodeNota,
+                'kodeNota'          =>$kodeNota,
                 'hargaJualTransaksi'=>$request->hargaJualTransaksi[$i], 
                 'jumlahSparepart'   =>$request->jumlahSparepart[$i], 
                 'kodeSparepart'     =>$request->kodeSparepart[$i]

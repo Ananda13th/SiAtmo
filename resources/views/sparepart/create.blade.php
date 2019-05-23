@@ -29,12 +29,6 @@
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-2" col-form-label>Kode</label>
-        <div class="col-sm-4">
-            <input class="form-control" type="text" id="kodeSparepart" name="kodeSparepart">
-        </div>
-    </div>
-    <div class="form-group row">
         <label class="col-sm-2" col-form-label>Tipe</label>
         <div class="col-sm-4">
             <input class="form-control" type="text" id="tipeSparepart" name="tipeSparepart">
@@ -65,6 +59,15 @@
             <option value="DPN"> Depan </option>
             <option value="TGH"> Tengah </option>
             <option value="BLK"> Belakang </option>
+        </select>
+    </div>
+    <div class="form-group-row">
+        <label for="tempatSimpan" class="col-sm-2 col-form-label">Penyimpanan</label>
+        <select class="custom-select" id="tempatSimpan" name="tempatSimpan">
+            <option value=" ">-Pilih Tempat-</option>
+            <option value="KAYU"> Kayu </option>
+            <option value="KACA"> Kaca </option>
+            <option value="KARDUS"> Kardus </option>
         </select>
     </div>
     <br>

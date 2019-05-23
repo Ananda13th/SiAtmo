@@ -152,7 +152,7 @@ class ReportController extends Controller
             MONTHNAME(t.tanggalTransaksi) AS Bulan
         FROM
             kendaraan AS p
-            INNER JOIN kendaraankonsumen AS q ON q.kodeKendaraan = p.kodeKendaraan
+            INNER JOIN kendaraankonsumen AS q ON q.merkKendaraan = p.kodeKendaraan
             INNER JOIN detiltransaksiservice AS r ON r.platNomorKendaraan = q.platNomorKendaraan
             INNER JOIN transaksipenjualan AS t ON r.kodeNota = t.kodeNota
             INNER JOIN service AS s ON s.kodeService = r.kodeService
