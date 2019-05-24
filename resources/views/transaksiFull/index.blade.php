@@ -31,8 +31,7 @@
                     <td><?= $data->tanggalTransaksi ?></td>
                     <td>
                         <a class="btn btn-sm btn-info" href="{{ route('transaksiFull.edit', $data['kodeNota']) }}"> <i class="oi oi-pencil"></i> Edit</a>
-                        <a class="btn btn-sm btn-primary" href="{{ route('transaksiFull.downloadPDF', $data['kodeNota']) }}"><span class="oi oi-eye"></span> Lihat</a>
-                        <a class="btn btn-sm btn-success" href="{{ route('SPK.printPreview', $data['kodeNota']) }}"><span class="oi oi-print"></span> Cetak</a>
+                        <a class="btn btn-sm btn-success" href="{{ route('SPKFull.printPreview', $data['kodeNota']) }}"><span class="oi oi-print"></span> Cetak</a>
                     </td>
                 </tr>
                 @endif

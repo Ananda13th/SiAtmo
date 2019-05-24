@@ -37,20 +37,8 @@ class TransaksiSparepartController extends Controller
 
     public function store(Request $request)
     {
-        $kode       = 'SP';
-        $tanggal    = Carbon::now()->format('dmy');
-        $id         = [];
-        $id = DB::select(" SELECT kodeNota FROM transaksipenjualan WHERE kodeNota LIKE '%$kode%' AND kodeNota LIKE '%$tanggal%' ORDER BY SUBSTRING(kodeNota, 11) + 0 DESC LIMIT 1");
-        
-        if(!$id)
-            $no = 1;
-        else{
-            $no_str = substr($id[0]->kodeNota, 10);
-            $no = ++$no_str;
-        }
-        $kodeNota = $kode.'-'.$tanggal.'-'.$no;
-
         $this->validate($request, [
+            'kodeNota'=>'required|max:13',
             'namaKonsumen'=>'required', 
             'noTelpKonsumen'=>'required', 
             'alamatKonsumen'=>'required',
@@ -65,40 +53,37 @@ class TransaksiSparepartController extends Controller
             $subtotal += $request->hargaJualTransaksi[$i]*$request->jumlahSparepart[$i];
         }
 
-        $transaksi = TransaksiPenjualan::create([
-            'kodeNota'          =>$kodeNota,
-            'tanggalTransaksi'  =>Carbon::now(), 
-            'statusTransaksi'   =>'Sedang Dikerjakan',
-            'subtotal'          =>$subtotal, 
-            'total'             =>$subtotal,
-            'namaKonsumen'      =>$request->namaKonsumen, 
-            'noTelpKonsumen'    =>$request->noTelpKonsumen, 
-            'alamatKonsumen'    =>$request->alamatKonsumen,
-        ]);
         $user = Auth::user();
         $pegawaiOnDuty = PegawaiOnDuty::create([
-             'emailPegawai' => $user->email,
-             'kodeNota'     =>$transaksi->kodeNota
+             'email'=> $user->email,
+             'kodeNota'=>$transaksi->kodeNota
         ]);
+
+       
+        $transaksi = TransaksiPenjualan::create([
+            'kodeNota'=>$request->kodeNota,
+            'tanggalTransaksi'=>Carbon::now(), 
+            'statusTransaksi'=>'sedang dikerjakan',
+            'subtotal'=>$subtotal, 
+            'total'=>$subtotal,
+            'namaKonsumen'=>$request->namaKonsumen, 
+            'noTelpKonsumen'=>$request->noTelpKonsumen, 
+            'alamatKonsumen'=>$request->alamatKonsumen,
+        ]);
+        
 
         $count = count($request->kodeSparepart);
         for($i = 0; $i<$count; $i++)
         {
-            $jumlah = $request->jumlahSparepart[$i]*-1;
-            HistorySparepart::create([
-                'jumlah'        =>$jumlah, 
-                'kodeSparepart' =>$request->kodeSparepart[$i],
-                'tanggal'       =>Carbon::now()
-            ]);
-
             Sparepart::where('kodeSparepart', '=', $request->kodeSparepart[$i])->decrement('jumlahStok', $request->jumlahSparepart[$i]);
             $detiltransaksi = DetilTransaksiSparepart::create([
-                'kodeNota'          =>$kodeNota,
+                'kodeNota'=>$transaksi->kodeNota,
                 'hargaJualTransaksi'=>$request->hargaJualTransaksi[$i], 
-                'jumlahSparepart'   =>$request->jumlahSparepart[$i], 
-                'kodeSparepart'     =>$request->kodeSparepart[$i]
+                'jumlahSparepart'=>$request->jumlahSparepart[$i], 
+                'kodeSparepart'=>$request->kodeSparepart[$i]
             ]);
 
+            
         }
         $response = "Sukses";
 

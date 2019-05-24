@@ -31,6 +31,7 @@ Route::get('sparepart/pushnotif', 'ApiControllers\SparepartController@pushNotif'
 Route::get('sparepart/kodesparepart', 'ApiControllers\SparepartController@kodeSparepart');
 Route::get('sparepart/bystok', 'ApiControllers\SparepartController@bystok');
 Route::get('sparepart/byharga', 'ApiControllers\SparepartController@byharga');
+Route::get('sparepart/tipesparepart', 'ApiControllers\SparepartController@tipeSparepart');
 Route::post('sparepart', 'ApiControllers\SparepartController@store');
 Route::patch('sparepart/{kodeSparepart}', 'ApiControllers\SparepartController@update');
 Route::delete('sparepart/{kodeSparepart}', 'ApiControllers\SparepartController@destroy');
@@ -48,10 +49,7 @@ Route::post('pemesanan/{noPemesanan}', 'ApiControllers\PemesananController@showD
 Route::post('pemesanan/status/{noPemesanan}', 'ApiControllers\PemesananController@updateStatus');
 Route::delete('pemesanan/{noPemesanan}', 'ApiControllers\PemesananController@destroy');
 
-// Route::get('transaksisparepart', 'ApiControllers\TransaksiSparepartController@index');
-// Route::get('transaksisparepart/{kodeNota}', 'ApiControllers\TransaksiSparepartController@showDetil');
-// Route::get('transaksiservice', 'ApiControllers\TransaksiServiceController@index');
-
+Route::get('kodenota', 'ApiControllers\TransaksiFullController@kodeNota');
 Route::get('cekhistorytransaksi', 'ApiControllers\TransaksiFullController@index');
 Route::post('historytransaksi', 'ApiControllers\TransaksiFullController@showIndex');
 
@@ -85,47 +83,36 @@ Route::any('sparepart/search',function()
 });
 
 //Proto Laporan
-Route::get('pemesanan/downloadPDF/{noPemesanan}',[
-    'as'=>'pemesanan.downloadPDF',
-    'uses'=>'PemesananController@downloadPDF'
-]);
-
 Route::get('pemesanan/printPreview/{noPemesanan}',[
     'as'=>'pemesananMobile. printPreview',
-    'uses'=>'PemesananController@printPreview']);
+    'uses'=>'ApiControllers\PemesananController@printPreview']);
 
-    
 //Laporan
 Route::get('laporan/pendapatanBulanan/{tahun}',[
     'as'=>'laporan.pendapatanBulanan',
     'uses'=>'ApiControllers\ReportController@LaporanPendapatanBulanan']);
-    
-// Route::post('laporan/pendapatanBulanan',[
-//     'as'=>'laporan.pendapatanBulanan',
-//     'uses'=>'ReportController@LaporanPendapatanBulanan']);
 
 Route::get('laporan/pengeluaranBulanan/{tahun}',[
     'as'=>'laporan.pengeluaranBulanan',
     'uses'=>'ApiControllers\ReportController@LaporanPengeluaranBulanan']);
-
-// Route::post('laporan/pengeluaranBulanan',[
-//     'as'=>'laporan.pengeluaranBulanan',
-//     'uses'=>'ReportController@LaporanPengeluaranBulanan']);
         
-Route::get('laporan/sparepartterlaris',[
+Route::get('laporan/sparepartterlaris/{tahun}',[
     'as'=>'laporan.stokTerlaris',
     'uses'=>'ApiControllers\ReportController@LaporanSparepartTerlaris']);
 
-Route::get('laporan/sisaStok',[
-    'as'=>'laporan.sisaStok',
-    'uses'=>'ApiControllers\ReportController@LaporanSisaStok']);
-Route::post('laporan/sisaStok',[
+Route::get('laporan/serviceterlaris',[
+    'as'=>'laporan.serviceTerlaris',
+    'uses'=>'ApiControllers\ReportController@LaporanServiceTerlaris']);
+
+Route::get('laporan/sisastok/{tahun}/{tipe}',[
     'as'=>'laporan.sisaStok',
     'uses'=>'ApiControllers\ReportController@LaporanSisaStok']);
 
-Route::get('laporan/cabang/{cabang}',[
+Route::get('laporan/cabang/{tahun}',[
     'as'=>'laporan.cabang',
     'uses'=>'ApiControllers\ReportController@LaporanCabang']);
-// Route::post('laporan/cabang',[
-//     'as'=>'laporan.cabang',
-//     'uses'=>'ReportController@LaporanCabang']);
+
+//Surat
+Route::get('spk/printPreview/{noPemesanan}',[
+    'as'=>'SPK.printPreview',
+    'uses'=>'ApiControllers\TransaksiServiceController@printPreviewSPK']);

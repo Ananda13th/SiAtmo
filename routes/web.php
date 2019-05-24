@@ -80,8 +80,12 @@ Route::get('transaksiService/spk/printPreview/{noPemesanan}',
     [
         'as'=>'SPK.printPreview',
         'uses'=>'TransaksiServiceController@printPreviewSPK']);
+
+Route::get('transaksiFull/spk/printPreview/{noPemesanan}',
+[
+    'as'=>'SPKFull.printPreview',
+    'uses'=>'TransaksiFullController@printPreviewSPK']);
         
-    
 Route::get('transaksiSparepart/printPreview/{noPemesanan}',
 [
     'as'=>'transaksiSparepart.printPreview',

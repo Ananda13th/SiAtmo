@@ -40,6 +40,12 @@ class SparepartController extends Controller
         return response()->json($sparepart, 200);
     }
 
+    public function tipeSparepart() {
+        $sparepart =  Sparepart::all('tipeSparepart');
+
+        return response()->json($sparepart, 200);
+    }
+
     public function create()
     {
         $sparepart= Sparepart::all();
@@ -48,20 +54,8 @@ class SparepartController extends Controller
 
     public function store(Request $request)
     {
-        $tempat         = $request->tempatPeletakan;
-        $penyimpanan    = $request->tempatSimpan;
-        $id             = [];
-        $id = DB::select(" SELECT kodeSparepart FROM sparepart WHERE kodeSparepart LIKE '%$tempat%' AND kodeSparepart LIKE '%$penyimpanan%' ORDER BY SUBSTRING(kodeSparepart, 11) + 0 DESC LIMIT 1");
-        if(!$id)
-            $no = 1;
-        else{
-            $no_str = substr($id[0]->kodeSparepart, 10);
-            $no = ++$no_str;
-        }
-        $kodeBarang = $tempat.'-'.$penyimpanan.'-'.$no;
-        
         $this->validate($request, [
-            // 'kodeSparepart'=>'required|max:12|min:11',
+            'kodeSparepart'=>'required|max:12|min:11',
             'namaSparepart'=>'required',
             'tipeSparepart'=>'required',
             'merkSparepart'=>'required',
@@ -72,7 +66,7 @@ class SparepartController extends Controller
         ]);
         
         $addSparepart = Sparepart::create([
-            'kodeSparepart' => $kodeBarang,
+            'kodeSparepart' => $request->kodeSparepart,
             'namaSparepart'=>$request->namaSparepart,
             'tipeSparepart'=>$request->tipeSparepart,
             'merkSparepart'=>$request->merkSparepart,

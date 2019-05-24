@@ -42,6 +42,12 @@ class TransaksiFullController extends Controller
         // return view('transaksiFull/index', ['tSparepart'=>$transaksiFull, 'no'=>0, ]);
         return response()->json($transaksiFull, 200);
     }
+    
+    public function kodeNota() {
+        $transaksi = TransaksiPenjualan::all('kodeNota');
+
+        return response()->json($transaksi, 200);
+    }
 
     public function create()
     {

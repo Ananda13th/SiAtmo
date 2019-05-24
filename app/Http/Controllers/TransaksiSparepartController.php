@@ -12,6 +12,7 @@ use SiAtmo\HistorySparepart;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use PDF;
+use DB;
 
 class TransaksiSparepartController extends Controller
 {

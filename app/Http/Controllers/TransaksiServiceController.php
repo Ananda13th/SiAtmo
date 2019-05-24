@@ -190,7 +190,7 @@ class TransaksiServiceController extends Controller
         ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
         ->get();
         $user = Auth::user();
-      return view('printPreview.notaLunasService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
+        return view('printPreview.notaLunasService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
     }
 
     public function printPreviewSPK($kodeNota)
@@ -200,8 +200,7 @@ class TransaksiServiceController extends Controller
         ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
         ->get();
         $user = Auth::user();
-
-      return view('printPreview.SPKService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
+        return view('printPreview.SPKService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
     }
 
 

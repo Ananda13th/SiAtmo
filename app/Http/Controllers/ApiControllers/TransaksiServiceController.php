@@ -37,20 +37,8 @@ class TransaksiServiceController extends Controller
 
     public function store(Request $request)
     {
-        $kode       = 'SV';
-        $tanggal    = Carbon::now()->format('dmy');
-        $id         = [];
-        $id = DB::select(" SELECT kodeNota FROM transaksipenjualan WHERE kodeNota LIKE '%$kode%' AND kodeNota LIKE '%$tanggal%' ORDER BY SUBSTRING(kodeNota, 11) + 0 DESC LIMIT 1");
-        
-        if(!$id)
-            $no = 1;
-        else{
-            $no_str = substr($id[0]->kodeNota, 10);
-            $no = ++$no_str;
-        }
-        $kodeNota = $kode.'-'.$tanggal.'-'.$no;
-   
         $this->validate($request, [
+            'kodeNota'=>'required|max:13',
             'namaKonsumen'=>'required', 
             'noTelpKonsumen'=>'required', 
             'alamatKonsumen'=>'required',
@@ -67,19 +55,19 @@ class TransaksiServiceController extends Controller
         }
 
         $transaksi = TransaksiPenjualan::create([
-            'kodeNota'          =>$kodeNota,
-            'tanggalTransaksi'  =>Carbon::now(), 
-            'statusTransaksi'   =>'Sedang Dikerjakan',
-            'subtotal'          =>$subtotal, 
-            'total'             =>$subtotal,
-            'namaKonsumen'      =>$request->namaKonsumen, 
-            'noTelpKonsumen'    =>$request->noTelpKonsumen, 
-            'alamatKonsumen'    =>$request->alamatKonsumen,
+            'kodeNota'=>$request->kodeNota,
+            'tanggalTransaksi'=>Carbon::now(), 
+            'statusTransaksi'=>'sedang dikerjakan',
+            'subtotal'=>$subtotal, 
+            'total'=>$subtotal,
+            'namaKonsumen'=>$request->namaKonsumen, 
+            'noTelpKonsumen'=>$request->noTelpKonsumen, 
+            'alamatKonsumen'=>$request->alamatKonsumen,
         ]);
 
         $user = Auth::user();
         $pegawaiOnDuty = PegawaiOnDuty::create([
-            'emailPegawai'=> $user->email,
+            'email'=> $user->email,
             'kodeNota'=>$transaksi->kodeNota
         ]);
 
@@ -87,11 +75,11 @@ class TransaksiServiceController extends Controller
         for($i = 0; $i<$count; $i++)
         {
             $detiltransaksi = DetilTransaksiService::create([
-                'kodeNota'              =>$kodeNota,
-                'biayaServiceTransaksi' =>$request->biayaServiceTransaksi[$i], 
-                'platNomorKendaraan'    =>$request->platNomorKendaraan[$i], 
-                'emailPegawai'          =>$request->emailPegawai[$i], 
-                'kodeService'           =>$request->kodeService[$i]
+                'kodeNota'=>$transaksi->kodeNota,
+                'biayaServiceTransaksi'=>$request->biayaServiceTransaksi[$i], 
+                'platNomorKendaraan'=>$request->platNomorKendaraan[$i], 
+                'emailPegawai'=>$request->emailPegawai[$i], 
+                'kodeService'=>$request->kodeService[$i]
             ]);
         }
         $response = "Sukses";
@@ -107,30 +95,39 @@ class TransaksiServiceController extends Controller
 
     }
 
-    public function downloadPDF($kodeNota)
+    public function downloadPDFLunas($kodeNota)
     {
         $tService = TransaksiPenjualan::find($kodeNota);
         $detil = DetilTransaksiService::leftJoin('service', 'detiltransaksiservice.kodeService', '=', 'service.kodeService')
         ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
         ->get();
         $user = Auth::user();
-        $pdf = PDF::loadView('pdf.SPKService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
+        $pdf = PDF::loadView('pdf.notaLunasService', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
         return $pdf->stream();
-  
-      }
-
-    public function show($kodeNota)
-    {
-
     }
 
-    public function update(Request $request, $kodeNota)
+
+    public function printPreview($kodeNota)
     {
-        
+        $tService = TransaksiPenjualan::find($kodeNota);
+        $detil = DetilTransaksiService::leftJoin('service', 'detiltransaksiservice.kodeService', '=', 'service.kodeService')
+        ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
+        ->get();
+        // $user = Auth::user();
+
+        // return response()->json($detil, 200);
+      return view('printPreview.notaLunasServiceMobile', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
     }
 
-    public function destroy($kodeNota)
+    public function printPreviewSPK($kodeNota)
     {
+        $tService = TransaksiPenjualan::find($kodeNota);
+        $detil = DetilTransaksiService::leftJoin('service', 'detiltransaksiservice.kodeService', '=', 'service.kodeService')
+        ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
+        ->get();
+        $user = Auth::user();
+        dd($user);
 
+      return view('printPreview.SPKServiceMobile', ['data'=>$tService, 'detil'=>$detil, 'pegawai'=>$user]);
     }
 }

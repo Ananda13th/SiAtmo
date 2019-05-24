@@ -14,6 +14,7 @@ use SiAtmo\KendaraanKonsumen;
 use Illuminate\Support\Facades\Auth;
 use SiAtmo\PegawaiOnDuty;
 use Carbon\Carbon;
+use DB;
 
 class TransaksiFullController extends Controller
 {
@@ -34,8 +35,20 @@ class TransaksiFullController extends Controller
 
     public function store(Request $request)
     {
+        $kode       = 'SS';
+        $tanggal    = Carbon::now()->format('dmy');
+        $id         = [];
+        $id = DB::select(" SELECT kodeNota FROM transaksipenjualan WHERE kodeNota LIKE '%$kode%' AND kodeNota LIKE '%$tanggal%' ORDER BY SUBSTRING(kodeNota, 11) + 0 DESC LIMIT 1");
+        
+        if(!$id)
+            $no = 1;
+        else{
+            $no_str = substr($id[0]->kodeNota, 10);
+            $no = ++$no_str;
+        }
+        $kodeNota = $kode.'-'.$tanggal.'-'.$no;
+
         $this->validate($request, [
-            'kodeNota'=>'required|max:13',
             'namaKonsumen'=>'required', 
             'noTelpKonsumen'=>'required', 
             'alamatKonsumen'=>'required',
@@ -63,9 +76,9 @@ class TransaksiFullController extends Controller
         $total=$subtotal;
 
         $transaksi = TransaksiPenjualan::create([
-            'kodeNota'=>$request->kodeNota,
+            'kodeNota'=>$kodeNota,
             'tanggalTransaksi'=>Carbon::now(), 
-            'statusTransaksi'=>'sedang dikerjakan',
+            'statusTransaksi'=>'Sedang Dikerjakan',
             'subtotal'=>$subtotal, 
             'total'=>$total,
             'namaKonsumen'=>$request->namaKonsumen, 
@@ -73,16 +86,16 @@ class TransaksiFullController extends Controller
             'alamatKonsumen'=>$request->alamatKonsumen,
         ]);
 
-        $user = Auth::user();
-        $pegawaiOnDuty = PegawaiOnDuty::create([
-            'email'=> $user->email,
-            'kodeNota'=>$request->kodeNota
-        ]);
+        // $user = Auth::user();
+        // $pegawaiOnDuty = PegawaiOnDuty::create([
+        //     'email'=> $user->email,
+        //     'kodeNota'=>$transaksi->kodeNota
+        // ]);
 
         for($i = 0; $i<$countSubtotalSparepart; $i++)
         {
             $detiltransaksi = DetilTransaksiSparepart::create([
-                'kodeNota'=>$transaksi->kodeNota,
+                'kodeNota'=>$kodeNota,
                 'hargaJualTransaksi'=>$request->hargaJualTransaksi[$i], 
                 'jumlahSparepart'=>$request->jumlahSparepart[$i], 
                 'kodeSparepart'=>$request->kodeSparepart[$i]
@@ -91,7 +104,7 @@ class TransaksiFullController extends Controller
         for($i = 0; $i<$countSubtotalService; $i++)
         {
             $detiltransaksi = DetilTransaksiService::create([
-                'kodeNota'=>$transaksi->kodeNota,
+                'kodeNota'=>$kodeNota,
                 'biayaServiceTransaksi'=>$request->biayaServiceTransaksi[$i], 
                 'platNomorKendaraan'=>$request->platNomorKendaraan[$i], 
                 'emailPegawai'=>$request->emailPegawai[$i], 
@@ -119,6 +132,16 @@ class TransaksiFullController extends Controller
     public function destroy($kodeNota)
     {
 
+    }
+    public function printPreviewSPK($kodeNota)
+    {
+        $tService = TransaksiPenjualan::find($kodeNota);
+        $detil1 = DetilTransaksiService::leftJoin('service', 'detiltransaksiservice.kodeService', '=', 'service.kodeService')
+        ->leftJoin('users', 'detiltransaksiservice.emailPegawai', '=', 'users.email')
+        ->get();
+        $detil2 = DetilTransaksiSparepart::leftJoin('sparepart', 'detiltransaksisparepart.kodeSparepart', '=', 'sparepart.kodeSparepart')->get();
+        $user = Auth::user();
+        return view('printPreview.notaLunasFull', ['data'=>$tService, 'detil1'=>$detil1,'detil2'=>$detil2, 'pegawai'=>$user]);
     }
 
 }

@@ -42,13 +42,12 @@ class SparepartController extends Controller
         $tempat         = $request->tempatPeletakan;
         $penyimpanan    = $request->tempatSimpan;
         $id             = [];
-        $id = DB::select(" SELECT kodeSparepart FROM sparepart WHERE kodeSparepart LIKE '%$tempat%' AND kodeSparepart LIKE '%$penyimpanan%' ORDER BY SUBSTRING(kodeSparepart, 11) + 0 DESC LIMIT 1");
+        $id = DB::select(" SELECT kodeSparepart FROM sparepart WHERE kodeSparepart LIKE '%$tempat%' AND kodeSparepart LIKE '%$penyimpanan%'");
+        $test = count($id);
+        $no = $test+1;
         if(!$id)
             $no = 1;
-        else{
-            $no_str = substr($id[0]->kodeSparepart, 10);
-            $no     = ++$no_str+1;
-        }
+
         $kodeBarang = $tempat.'-'.$penyimpanan.'-'.$no;
 
         $this->validate($request, [
@@ -64,47 +63,35 @@ class SparepartController extends Controller
 
         if($request->hasFile('gambarSparepart'))
         {
-            $file = $request->file('gambarSparepart');
-            $image = $file->openFile()->fread($file->getSize());
-            // $image = $request->file('gambarSparepart');
-            // $filename = time() .$image->getClientOriginalName();
-            // $image->move( public_path().'/image/',  $filename );
-            try{
-                $addSparepart = Sparepart::create([
-                    'kodeSparepart' => $kodeBarang,
-                    'namaSparepart'=>$request->namaSparepart,
-                    'tipeSparepart'=>$request->tipeSparepart,
-                    'merkSparepart'=>$request->merkSparepart,
-                    'hargaJual'=>$request->hargaJual,
-                    'hargaBeli'=>$request->hargaBeli,
-                    'tempatPeletakan'=>$request->tempatPeletakan,
-                    'jumlahStok'=>$request->jumlahStok,
-                    'gambarSparepart'=>$image
-                ]);
-            }
-            catch(Exception $exception)
-            {
-                return redirect()->route('sparepart.create')->with('failed','Kode Sparepart Sudah Ada');
-            }
+            // $file = $request->file('gambarSparepart');
+            // $image = $file->openFile()->fread($file->getSize());
+            $image = $request->file('gambarSparepart');
+            $filename = time() .$image->getClientOriginalName();
+            $image->move( public_path().'/image/',  $filename );
+            $addSparepart = Sparepart::create([
+                'kodeSparepart'     => $kodeBarang,
+                'namaSparepart'     => $request->namaSparepart,
+                'tipeSparepart'     => $request->tipeSparepart,
+                'merkSparepart'     => $request->merkSparepart,
+                'hargaJual'         => $request->hargaJual,
+                'hargaBeli'         => $request->hargaBeli,
+                'tempatPeletakan'   => $request->tempatPeletakan,
+                'jumlahStok'        => $request->jumlahStok,
+                'gambarSparepart'   => $image
+            ]);
         }
         else
         {
-            try{
-                $addSparepart = Sparepart::create([
-                    'kodeSparepart' => $kodeBarang,
-                    'namaSparepart'=>$request->namaSparepart,
-                    'tipeSparepart'=>$request->tipeSparepart,
-                    'merkSparepart'=>$request->merkSparepart,
-                    'hargaJual'=>$request->hargaJual,
-                    'hargaBeli'=>$request->hargaBeli,
-                    'tempatPeletakan'=>$request->tempatPeletakan,
-                    'jumlahStok'=>$request->jumlahStok
-                ]);
-            }
-            catch(Exception $exception)
-            {
-                return redirect()->route('sparepart.create')->with('failed','Kode Sparepart Sudah Ada');
-            }
+            $addSparepart = Sparepart::create([
+                'kodeSparepart'     => $kodeBarang,
+                'namaSparepart'     => $request->namaSparepart,
+                'tipeSparepart'     => $request->tipeSparepart,
+                'merkSparepart'     => $request->merkSparepart,
+                'hargaJual'         => $request->hargaJual,
+                'hargaBeli'         => $request->hargaBeli,
+                'tempatPeletakan'   => $request->tempatPeletakan,
+                'jumlahStok'        => $request->jumlahStok
+            ]);
         };
         return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil ditambah');
     }
