@@ -7,9 +7,9 @@ use SiAtmo\Supplier;
 use SiAtmo\Kendaraan;
 
 Route::get('laporan/terlaris/service',
-    [
-        'as'=>'laporan.serviceTerlaris',
-        'uses'=>'ReportController@LaporanServiceTerlaris']);
+[
+    'as'=>'laporan.serviceTerlaris',
+    'uses'=>'ReportController@LaporanServiceTerlaris']);
 
 Route::post('laporan/terlaris/service',
 [
@@ -53,7 +53,6 @@ Route::get('konsumen/riwayat',
     'as'    =>'konsumen.riwayat',
     'uses'  =>'KonsumenController@riwayat'
 ]);
-//
 
 
 Route::get('transaksiService/downloadPDF/{noPemesanan}',

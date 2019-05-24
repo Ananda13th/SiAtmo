@@ -92,6 +92,7 @@
   </table>
       <hr/>
       <div>
+      <label>Service</label> <br>
         <table>
             <thead>
                 <tr>
@@ -110,29 +111,42 @@
                     </tr>
                 @endif
                 @endforeach
-                @foreach($detil2 as $d)
-                @if($d->kodeNota == $data->kodeNota)
-                    <tr>
-                        <td>{{$d->kodeService}} </td>
-                        <td>{{$d->keterangan}} </td>
-                        <td>{{$d->biayaServiceTransaksi}} </td>
-                    </tr>
-                @endif
-                @endforeach
-                <tr>
-                    <td colspan="2">Subtotal</td>
-                    <td>{{$data->subtotal}} </td>
-                </tr>
-                <tr>
-                    <td colspan="2">Diskon</td>
-                    <td>{{$data->diskon}} </td>
-                </tr>
-                <tr>
-                    <td colspan="2">Total</td>
-                    <td>{{$data->total}} </td>
-                </tr>
             </tbody>
         </table>
+        <br>
+        <label>Sparepart</label> <br>
+        <table>
+          <thead>
+              <tr>
+                  <th>Nama</th>
+                  <th>Merk </th>
+                  <th>Harga</th>
+              </tr>
+          </thead>
+          <tbody>
+          @foreach($detil2 as $d)
+                @if($d->kodeNota == $data->kodeNota)
+                    <tr>
+                        <td>{{$d->namaSparepart}} </td>
+                        <td>{{$d->merkSparepart}} </td>
+                        <td>{{$d->hargaJualTransaksi}} </td>
+                    </tr>
+                @endif
+              @endforeach
+          </tbody>
+              <tr>
+                  <td colspan="2">Subtotal</td>
+                  <td>{{$data->subtotal}} </td>
+              </tr>
+              <tr>
+                  <td colspan="2">Diskon</td>
+                  <td>{{$data->diskon}} </td>
+              </tr>
+              <tr>
+                  <td colspan="2">Total</td>
+                  <td>{{$data->total}} </td>
+              </tr>
+          </table>
       </div>
       <br>
       <input type="button" value="Print" class="btn no-print" onclick="PrintDoc()"/>

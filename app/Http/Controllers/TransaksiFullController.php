@@ -64,7 +64,7 @@ class TransaksiFullController extends Controller
 
         for($i = 0; $i<$countSubtotalSparepart; $i++)
         {
-            $subtotalSparepart += $request->hargaJualTransaksi[$i]*$request->hargaJualTransaksi[$i];
+            $subtotalSparepart += $request->hargaJualTransaksi[$i]*$request->jumlahSparepart[$i];
         }
 
         for($i = 0; $i<$countSubtotalService; $i++)
@@ -86,11 +86,13 @@ class TransaksiFullController extends Controller
             'alamatKonsumen'=>$request->alamatKonsumen,
         ]);
 
-        // $user = Auth::user();
-        // $pegawaiOnDuty = PegawaiOnDuty::create([
-        //     'email'=> $user->email,
-        //     'kodeNota'=>$transaksi->kodeNota
-        // ]);
+        $user = Auth::user();
+        $pegawaiOnDuty = PegawaiOnDuty::create([
+            'emailPegawai'=> $user->email,
+            'kodeNota'=>$kodeNota
+        ]);
+
+        dd($pegawaiOnDuty);
 
         for($i = 0; $i<$countSubtotalSparepart; $i++)
         {

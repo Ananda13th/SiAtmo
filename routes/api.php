@@ -116,3 +116,7 @@ Route::get('laporan/cabang/{tahun}',[
 Route::get('spk/printPreview/{noPemesanan}',[
     'as'=>'SPK.printPreview',
     'uses'=>'ApiControllers\TransaksiServiceController@printPreviewSPK']);
+Route::get('transaksiFull/spk/printPreview/{noPemesanan}',
+[
+    'as'=>'SPKFull.printPreview',
+    'uses'=>'TransaksiFullController@printPreviewSPK']);
